@@ -1,20 +1,7 @@
-map {
+/* The map container must fill the whole screen */
+#map {
     width: 100vw;
     height: 100vh;
-    /* z-index: 0 keeps it behind the header and modals */
+    /* z-index: 0 keeps it behind the header and modal */
     z-index: 0; 
-}
-
-/* Add padding to the top of the map 
-  so the header and search bar don't cover it.
-*/
-.leaflet-top.leaflet-left {
-    margin-top: 140px;
-}
-
-@media (min-width: 768px) {
-    /* On desktop, the header is shorter */
-    .leaflet-top.leaflet-left {
-        margin-top: 100px;
-    }
 }
