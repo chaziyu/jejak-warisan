@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "name": "Bangunan Sultan Abdul Samad",
+    "coordinates": [3.1489, 101.6944],
+    "built": "1894-1897",
+    "architects": "AC Norman, RAJ Bidwell, CE Spooner and AB Hubback",
+    "info": "This was the Government Offices of the British Colonial administration. At 480ft in length, the two storey building has a wide arched colonnade running around both floors. It was the largest building of its day, constructed entirely of brick and plaster."
+  },
+  {
+    "id": "4",
+    "name": "Masjid Jamek",
+    "coordinates": [3.1471, 101.6954],
+    "built": "1908-1909",
+    "architects": "AB Hubback",
+    "info": "Located on the site of a Malay cemetery, this was the main mosque in Kuala Lumpur until Masjid Negara opened in 1965. The design is said to be inspired by North Indian Moghul mosques."
+  },
+  {
+    "id": "A",
+    "name": "Dataran Merdeka",
+    "coordinates": [3.1483, 101.6938],
+    "built": "1897 (Fountain)",
+    "architects": "Messrs Rosher & Company (Fountain)",
+    "info": "Originally known as the Padang, it was the focal point of colonial Kuala Lumpur and was used as the Parade Ground. At the stroke of midnight on 31 August 1957, the Union Jack was lowered here for the last time."
+  }
+]

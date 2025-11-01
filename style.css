@@ -1,0 +1,7 @@
+/* The map container must have a height */
+#map {
+    width: 100vw;
+    height: 100vh;
+    /* This z-index keeps it behind the modal */
+    z-index: 10; 
+}
