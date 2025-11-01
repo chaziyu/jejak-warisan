@@ -31,6 +31,24 @@
 
     <div id="map"></div>
 
+    <div id="filterModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-[1000] hidden flex justify-center items-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[85vh] flex flex-col">
+            <div class="p-5 border-b flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-gray-800">Filter Sites</h2>
+                <button id="closeFilterModal" class="text-gray-500 hover:text-gray-800 text-3xl">×</button>
+            </div>
+            <div id="filterContainer" class="p-6 overflow-y-auto">
+                <div class="mb-4">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="filter-checkbox" value="All" checked>
+                        <span class="ml-2 font-bold">Show All</span>
+                    </label>
+                </div>
+                <hr class="my-2">
+                </div>
+        </div>
+    </div>
+
     <div id="siteModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-[1000] hidden flex items-end md:items-center justify-center p-0 md:p-4">
         <div class="bg-white rounded-t-lg md:rounded-lg shadow-xl max-w-2xl w-full max-h-[85vh] flex flex-col">
             <div class="p-5 border-b flex justify-between items-center">
@@ -51,10 +69,6 @@
                 </div>
                 <hr class="my-4">
                 <p id="modalInfo" class="text-gray-700 leading-relaxed">...</p>
-                <hr class="my-4">
-                <a id="getDirectionsButton" href="#" target="_blank" class="block w-full text-center p-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-bold">
-                    Get Directions
-                </a>
             </div>
         </div>
     </div>
