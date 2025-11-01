@@ -6,9 +6,8 @@
     z-index: 0; 
 }
 
-/* NEW: Add padding to the top of the map 
+/* Add padding to the top of the map 
   so the header and search bar don't cover it.
-  120px is a good start for the new header height on mobile.
 */
 .leaflet-top.leaflet-left {
     margin-top: 140px;
