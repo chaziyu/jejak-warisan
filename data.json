@@ -5,8 +5,9 @@
     "coordinates": [3.1489, 101.6944],
     "built": "1894-1897",
     "architects": "AC Norman, RAJ Bidwell, CE Spooner, AB Hubback",
-    "info": "This was the Government Offices of the British Colonial administration. The two-storey building is 480ft long with a wide arched colonnade. The imposing clock tower rises to over 140ft. It now holds the offices of the National Heritage Department.",
-    "imageUrl": "http://www.eveandersson.com/photos/malaysia/kuala-lumpur-merdeka-square-sultan-abdul-samad-building-large.jpg"
+    "category": "Moghul Style",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Sultan_Abdul_Samad_Building_in_Kuala_Lumpur.jpg/800px-Sultan_Abdul_Samad_Building_in_Kuala_Lumpur.jpg",
+    "info": "This was the Government Offices of the British Colonial administration. The two-storey building is 480ft long with a wide arched colonnade. The imposing clock tower rises to over 140ft. It now holds the offices of the National Heritage Department."
   },
   {
     "id": "2",
@@ -14,8 +15,9 @@
     "coordinates": [3.1485, 101.6947],
     "built": "1904-1907",
     "architects": "AB Hubback",
-    "info": "Designed by AB Hubback at a cost of $100,000 (Straits Dollars), its style is similar to the Sultan Abdul Samad building. It remained the General Post Office until 1984 and is now used by the Ministry of Tourism and Culture.",
-    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/9d/19/6b/old-post-office-tower.jpg?w=1200&h=1200&s=1"
+    "category": "Moghul Style",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Old_Kuala_Lumpur_Post_Office.jpg/800px-Old_Kuala_Lumpur_Post_Office.jpg",
+    "info": "Designed by AB Hubback at a cost of $100,000 (Straits Dollars), its style is similar to the Sultan Abdul Samad building. It remained the General Post Office until 1984 and is now used by the Ministry of Tourism and Culture."
   },
   {
     "id": "3",
@@ -23,8 +25,9 @@
     "coordinates": [3.1480, 101.6949],
     "built": "Early 1900s - 1930s",
     "architects": "B.M. Iversen (Loke Yew Bldg), AK Moosden (Chow Kit Bldg)",
-    "info": "This group includes the Loke Yew Building, an iconic six-storey Art Deco structure, and the Chow Kit & Co. Building, built in a Neo-Renaissance style. The latter was adapted for new use as the Industrial Court of Malaysia.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Wisma_Straits_Trading%2C_Kuala_Lumpur.jpg/800px-Wisma_Straits_Trading%2C_Kuala_Lumpur.jpg"
+    "category": "Art Deco",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Wisma_Straits_Trading%2C_Kuala_Lumpur.jpg/800px-Wisma_Straits_Trading%2C_Kuala_Lumpur.jpg",
+    "info": "This group includes the Loke Yew Building, an iconic six-storey Art Deco structure, and the Chow Kit & Co. Building, built in a Neo-Renaissance style. The latter was adapted for new use as the Industrial Court of Malaysia."
   },
   {
     "id": "4",
@@ -32,8 +35,9 @@
     "coordinates": [3.1471, 101.6954],
     "built": "1908-1909",
     "architects": "AB Hubback",
-    "info": "Located on the site of a Malay cemetery at the confluence of the Klang and Gombak rivers. The design is said to be inspired by North Indian Moghul mosques, with distinctive red and white masonry bands. It was the main mosque in KL until Masjid Negara opened in 1965.",
-    "imageUrl": "https://media1.thrillophilia.com/filestore/hf680ko1qma9yt6l1d0snttr4lol_Masjid_Jamek.jpg"
+    "category": "Temple/Mosque",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Jamek_Mosque.jpg/800px-Jamek_Mosque.jpg",
+    "info": "Located on the site of a Malay cemetery at the confluence of the Klang and Gombak rivers. The design is said to be inspired by North Indian Moghul mosques. It was the main mosque in KL until Masjid Negara opened in 1965."
   },
   {
     "id": "5",
@@ -41,8 +45,9 @@
     "coordinates": [3.14736, 101.69598],
     "built": "1907 (Shophouses), 1937 (Clock Tower)",
     "architects": "N/A",
-    "info": "This was the original township center with Kapitan Yap Ah Loy's market and gambling sheds. The ornate three-storey Neo-classical shophouses were built in 1907. The Art Deco Clock Tower in the center was erected in 1937 to commemorate the coronation of King George VI.",
-    "imageUrl": "https://tse1.mm.bing.net/th/id/OIP.qOQJAkFCc-ccya5NWa7o6QAAAA?rs=1&pid=ImgDetMain&o=7&rm=3"
+    "category": "Civic",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Medan_Pasar_Clock_Tower%2C_Kuala_Lumpur.jpg/800px-Medan_Pasar_Clock_Tower%2C_Kuala_Lumpur.jpg",
+    "info": "This was the original township center with Kapitan Yap Ah Loy's market. The Art Deco Clock Tower in the center was erected in 1937 to commemorate the coronation of King George VI."
   },
   {
     "id": "6",
@@ -50,8 +55,9 @@
     "coordinates": [3.14517, 101.69624],
     "built": "1882 (Rebuilt)",
     "architects": "N/A",
-    "info": "The oldest traditional Chinese temple in the city. The board at the entrance attributes Kapitan Yap Ah Loy as the founder in 1864. It is dedicated to the patron deities of Sin Sze Ya and Si Sze Ya, who are said to have guided Yap Ah Loy to victory during the Selangor Civil War.",
-    "imageUrl": "https://tse3.mm.bing.net/th/id/OIP.z0vcak18H6f1xGKhatLvQwAAAA?rs=1&pid=ImgDetMain&o=7&rm=3"
+    "category": "Temple/Mosque",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Sze_Ya_Temple_%28Kuala_Lumpur%29_IMG_6802.JPG/800px-Sze_Ya_Temple_%28Kuala_Lumpur%29_IMG_6802.JPG",
+    "info": "The oldest traditional Chinese temple in the city. The board at the entrance attributes Kapitan Yap Ah Loy as the founder in 1864. It is dedicated to the patron deities of Sin Sze Ya and Si Sze Ya."
   },
   {
     "id": "7",
@@ -59,8 +65,9 @@
     "coordinates": [3.1460, 101.69645],
     "built": "N/A",
     "architects": "N/A",
-    "info": "This triangle is formed by the conjunction of Jalan Tun HS Lee and Jalan Petaling. It features several distinctive shophouses, such as the unique Old Federal Stores Building, which was occupied by the founders of the Cycle and Carriage Company in 1905.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Kuala_Lumpur_-_Street_scene_%2816913401777%29.jpg/800px-Kuala_Lumpur_-_Street_scene_%2816913401777%29.jpg"
+    "category": "Commercial",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Kuala_Lumpur_-_Street_scene_%2816913401777%29.jpg/800px-Kuala_Lumpur_-_Street_scene_%2816913401777%29.jpg",
+    "info": "This triangle is formed by the conjunction of Jalan Tun HS Lee and Jalan Petaling. It features several distinctive shophouses, such as the unique Old Federal Stores Building."
   },
   {
     "id": "8",
@@ -68,8 +75,9 @@
     "coordinates": [3.14855, 101.69712],
     "built": "c. 1980s",
     "architects": "N/A",
-    "info": "Located at No 62, Jalan Tun Perak. Established over 30 years ago, it retains many traditional fixtures and fittings, such as glass cabinets and shelving. You can find different types of traditional herbs and medicines here.",
-    "imageUrl": "https://via.placeholder.com/400x250?text=Kwong+Ban+Heng"
+    "category": "Commercial",
+    "imageUrl": "https://via.placeholder.com/400x250?text=Kwong+Ban+Heng",
+    "info": "Located at No 62, Jalan Tun Perak. Established over 30 years ago, it retains many traditional fixtures and fittings, such as glass cabinets and shelving."
   },
   {
     "id": "9",
@@ -77,8 +85,9 @@
     "coordinates": [3.1499, 101.69713],
     "built": "1932",
     "architects": "A.O. Coltman (Booty and Edwards)",
-    "info": "One of KL's distinctive heritage buildings, located at the intersection of Jalan Tun Perak and Jalan Melaka. At five storeys, it was the tallest in Kuala Lumpur at that time. It originally housed Radio Malaya and is now leased by CIMB Bank.",
-    "imageUrl": "https://farm1.staticflickr.com/743/22736790517_5d40b6c790.jpg"
+    "category": "Art Deco",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Oriental_Building%2C_Kuala_Lumpur_-_2015-09-02.jpg/800px-Oriental_Building%2C_Kuala_Lumpur_-_2015-09-02.jpg",
+    "info": "One of KL's distinctive heritage buildings. At five storeys, it was the tallest in Kuala Lumpur at that time. It originally housed Radio Malaya and is now leased by CIMB Bank."
   },
   {
     "id": "10",
@@ -86,8 +95,9 @@
     "coordinates": [3.1505, 101.6976],
     "built": "N/A",
     "architects": "N/A",
-    "info": "Located across the street from the Oriental Building, near the Teochew Association. These stalls are where you can learn how to make a traditional flower garland or buy fresh flowers.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Little_India%2C_Kuala_Lumpur_%282012%29.jpg/800px-Little_India%2C_Kuala_Lumpur_%282012%29.jpg"
+    "category": "Commercial",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Little_India%2C_Kuala_Lumpur_%282012%29.jpg/800px-Little_India%2C_Kuala_Lumpur_%282012%29.jpg",
+    "info": "Located across the street from the Oriental Building, near the Teochew Association. These stalls are where you can learn how to make a traditional flower garland."
   },
   {
     "id": "11",
@@ -95,8 +105,9 @@
     "coordinates": [3.1531, 101.69736],
     "built": "1893 (Original), 1966 (New)",
     "architects": "N/A",
-    "info": "Began as a timber building with an attap roof in 1893. The new mosque, which can accommodate 3,500 people, was opened in 1966. It is built in the Southern Indian style, and prayer service continues to be conducted in both Arabic and Tamil.",
-    "imageUrl": "https://ak-d.tripcdn.com/images/1mi632224way47q4y26BF_W_640_0_R5_Q80.jpg?proc=source/trip"
+    "category": "Temple/Mosque",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Masjid_India%2C_Kuala_Lumpur.jpg/800px-Masjid_India%2C_Kuala_Lumpur.jpg",
+    "info": "Began as a timber building in 1893. The new mosque, which can accommodate 3,500 people, was opened in 1966. It is built in the Southern Indian style."
   },
   {
     "id": "12",
@@ -104,8 +115,9 @@
     "coordinates": [3.1528, 101.6961],
     "built": "1902 (Established)",
     "architects": "N/A",
-    "info": "The oldest existing jewellers in Malaysia. P.H. Hendry Jewellers was established in 1902. The three coats of arms on their business card attest that they were appointed royal jewellers to the Sultans of Selangor, Kelantan, and Negeri Sembilan in the 1920s.",
-    "imageUrl": "https://via.placeholder.com/400x250?text=P.H.+Hendry"
+    "category": "Commercial",
+    "imageUrl": "https://via.placeholder.com/400x250?text=P.H.+Hendry",
+    "info": "The oldest existing jewellers in Malaysia. They were appointed royal jewellers to the Sultans of Selangor, Kelantan, and Negeri Sembilan in the 1920s."
   },
   {
     "id": "13",
@@ -113,8 +125,9 @@
     "coordinates": [3.15027, 101.6950],
     "built": "1904",
     "architects": "AB Hubback",
-    "info": "Designed by AB Hubback, this building originally housed the Kuala Lumpur Town Hall and Municipal Offices. Architecturally, it carries the Moghul style of the Bangunan Sultan Abdul Samad. The Auditorium is now the venue for the popular musical 'MUD: Our story of Kuala Lumpur'.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Panggung_Bandaraya_DBKL%2C_Kuala_Lumpur%2C_Malaysia_-_20110725-02.jpg/960px-Panggung_Bandaraya_DBKL%2C_Kuala_Lumpur%2C_Malaysia_-_20110725-02.jpg"
+    "category": "Moghul Style",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Panggung_Bandaraya_Kuala_Lumpur.jpg/800px-Panggung_Bandaraya_Kuala_Lumpur.jpg",
+    "info": "Designed by AB Hubback, this building originally housed the Kuala Lumpur Town Hall. Architecturally, it carries the Moghul style of the Bangunan Sultan Abdul Samad."
   },
   {
     "id": "A",
@@ -122,8 +135,9 @@
     "coordinates": [3.1483, 101.6938],
     "built": "1897 (Fountain)",
     "architects": "Messrs Rosher & Company (Fountain)",
-    "info": "Originally known as the Padang, it was the focal point of colonial Kuala Lumpur. At the stroke of midnight on 31 August 1957, the Union Jack was lowered here, and Malaya became an independent nation. On the south side is a 100m tall flagpole.",
-    "imageUrl": "https://media1.thrillophilia.com/filestore/5n3ei67dvliiuqsubriwl1rsge9r_Dataran_Merdeka_7ad8e6e453.jpg"
+    "category": "Civic",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Dataran_Merdeka%2C_Kuala_Lumpur.jpg/800px-Dataran_Merdeka%2C_Kuala_Lumpur.jpg",
+    "info": "Originally known as the Padang. At the stroke of midnight on 31 August 1957, the Union Jack was lowered here, and Malaya became an independent nation."
   },
   {
     "id": "B",
@@ -131,8 +145,9 @@
     "coordinates": [3.14675, 101.69405],
     "built": "1904-1905",
     "architects": "AB Hubback",
-    "info": "Originally built as the FMS Railway Offices, it was taken over by the PWD in 1917 and now houses the Textile Museum. The façade is in the Moghul style with distinctive red and white banding, achieved by alternating fair-faced bricks with plastered bricks.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/National_Textile_Museum.jpg/800px-National_Textile_Museum.jpg"
+    "category": "Moghul Style",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/National_Textile_Museum.jpg/800px-National_Textile_Museum.jpg",
+    "info": "Originally built as the FMS Railway Offices. The façade is in the Moghul style with distinctive red and white banding, achieved by alternating fair-faced bricks with plastered bricks."
   },
   {
     "id": "C",
@@ -140,8 +155,9 @@
     "coordinates": [3.1465, 101.6958],
     "built": "1936",
     "architects": "AO Coltman",
-    "info": "This Art Deco building was the headquarters of the Overseas Chinese Banking Corporation (OCBC). The design was innovative for its time as it provided basement storage for bicycles. A muted mosaic panel runs up the pylon, ending with the original bank logo of a Chinese junk.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/OCBC_Building%2C_Kuala_Lumpur.jpg/800px-OCBC_Building%2C_Kuala_Lumpur.jpg"
+    "category": "Art Deco",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/OCBC_Building%2C_Kuala_Lumpur.jpg/800px-OCBC_Building%2C_Kuala_Lumpur.jpg",
+    "info": "This Art Deco building was the headquarters of the OCBC. The design was innovative for its time as it provided basement storage for bicycles."
   },
   {
     "id": "D",
@@ -149,8 +165,9 @@
     "coordinates": [3.14555, 101.69527],
     "built": "1936",
     "architects": "N/A",
-    "info": "This Art Deco building served as KL's wholesale wet market until the mid-1980s. It was restored and adapted into an art and culture market in 1986. When built, it was the largest room in the city at 120m long x 60m wide.",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Central_Market%2C_Kuala_Lumpur.jpg/800px-Central_Market%2C_Kuala_Lumpur.jpg"
+    "category": "Art Deco",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Central_Market%2C_Kuala_Lumpur.jpg/800px-Central_Market%2C_Kuala_Lumpur.jpg",
+    "info": "This Art Deco building served as KL's wholesale wet market until the mid-1980s. It was restored and adapted into an art and culture market in 1986."
   },
   {
     "id": "E",
@@ -158,8 +175,9 @@
     "coordinates": [3.1469, 101.69689],
     "built": "N/A",
     "architects": "N/A",
-    "info": "A short road with high historical significance, it led to Kapitan Yap Ah Loy's house on Lebuh Pasar Besar.",
-    "imageUrl": "https://via.placeholder.com/400x250?text=Jalan+Yap+Ah+Loy"
+    "category": "Civic",
+    "imageUrl": "https://via.placeholder.com/400x250?text=Jalan+Yap+Ah+Loy",
+    "info": "A short road with high historical significance, it led to Kapitan Yap Ah Loy's house on Lebuh Pasar Besar."
   },
   {
     "id": "F",
@@ -167,8 +185,9 @@
     "coordinates": [3.1491, 101.69743],
     "built": "N/A",
     "architects": "N/A",
-    "info": "This street still has many Indian restaurants, spice stores, and money-lenders. It was the street of the Chettiar, a south Indian caste of money-lenders. An example is No 85, decorated with glazed ceramic tiles of peacock designs.",
-    "imageUrl": "https://via.placeholder.com/400x250?text=Lebuh+Ampang"
+    "category": "Commercial",
+    "imageUrl": "https://via.placeholder.com/400x250?text=Lebuh+Ampang",
+    "info": "This street still has many Indian restaurants, spice stores, and money-lenders. It was the street of the Chettiar, a south Indian caste of money-lenders."
   },
   {
     "id": "G",
@@ -176,8 +195,9 @@
     "coordinates": [3.1499, 101.69713],
     "built": "N/A",
     "architects": "N/A",
-    "info": "Walking up this street, you pass major modern buildings like Bank Muamalat, which has a banking hall built following the design of a traditional Malay House.",
-    "imageUrl": "https://via.placeholder.com/400x250?text=Jalan+Melaka"
+    "category": "Commercial",
+    "imageUrl": "https://via.placeholder.com/400x250?text=Jalan+Melaka",
+    "info": "Walking up this street, you pass major modern buildings like Bank Muamalat, which has a banking hall built following the design of a traditional Malay House."
   },
   {
     "id": "H",
@@ -185,8 +205,9 @@
     "coordinates": [3.1535, 101.6975],
     "built": "c. 1964",
     "architects": "N/A",
-    "info": "An early example of mass public housing in the newly independent Malaya. These are eight-storey buildings with retail on the ground floor and 160 residential flats on the subsequent floors.",
-    "imageUrl": "https://via.placeholder.com/400x250?text=Selangor+Mansion"
+    "category": "Commercial",
+    "imageUrl": "https://via.placeholder.com/400x250?text=Selangor+Mansion",
+    "info": "An early example of mass public housing. These are eight-storey buildings with retail on the ground floor and 160 residential flats on the subsequent floors."
   },
   {
     "id": "I",
@@ -194,8 +215,9 @@
     "coordinates": [3.1530, 101.6970],
     "built": "Early 1970s",
     "architects": "N/A",
-    "info": "An 11-storey building developed by Malay entrepreneurs supported by PKNS. It was the tallest building in the area when first built and remains the 'must-go' place to buy Baju Melayu or songkok.",
-    "imageUrl": "https://via.placeholder.com/400x250?text=Wisma+Yakin"
+    "category": "Commercial",
+    "imageUrl": "https://via.placeholder.com/400x250?text=Wisma+Yakin",
+    "info": "An 11-storey building developed by Malay entrepreneurs supported by PKNS. It remains the 'must-go' place to buy Baju Melayu or songkok."
   },
   {
     "id": "J",
@@ -203,8 +225,9 @@
     "coordinates": [3.1507, 101.69628],
     "built": "N/A",
     "architects": "N/A",
-    "info": "Also known as Malay Street, this was named for the Malay settlers in the area. A prominent owner from the 1870s was Haji Mohamed Eusop bin Abubakar, a sea captain from Terengganu.",
-    "imageUrl": "https://via.placeholder.com/400x250?text=Jalan+Melayu"
+    "category": "Commercial",
+    "imageUrl": "https://via.placeholder.com/400x250?text=Jalan+Melayu",
+    "info": "Also known as Malay Street, this was named for the Malay settlers in the area. A prominent owner from the 1870s was Haji Mohamed Eusop bin Abubakar."
   },
   {
     "id": "K",
@@ -212,8 +235,9 @@
     "coordinates": [3.1535, 101.69633],
     "built": "1915-1920 (Shophouses)",
     "architects": "N/A",
-    "info": "Now Jalan Tuanku Abdul Rahman (Jalan TAR). It was so named because it began as a track leading to the limestone caves and tin mines at Batu. By the 1930s, this road became a busy commercial hub.",
-    "imageUrl": "https://via.placeholder.com/400x250?text=Jalan+TAR"
+    "category": "Commercial",
+    "imageUrl": "https://via.placeholder.com/400x250?text=Jalan+TAR",
+    "info": "Now Jalan Tuanku Abdul Rahman (Jalan TAR). It was so named because it began as a track leading to the limestone caves and tin mines at Batu."
   },
   {
     "id": "L",
@@ -221,8 +245,9 @@
     "coordinates": [3.15027, 101.69555],
     "built": "1909-1910",
     "architects": "AB Hubback",
-    "info": "Designed by AB Hubback, this building features a dramatic 400 ft (121.6m) long arcade along Jalan Tun Perak. Sadly, this is now eclipsed by the LRT line which runs above the street. It was later turned into the Sessions and Magistrates Courts but is no longer in use.",
-    "imageUrl": "https://via.placeholder.com/400x250?text=Old+Survey+Office"
+    "category": "Moghul Style",
+    "imageUrl": "https://via.placeholder.com/400x250?text=Old+Survey+Office",
+    "info": "Designed by AB Hubback, this building features a dramatic 400 ft (121.6m) long arcade along Jalan Tun Perak. It was later turned into the Sessions and Magistrates Courts."
   },
   {
     "id": "M",
@@ -230,7 +255,8 @@
     "coordinates": [3.1508, 101.6952],
     "built": "1912-1915",
     "architects": "AB Hubback",
-    "info": "Also designed by AB Hubback, it replaced the Supreme Courts which had been located on Court Hill. The public entrance faces the river and leads to a grand inner courtyard. It now stands vacant but expectations are that it will be restored for new use by Kraftangan Malaysia.",
-    "imageUrl": "https://via.placeholder.com/400x250?text=Old+High+Court"
+    "category": "Moghul Style",
+    "imageUrl": "https://via.placeholder.com/400x250?text=Old+High+Court",
+    "info": "Also designed by AB Hubback, it replaced the Supreme Courts which had been located on Court Hill. The public entrance faces the river and leads to a grand inner courtyard."
   }
 ]
