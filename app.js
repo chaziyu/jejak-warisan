@@ -43,6 +43,8 @@ function setupLandingPage() {
     const landingPage = document.getElementById('landing-page');
     const gatekeeper = document.getElementById('gatekeeper');
     const backToHome = document.getElementById('backToHome');
+    const closeStaffScreen = document.getElementById('closeStaffScreen');
+    const staffScreen = document.getElementById('staff-screen');
 
     // Visitor Click -> Hide Landing, Show Lock Screen
     btnVisitor.addEventListener('click', () => {
@@ -50,9 +52,9 @@ function setupLandingPage() {
         gatekeeper.classList.remove('hidden');
     });
 
-    // Staff Click -> Ask for Password -> Show Alert
+    // Staff Click -> Ask for Password -> Show BIG RESULT SCREEN
     btnStaff.addEventListener('click', async () => {
-        const pass = prompt("👮 STAFF LOGIN\nPlease enter the Admin Password:");
+        const pass = prompt("👮 BWM STAFF LOGIN\nPlease enter your password:");
         if (pass === ADMIN_PASSWORD) {
             await showAdminCode();
         } else if (pass !== null) {
@@ -60,17 +62,33 @@ function setupLandingPage() {
         }
     });
 
-    // Back Button (on lock screen) -> Go back to Landing
+    // Back Button (on visitor lock screen) -> Go back to Landing
     backToHome.addEventListener('click', () => {
         gatekeeper.classList.add('hidden');
         landingPage.classList.remove('hidden');
     });
 
-    // Initialize the lock screen logic
+    // Close Button (on staff result screen) -> Go back to Landing
+    closeStaffScreen.addEventListener('click', () => {
+        staffScreen.classList.add('hidden');
+        // Optional: Reload page to clear everything or just stay on landing
+        landingPage.classList.remove('hidden');
+    });
+
+    // Initialize the visitor lock screen logic
     setupGatekeeperLogic();
 }
 
 async function showAdminCode() {
+    const staffScreen = document.getElementById('staff-screen');
+    const passkeyDisplay = document.getElementById('adminPasskeyDisplay');
+    const dateDisplay = document.getElementById('adminDateDisplay');
+    
+    // Show Loading State
+    staffScreen.classList.remove('hidden');
+    passkeyDisplay.textContent = "LOADING...";
+    passkeyDisplay.classList.add('animate-pulse');
+
     try {
         const response = await fetch(SHEET_URL);
         const data = await response.text();
@@ -87,10 +105,17 @@ async function showAdminCode() {
                 break;
             }
         }
-        alert(`📅 DATE: ${todayStr}\n🔑 TODAY'S CODE: ${todayCode}`);
+
+        // Update the Big Screen
+        passkeyDisplay.classList.remove('animate-pulse');
+        passkeyDisplay.textContent = todayCode;
+        dateDisplay.textContent = `Date: ${todayStr}`;
+
     } catch (e) {
         console.error(e);
+        passkeyDisplay.textContent = "ERROR";
         alert("Error connecting to Google Sheet. Check internet.");
+        staffScreen.classList.add('hidden'); // Hide if error
     }
 }
 
@@ -124,7 +149,7 @@ async function verifyCode(enteredCode) {
         const todayStr = getTodayString();
         let validCode = null;
 
-        // Search CSV for today's code
+        // Search CSV for today's passkey
         for (let i = 1; i < rows.length; i++) {
             const cols = rows[i].split(',');
             if (cols.length >= 2 && cols[0].trim() === todayStr) {
@@ -150,7 +175,7 @@ async function verifyCode(enteredCode) {
         } else {
             // FAIL
             btn.textContent = "Verify & Unlock";
-            errorMsg.textContent = "Invalid Code for Today.";
+            errorMsg.textContent = "Invalid Passkey.";
             errorMsg.classList.remove('hidden');
             input.classList.add('border-red-500');
         }
