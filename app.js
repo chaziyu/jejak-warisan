@@ -167,6 +167,12 @@ document.addEventListener('DOMContentLoaded', () => {
     updateGameProgress(); 
 
     const map = L.map('map').setView([3.1483, 101.6938], 16);
+
+    // Esri National Geographic Style (Vintage/Paper Look)
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; National Geographic',
+        maxZoom: 16
+    }).addTo(map);
     
     // CartoDB Voyager Style (Clean & Tourist Friendly)
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
