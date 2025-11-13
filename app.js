@@ -25,8 +25,8 @@ function initApp() {
 
     if (sessionData && sessionData.valid) {
         if (Date.now() - sessionData.start < SESSION_DURATION) {
-            landingPage.remove();
-            gatekeeper.remove();
+            if(landingPage) landingPage.remove();
+            if(gatekeeper) gatekeeper.remove();
             document.getElementById('game-ui').classList.remove('hidden');
             return; 
         } else {
@@ -45,29 +45,37 @@ function setupLandingPage() {
     const closeStaffScreen = document.getElementById('closeStaffScreen');
     const staffScreen = document.getElementById('staff-screen');
 
-    btnVisitor.addEventListener('click', () => {
-        landingPage.classList.add('hidden');
-        gatekeeper.classList.remove('hidden');
-    });
+    if(btnVisitor) {
+        btnVisitor.addEventListener('click', () => {
+            landingPage.classList.add('hidden');
+            gatekeeper.classList.remove('hidden');
+        });
+    }
 
-    btnStaff.addEventListener('click', async () => {
-        const pass = prompt("👮 BWM STAFF LOGIN\nPlease enter your password:");
-        if (pass === ADMIN_PASSWORD) {
-            await showAdminCode();
-        } else if (pass !== null) {
-            alert("❌ Wrong password");
-        }
-    });
+    if(btnStaff) {
+        btnStaff.addEventListener('click', async () => {
+            const pass = prompt("👮 BWM STAFF LOGIN\nPlease enter your password:");
+            if (pass === ADMIN_PASSWORD) {
+                await showAdminCode();
+            } else if (pass !== null) {
+                alert("❌ Wrong password");
+            }
+        });
+    }
 
-    backToHome.addEventListener('click', () => {
-        gatekeeper.classList.add('hidden');
-        landingPage.classList.remove('hidden');
-    });
+    if(backToHome) {
+        backToHome.addEventListener('click', () => {
+            gatekeeper.classList.add('hidden');
+            landingPage.classList.remove('hidden');
+        });
+    }
 
-    closeStaffScreen.addEventListener('click', () => {
-        staffScreen.classList.add('hidden');
-        landingPage.classList.remove('hidden');
-    });
+    if(closeStaffScreen) {
+        closeStaffScreen.addEventListener('click', () => {
+            staffScreen.classList.add('hidden');
+            landingPage.classList.remove('hidden');
+        });
+    }
 
     setupGatekeeperLogic();
 }
@@ -108,8 +116,11 @@ async function showAdminCode() {
 function setupGatekeeperLogic() {
     const btn = document.getElementById('unlockBtn');
     const input = document.getElementById('passcodeInput');
-    btn.addEventListener('click', () => { if(input.value) verifyCode(input.value); });
-    input.addEventListener('keypress', (e) => { if (e.key === 'Enter' && input.value) verifyCode(input.value); });
+    
+    if(btn && input) {
+        btn.addEventListener('click', () => { if(input.value) verifyCode(input.value); });
+        input.addEventListener('keypress', (e) => { if (e.key === 'Enter' && input.value) verifyCode(input.value); });
+    }
 }
 
 async function verifyCode(enteredCode) {
@@ -141,11 +152,11 @@ async function verifyCode(enteredCode) {
             localStorage.setItem('jejak_session', JSON.stringify(session));
             
             gatekeeper.style.opacity = '0';
-            landingPage.style.opacity = '0';
+            if(landingPage) landingPage.style.opacity = '0';
             
             setTimeout(() => {
                 gatekeeper.remove();
-                landingPage.remove();
+                if(landingPage) landingPage.remove();
                 document.getElementById('game-ui').classList.remove('hidden');
             }, 500);
         } else {
@@ -165,12 +176,14 @@ document.addEventListener('DOMContentLoaded', () => {
     initApp();
     updateGameProgress(); 
 
+    // Initialize Map
     const map = L.map('map').setView([3.1483, 101.6938], 16);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap'
     }).addTo(map);
 
-    // --- HERITAGE ZONE POLYGON ---
+    // --- KML HERITAGE ZONE POLYGON ---
+    // Coordinates extracted from your KML and swapped to [Lat, Lng] for Leaflet
     const heritageZoneCoords = [
         [3.148934, 101.694228], [3.148012, 101.694051], [3.147936, 101.694399],
         [3.147164, 101.694292], [3.147067, 101.695104], [3.146902, 101.695994],
@@ -187,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
         [3.152586, 101.698413], [3.151802, 101.697252], [3.151796, 101.697171],
         [3.152102, 101.696968], [3.151684, 101.696683], [3.151914, 101.696270],
         [3.151298, 101.695889], [3.151581, 101.695549], [3.150951, 101.695173],
-        [3.150238, 101.694712], [3.149922, 101.694510]
+        [3.150238, 101.694712], [3.149922, 101.694510], [3.148934, 101.694228]
     ];
 
     L.polygon(heritageZoneCoords, {
@@ -195,7 +208,8 @@ document.addEventListener('DOMContentLoaded', () => {
         fillColor: '#333',      
         fillOpacity: 0.1,       
         weight: 2,
-        dashArray: '5, 5'       
+        dashArray: '5, 5',
+        interactive: false // <--- FIX: Allows clicks to pass through the shape to markers
     }).addTo(map);
 
     // -----------------------------------------------
@@ -214,15 +228,19 @@ document.addEventListener('DOMContentLoaded', () => {
         built: document.getElementById('modalBuilt'),
         architects: document.getElementById('modalArchitects'),
         info: document.getElementById('modalInfo'),
-        img: document.getElementById('modalImage'),              // IMAGE SELECTOR
-        imgContainer: document.getElementById('modalImageContainer') // CONTAINER SELECTOR
+        img: document.getElementById('modalImage'),             
+        imgContainer: document.getElementById('modalImageContainer') 
     };
 
     fetch('data.json')
         .then(res => res.json())
         .then(sites => {
             sites.forEach(site => {
-                const marker = L.marker(site.coordinates).addTo(map);
+                // FIX: Parse coordinates as floats to ensure they work correctly
+                const lat = parseFloat(site.coordinates[0]);
+                const lng = parseFloat(site.coordinates[1]);
+
+                const marker = L.marker([lat, lng]).addTo(map);
 
                 if (visitedSites.includes(site.id)) {
                     marker._icon.classList.add('marker-visited');
@@ -234,7 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     elements.architects.textContent = site.architects || "N/A";
                     elements.info.textContent = site.info;
                     
-                    // --- IMAGE LOGIC (NEW) ---
                     if (site.image) {
                         elements.img.src = site.image;
                         elements.imgContainer.classList.remove('hidden');
@@ -242,7 +259,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         elements.imgContainer.classList.add('hidden');
                     }
 
-                    btnDirections.href = `https://www.google.com/maps/dir/?api=1&destination=${site.coordinates[0]},${site.coordinates[1]}&travelmode=walking`;
+                    // Fix Google Maps URL
+                    btnDirections.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
 
                     const isNumberedSite = !isNaN(site.id);
                     if (!isNumberedSite) {
@@ -294,27 +312,32 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateGameProgress() {
         const progressBar = document.getElementById('progressBar');
         const progressText = document.getElementById('progressText');
+        if(!progressBar || !progressText) return;
+        
         const count = visitedSites.filter(id => !isNaN(id)).length;
         const percent = (count / TOTAL_SITES) * 100;
         progressBar.style.width = `${percent}%`;
         progressText.textContent = `${count}/${TOTAL_SITES} Sites`;
     }
-
-    // --- NEW BUTTON LOGIC ---
     
-    // Recenter Button: Resets view to Dataran Merdeka (Centre of Zone)
-    btnRecenter.addEventListener('click', () => {
-        map.setView([3.1483, 101.6938], 16);
-    });
+    // Recenter Button
+    if(btnRecenter) {
+        btnRecenter.addEventListener('click', () => {
+            map.setView([3.1483, 101.6938], 16);
+        });
+    }
 
-    // Share Button: Opens WhatsApp with victory message
-    btnShare.addEventListener('click', () => {
-        const text = "I just became an Official Explorer by visiting all 13 Heritage Sites in Kuala Lumpur! 🇲🇾✨ Try the Jejak Warisan challenge here: #ThisKulCity #BadanWarisanMalaysia";
-        const url = "https://jejak-warisan.vercel.app";
-        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
-        window.open(whatsappUrl, '_blank');
-    });
+    // Share Button
+    if(btnShare) {
+        btnShare.addEventListener('click', () => {
+            const text = "I just became an Official Explorer by visiting all 13 Heritage Sites in Kuala Lumpur! 🇲🇾✨ Try the Jejak Warisan challenge here: #ThisKulCity #BadanWarisanMalaysia";
+            const url = "https://jejak-warisan.vercel.app";
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
+            window.open(whatsappUrl, '_blank');
+        });
+    }
 
+    // User Location Logic
     const userMarker = L.marker([0, 0]).addTo(map);
     const userCircle = L.circle([0, 0], { radius: 10 }).addTo(map);
     map.on('locationfound', (e) => {
@@ -323,7 +346,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     map.locate({ watch: true, enableHighAccuracy: true });
 
+    // Modal Closers
     const hideModal = () => siteModal.classList.add('hidden');
-    closeModal.addEventListener('click', hideModal);
-    closeReward.addEventListener('click', () => rewardModal.classList.add('hidden'));
+    if(closeModal) closeModal.addEventListener('click', hideModal);
+    if(closeReward) closeReward.addEventListener('click', () => rewardModal.classList.add('hidden'));
 });
