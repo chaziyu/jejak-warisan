@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Share Button: Opens WhatsApp with victory message
     btnShare.addEventListener('click', () => {
-        const text = "I just became an Official Explorer by visiting all 13 Heritage Sites in Kuala Lumpur! 🇲🇾✨ Try the Jejak Warisan challenge here:";
+        const text = "I just became an Official Explorer by visiting all 13 Heritage Sites in Kuala Lumpur! 🇲🇾✨ Try the Jejak Warisan challenge here: #ThisKulCity #BadanWarisanMalaysia";
         const url = "https://jejak-warisan.vercel.app";
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
         window.open(whatsappUrl, '_blank');
