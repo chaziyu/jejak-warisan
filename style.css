@@ -21,11 +21,16 @@
     filter: hue-rotate(140deg) brightness(1.2) saturate(3);
 }
 
-/* Confetti effect for reward (optional simple animation) */
+/* Confetti effect for reward */
 #rewardModal .text-6xl {
     animation: pulse 1s infinite;
 }
 @keyframes pulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.2); }
+}
+
+/* Recenter Button (ensure it stays above map tiles) */
+#btnRecenter {
+    z-index: 1000;
 }
