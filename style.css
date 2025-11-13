@@ -1,19 +1,39 @@
+/* Map settings */
 #map {
     width: 100vw;
     height: 100vh;
     z-index: 1; 
 }
 
-/* Smooth fade for unlocking */
+/* Gatekeeper Transition */
 #gatekeeper {
-    transition: opacity 0.5s ease;
+    transition: opacity 0.3s ease;
 }
 
-/* Bounce animation for the modal */
+/* Modal Animation */
 @keyframes slideUp {
     from { transform: translateY(100%); }
     to { transform: translateY(0); }
 }
 .animate-bounce-up {
     animation: slideUp 0.3s ease-out;
+}
+
+/* --- LANDING PAGE ANIMATIONS --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.animate-slide-up {
+    opacity: 0; /* Start hidden */
+    animation: slideUpFade 0.8s ease-out 0.3s forwards; /* 0.3s delay */
 }
