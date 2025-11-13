@@ -1,39 +1,31 @@
 /* Map settings */
-#map {
-    width: 100vw;
-    height: 100vh;
-    z-index: 1; 
+#map { width: 100vw; height: 100vh; z-index: 1; }
+
+/* Transitions */
+#gatekeeper, #staff-screen, #rewardModal { transition: opacity 0.3s ease; }
+
+/* Animation Keyframes */
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.animate-bounce-up { animation: slideUp 0.3s ease-out; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fade-in { animation: fadeIn 1s ease-out forwards; }
+
+@keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.animate-slide-up { opacity: 0; animation: slideUpFade 0.8s ease-out 0.3s forwards; }
+
+/* --- GAMIFICATION STYLES --- */
+
+/* This turns the Blue marker into Gold */
+.marker-visited {
+    filter: hue-rotate(140deg) brightness(1.2) saturate(3);
 }
 
-/* Gatekeeper & Staff Screen Transitions */
-#gatekeeper, #staff-screen {
-    transition: opacity 0.3s ease;
+/* Confetti effect for reward (optional simple animation) */
+#rewardModal .text-6xl {
+    animation: pulse 1s infinite;
 }
-
-/* Modal Animation */
-@keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-}
-.animate-bounce-up {
-    animation: slideUp 0.3s ease-out;
-}
-
-/* --- LANDING PAGE ANIMATIONS --- */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes slideUpFade {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in {
-    animation: fadeIn 1s ease-out forwards;
-}
-
-.animate-slide-up {
-    opacity: 0; /* Start hidden */
-    animation: slideUpFade 0.8s ease-out 0.3s forwards; /* 0.3s delay */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
 }
