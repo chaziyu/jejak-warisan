@@ -29,7 +29,7 @@
             </button>
 
             <button id="btnStaff" class="w-full flex justify-center items-center py-4 px-4 border-2 border-gray-200 text-sm font-bold rounded-xl text-gray-600 bg-white hover:bg-gray-50 hover:text-gray-900 hover:border-gray-400 transition-all">
-                NGO Staff Login
+                BWM Staff Login
             </button>
 
         </div>
@@ -48,7 +48,7 @@
 
             <div class="mb-4 mt-2 text-5xl">🔐</div>
             <h2 class="text-2xl font-bold text-gray-800 mb-2">Visitor Access</h2>
-            <p class="text-gray-600 mb-6 text-sm">Please enter the Daily Code provided by the counter.</p>
+            <p class="text-gray-600 mb-6 text-sm">Please enter the Passkey provided by the counter.</p>
             
             <input type="text" id="passcodeInput" placeholder="e.g. AB-1234" 
                 class="w-full border-2 border-gray-200 p-3 rounded-lg mb-4 text-center text-lg uppercase tracking-widest focus:outline-none focus:border-blue-500 transition font-mono">
@@ -57,9 +57,31 @@
                 Verify & Unlock
             </button>
             
-            <p id="errorMsg" class="text-red-500 text-sm mt-4 hidden font-bold">Invalid Access Code.</p>
+            <p id="errorMsg" class="text-red-500 text-sm mt-4 hidden font-bold">Invalid Passkey.</p>
         </div>
     </div>
+
+    <div id="staff-screen" class="fixed inset-0 bg-slate-900 z-[7000] hidden flex flex-col justify-center items-center p-6 text-center text-white">
+        
+        <button id="closeStaffScreen" class="absolute top-6 right-6 text-gray-400 hover:text-white text-lg font-bold border border-gray-600 px-4 py-2 rounded-lg hover:border-white transition">
+            Close ✕
+        </button>
+
+        <h2 class="text-gray-400 uppercase tracking-[0.3em] mb-6 text-sm font-bold">Today's Passkey</h2>
+        
+        <div id="adminPasskeyDisplay" class="text-6xl md:text-8xl font-mono font-bold tracking-wider text-yellow-400 mb-6 drop-shadow-2xl">
+            LOADING...
+        </div>
+        
+        <div class="bg-slate-800 px-6 py-2 rounded-full border border-slate-700">
+            <p id="adminDateDisplay" class="text-gray-400 text-sm md:text-base font-mono">Date: ...</p>
+        </div>
+
+        <p class="mt-12 text-gray-500 text-xs max-w-md leading-relaxed">
+            Share this Passkey with visitors after payment.<br>It will expire automatically at midnight.
+        </p>
+    </div>
+
 
     <header class="fixed top-0 left-0 w-full bg-white shadow-md z-50">
         <div class="container mx-auto p-4 flex justify-between items-center">
