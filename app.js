@@ -166,12 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateGameProgress(); 
 
     const map = L.map('map').setView([3.1483, 101.6938], 16);
-    
-    // Voyager Map Style
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 20
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
     }).addTo(map);
 
     // --- HERITAGE ZONE POLYGON ---
@@ -197,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     L.polygon(heritageZoneCoords, {
         color: '#666',          
         fillColor: '#333',      
-        fillOpacity: 0.15,      
+        fillOpacity: 0.1,       
         weight: 2,
         dashArray: '5, 5'       
     }).addTo(map);
@@ -218,8 +214,8 @@ document.addEventListener('DOMContentLoaded', () => {
         built: document.getElementById('modalBuilt'),
         architects: document.getElementById('modalArchitects'),
         info: document.getElementById('modalInfo'),
-        img: document.getElementById('modalImage'),
-        imgContainer: document.getElementById('modalImageContainer')
+        img: document.getElementById('modalImage'),              // IMAGE SELECTOR
+        imgContainer: document.getElementById('modalImageContainer') // CONTAINER SELECTOR
     };
 
     fetch('data.json')
@@ -238,20 +234,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     elements.architects.textContent = site.architects || "N/A";
                     elements.info.textContent = site.info;
                     
-                    // --- IMAGE LOGIC (Restored) ---
-
+                    // --- IMAGE LOGIC (NEW) ---
                     if (site.image) {
                         elements.img.src = site.image;
                         elements.imgContainer.classList.remove('hidden');
                     } else {
                         elements.imgContainer.classList.add('hidden');
                     }
-                    
-                    // CORRECTED LINE BELOW:
+
                     btnDirections.href = `https://www.google.com/maps/dir/?api=1&destination=${site.coordinates[0]},${site.coordinates[1]}&travelmode=walking`;
-                    
+
                     const isNumberedSite = !isNaN(site.id);
-                    // ... rest of code
                     if (!isNumberedSite) {
                         btnCollect.style.display = 'none'; 
                     } else {
@@ -307,16 +300,16 @@ document.addEventListener('DOMContentLoaded', () => {
         progressText.textContent = `${count}/${TOTAL_SITES} Sites`;
     }
 
-    // --- BUTTON LOGIC ---
+    // --- NEW BUTTON LOGIC ---
     
-    // Recenter Button
+    // Recenter Button: Resets view to Dataran Merdeka (Centre of Zone)
     btnRecenter.addEventListener('click', () => {
         map.setView([3.1483, 101.6938], 16);
     });
 
-    // Share Button
+    // Share Button: Opens WhatsApp with victory message
     btnShare.addEventListener('click', () => {
-        const text = "I just became an Official Explorer by visiting all 13 Heritage Sites in Kuala Lumpur! 🇲🇾✨ Try the Jejak Warisan challenge here: #ThisKulCity #BadanWarisanMalaysia";
+        const text = "I just became an Official Explorer by visiting all 13 Heritage Sites in Kuala Lumpur! 🇲🇾✨ Try the Jejak Warisan challenge here:";
         const url = "https://jejak-warisan.vercel.app";
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
         window.open(whatsappUrl, '_blank');
