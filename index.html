@@ -14,35 +14,63 @@
 </head>
 <body class="overflow-hidden bg-gray-100">
 
+    <div id="landing-page" class="fixed inset-0 bg-white z-[6000] flex flex-col justify-center items-center p-6 text-center">
+        
+        <div class="mb-8 animate-fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2 tracking-tight">Jejak Warisan KL</h1>
+            <p class="text-gray-500 text-sm md:text-base uppercase tracking-widest">Discover Kuala Lumpur's Heritage</p>
+        </div>
+
+        <div class="w-full max-w-xs space-y-4 animate-slide-up">
+            
+            <button id="btnVisitor" class="w-full group relative flex justify-center py-4 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-all shadow-lg">
+                <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                    <svg class="h-5 w-5 text-gray-500 group-hover:text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v2H2v-4l4.257-4.257A6 6 0 1118 8zm-6-4a1 1 0 100 2 2 2 0 000-2z" clip-rule="evenodd" />
+                    </svg>
+                </span>
+                Enter with Passkey
+            </button>
+
+            <button id="btnStaff" class="w-full flex justify-center py-4 px-4 border-2 border-gray-200 text-sm font-medium rounded-xl text-gray-600 bg-white hover:bg-gray-50 hover:text-gray-900 hover:border-gray-300 focus:outline-none transition-all">
+                NGO Staff Login
+            </button>
+
+        </div>
+
+        <div class="absolute bottom-6 text-xs text-gray-400">
+            <p>A SULAM Project by Universiti Malaya & BWM</p>
+        </div>
+    </div>
+
     <header class="fixed top-0 left-0 w-full bg-white shadow-md z-50">
         <div class="container mx-auto p-4 flex justify-between items-center">
             <div>
                 <h1 class="text-xl md:text-2xl font-bold text-gray-800">Jejak Warisan KL</h1>
-                <p class="text-xs text-gray-600">A SULAM project by UM & BWM</p>
+                <p class="text-xs text-gray-600">Interactive Map</p>
             </div>
-            <a href="?mode=admin" class="text-gray-300 text-xs hover:text-gray-500">Staff Login</a>
         </div>
     </header>
 
-    <div id="gatekeeper" class="fixed inset-0 bg-slate-900 z-[5000] flex flex-col justify-center items-center p-4">
-        <div class="bg-white p-6 md:p-8 rounded-xl shadow-2xl max-w-sm w-full text-center">
-            <div class="mb-4 text-4xl">🔐</div>
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Restricted Access</h2>
-            <p class="text-gray-600 mb-6 text-sm">Please enter your Daily Access Pass to view the heritage map.</p>
+    <div id="gatekeeper" class="fixed inset-0 bg-slate-900/95 z-[5000] hidden flex flex-col justify-center items-center p-4">
+        <div class="bg-white p-6 md:p-8 rounded-xl shadow-2xl max-w-sm w-full text-center relative">
             
-            <input type="text" id="passcodeInput" placeholder="Enter Code (e.g. AB-1234)" 
+            <button id="backToHome" class="absolute top-4 left-4 text-gray-400 hover:text-gray-800">
+                ← Back
+            </button>
+
+            <div class="mb-4 mt-4 text-4xl">🔐</div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Visitor Access</h2>
+            <p class="text-gray-600 mb-6 text-sm">Please enter the Daily Code provided by the counter.</p>
+            
+            <input type="text" id="passcodeInput" placeholder="e.g. AB-1234" 
                 class="w-full border-2 border-gray-200 p-3 rounded-lg mb-4 text-center text-lg uppercase tracking-widest focus:outline-none focus:border-blue-500 transition">
             
             <button id="unlockBtn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition shadow-lg">
-                Unlock Map
+                Verify & Unlock
             </button>
             
             <p id="errorMsg" class="text-red-500 text-sm mt-4 hidden font-semibold">Invalid Access Code.</p>
-            
-            <div class="mt-6 border-t pt-4">
-                <p class="text-xs text-gray-400">Don't have a pass?</p>
-                <p class="text-xs text-gray-500">Contact Badan Warisan Malaysia.</p>
-            </div>
         </div>
     </div>
 
@@ -50,12 +78,10 @@
 
     <div id="siteModal" class="fixed inset-0 bg-black bg-opacity-70 z-[1000] hidden flex justify-center items-end md:items-center p-4">
         <div class="bg-white rounded-t-xl md:rounded-xl shadow-2xl w-full max-w-lg max-h-[80vh] flex flex-col animate-bounce-up">
-            
             <div class="p-4 border-b flex justify-between items-center bg-gray-50">
                 <h2 id="modalTitle" class="text-xl font-bold text-gray-800">Site Title</h2>
                 <button id="closeModal" class="text-gray-400 hover:text-gray-800 text-3xl leading-none">&times;</button>
             </div>
-            
             <div class="p-6 overflow-y-auto">
                 <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
                     <div>
