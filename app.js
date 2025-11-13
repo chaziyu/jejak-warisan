@@ -171,8 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         attribution: '© OpenStreetMap'
     }).addTo(map);
 
-    // --- NEW: ADD HERITAGE ZONE POLYGON (From KML) ---
-    [cite_start]// This draws the "Grey Area" your friend created [cite: 1]
+    // --- HERITAGE ZONE POLYGON ---
     const heritageZoneCoords = [
         [3.148934, 101.694228], [3.148012, 101.694051], [3.147936, 101.694399],
         [3.147164, 101.694292], [3.147067, 101.695104], [3.146902, 101.695994],
@@ -256,7 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     siteModal.classList.remove('hidden');
                 });
             });
-        });
+        })
+        .catch(err => console.error("Error loading Map Data:", err)); // Added Error Logging
 
     function collectStamp(siteId, marker, btn) {
         if (!visitedSites.includes(siteId)) {
