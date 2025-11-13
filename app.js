@@ -14,6 +14,18 @@ btnAskAI.addEventListener('click', () => {
 */
 
 // Corrected "After" Code (in app.js)
+
+// Refactored app.js
+function showModal() {
+  document.body.classList.add('modal-open');
+}
+
+function hideModal() {
+  document.body.classList.remove('modal-open');
+}
+
+// All other event listeners remain the same.
+
 btnAskAI.addEventListener('click', () => {
   const userPrompt = document.getElementById('prompt-input').value;
 
