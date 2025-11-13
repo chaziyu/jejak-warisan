@@ -167,14 +167,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const map = L.map('map').setView([3.1483, 101.6938], 16);
     
-    // Using Voyager Map Style (Clean)
+    // Voyager Map Style
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
         subdomains: 'abcd',
         maxZoom: 20
     }).addTo(map);
 
-    // --- HERITAGE ZONE POLYGON (Grey Area) ---
+    // --- HERITAGE ZONE POLYGON ---
     const heritageZoneCoords = [
         [3.148934, 101.694228], [3.148012, 101.694051], [3.147936, 101.694399],
         [3.147164, 101.694292], [3.147067, 101.695104], [3.146902, 101.695994],
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     elements.architects.textContent = site.architects || "N/A";
                     elements.info.textContent = site.info;
                     
-                    // --- IMAGE LOGIC (Re-added) ---
+                    // --- IMAGE LOGIC (Restored) ---
                     if (site.image) {
                         elements.img.src = site.image;
                         elements.imgContainer.classList.remove('hidden');
