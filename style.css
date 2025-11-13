@@ -1,5 +1,3 @@
-
-
 /* --- 1. MAP & LAYOUT SETTINGS --- */
 body, html {
     margin: 0;
@@ -28,7 +26,7 @@ body, html {
 #game-ui button, 
 #game-ui input, 
 #game-ui a,
-#game-ui .bg-white, 
+#game-ui.bg-white, 
 #btnRecenter {
     pointer-events: auto; 
 }
@@ -42,8 +40,8 @@ body, html {
 /* --- 4. CRITICAL FIX FOR "CANNOT CLICK PIN" --- */
 /* This forces the modal to completely disappear when it has the 'hidden' class */
 .hidden {
-    display: none !important;
-    pointer-events: none !important;
+    display: none!important;
+    pointer-events: none!important;
 }
 
 /* --- 5. ANIMATIONS --- */
@@ -62,7 +60,7 @@ body, html {
     transition: filter 0.5s ease; 
 }
 
-#rewardModal .text-6xl {
+#rewardModal.text-6xl {
     animation: pulse 1s infinite;
 }
 @keyframes pulse {
@@ -72,49 +70,4 @@ body, html {
 
 #btnRecenter {
     z-index: 1000; 
-}
-
-/* Refactored style.css */
-
-/* Default state: modal is hidden */
-#siteModal,
-#modalBackdrop {
-  display: none;
-}
-
-/* Modal backdrop styles */
-#modalBackdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 50;
-}
-
-/* Modal window styles */
-#siteModal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 2rem;
-  z-index: 51;
-}
-
-/* 
- * ACTIVE STATE:
- * When the body has the.modal-open class,
- * display the modal and its backdrop.
- */
-body.modal-open #siteModal,
-body.modal-open #modalBackdrop {
-  display: block;
-}
-
-/* (Bonus) Prevent the page from scrolling behind the open modal */
-body.modal-open {
-  overflow: hidden;
 }
