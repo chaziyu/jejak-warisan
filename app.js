@@ -2,35 +2,8 @@
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOtyJ200uEv2yu24C-DesB5g57iBX9CpO_qp8mAQCKX1LYrS_S8BnZGtfVDq_9LqnJ7HO6nbXpu8J4/pub?gid=0&single=true&output=csv"; 
 const ADMIN_PASSWORD = "BWM"; 
 
-// API KEY REMOVED - It now lives securely on the server.
-
-// --- KNOWLEDGE BASE ---
-const PDF_KNOWLEDGE_BASE = `
-SOURCE MATERIAL: "This Kul City: Discover Kwala Lumpur" by Badan Warisan Malaysia.
-
-SITE 1: Bangunan Sultan Abdul Samad. Built 1894-1897. Architects: AC Norman, RAJ Bidwell, CE Spooner, AB Hubback. Originally Govt Offices. 480ft long in "Mahometan" style. Clock tower is 140ft high. Contains 4 million bricks, 5000lbs copper. The clock was first heard on Queen Victoria's birthday in 1897.
-SITE 2: Old Post Office. Built 1904-1907 by Architect AB Hubback. Cost $100,000. Features horse-shoe arches. Used to be Ministry of Tourism.
-SITE 3: Wisma Straits Trading & Loke Yew Building. Loke Yew Building is Art Deco (designed by B.M. Iversen). Chow Kit & Co building (1904) is Neo-Renaissance, designed by AK Moosden.
-SITE 4: Masjid Jamek. Built 1908-1909 by AB Hubback. Cost $33,500. Sited on an old Malay cemetery. Moghul style with onion domes and red/white brick bands.
-SITE 5: Medan Pasar (Old Market Square). Site of Yap Ah Loy's market. The Clock tower was erected in 1937 for King George VI's coronation and features an Art Deco sunburst motif.
-SITE 6: Sze Ya Temple. Built 1882. Oldest traditional Chinese temple in KL. Dedicated to deities Sin Sze Ya and Si Sze Ya who guided Yap Ah Loy. Built at an angle for Feng Shui.
-SITE 7: The Triangle / Old Federal Stores. Federal Stores (1905) has "garlic shaped finials" and no five-foot way.
-SITE 8: Kedai Ubat Kwong Ban Heng. Traditional herb shop established over 30 years ago at No 62.
-SITE 9: Oriental Building. Built 1932 by A.O. Coltman. Was the tallest in KL (85ft) at the time. Features a curved facade.
-SITE 10: Flower Garland Stall. Located near the Teochew Association.
-SITE 11: Masjid India. Originally timber (1893), rebuilt 1966. Southern Indian style with chatris. Prayers conducted in Arabic and Tamil.
-SITE 12: P.H. Hendry Royal Jewellers. Oldest jewellers in Malaysia. Founded by P.H. Dineshamy from Ceylon. Appointed royal jewellers to Sultans.
-SITE 13: Old City Hall. Built 1904 by AB Hubback. Cost $107,000. Now venue for "MUD: Our Story of KL".
-
-ADDITIONAL FACTS:
-- Dataran Merdeka (The Padang) has a 100m flagpole. Union Jack lowered Aug 31, 1957.
-- Textile Museum (1905) was originally FMS Railway Offices.
-- OCBC Building (1936) by AO Coltman had bicycle parking in the basement.
-- Central Market (1936) used "Calorex" glass to reduce heat.
-`;
-
 // --- GAME STATE ---
-let visitedSites = JSON.parse(localStorage.getItem('jejak_visited')) ||;
+let visitedSites = JSON.parse(localStorage.getItem('jejak_visited')) || [];
 const TOTAL_SITES = 13; 
 
 // --- 1. APP NAVIGATION & SECURITY ---
@@ -84,7 +57,7 @@ function setupLandingPage() {
             const pass = prompt("👮 BWM STAFF LOGIN\nPlease enter your password:");
             if (pass === ADMIN_PASSWORD) {
                 await showAdminCode();
-            } else if (pass!== null) {
+            } else if (pass !== null) {
                 alert("❌ Wrong password");
             }
         });
@@ -125,8 +98,8 @@ async function showAdminCode() {
         
         for (let i = 1; i < rows.length; i++) {
             const cols = rows[i].split(',');
-            if (cols && cols.trim() === todayStr) {
-                todayCode = cols.[1]trim();
+            if (cols[0] && cols[0].trim() === todayStr) {
+                todayCode = cols[1].trim();
                 break;
             }
         }
@@ -168,8 +141,8 @@ async function verifyCode(enteredCode) {
 
         for (let i = 1; i < rows.length; i++) {
             const cols = rows[i].split(',');
-            if (cols.length >= 2 && cols.trim() === todayStr) {
-                validCode = cols.[1]trim();
+            if (cols.length >= 2 && cols[0].trim() === todayStr) {
+                validCode = cols[1].trim();
                 break;
             }
         }
@@ -205,38 +178,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Map
     const map = L.map('map').setView([3.1483, 101.6938], 16);
-
-    // Clean Map Style (Positron)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 20
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
     }).addTo(map);
 
-    // --- KML HERITAGE ZONE ROUTE ---
-    const heritageZoneCoords = [3.148934, 101.694228], [3.148012, 101.694051], [3.147936, 101.694399],
+    // --- KML HERITAGE ZONE POLYGON ---
+    // Coordinates extracted from your KML and swapped to [Lat, Lng] for Leaflet
+    const heritageZoneCoords = [
+        [3.148934, 101.694228], [3.148012, 101.694051], [3.147936, 101.694399],
         [3.147164, 101.694292], [3.147067, 101.695104], [3.146902, 101.695994],
-        [3.146215, 101.695884], [3.146004, 101.69586], [3.145961, 101.695897],
-        [3.145896, 101.69616], [3.145642, 101.696179], [3.145672, 101.696616],
-        [3.145883, 101.696592], [3.145982, 101.696922], [3.146416, 101.69667],
-        [3.146694, 101.696546], [3.146828, 101.696584], [3.146903, 101.69689],
+        [3.146215, 101.695884], [3.146004, 101.695860], [3.145961, 101.695897],
+        [3.145896, 101.696160], [3.145642, 101.696179], [3.145672, 101.696616],
+        [3.145883, 101.696592], [3.145982, 101.696922], [3.146416, 101.696670],
+        [3.146694, 101.696546], [3.146828, 101.696584], [3.146903, 101.696890],
         [3.147075, 101.697169], [3.147541, 101.697517], [3.147889, 101.697807],
         [3.147969, 101.697872], [3.148366, 101.697491], [3.149041, 101.696868],
-        [3.14933, 101.696632], [3.149549, 101.696718], [3.150106, 101.697303],
-        [3.15038, 101.697576], [3.150439, 101.697668], [3.150733, 101.697576],
-        [3.151065, 101.697694], [3.151467, 101.697791], [3.15181, 101.698011],
+        [3.149330, 101.696632], [3.149549, 101.696718], [3.150106, 101.697303],
+        [3.150380, 101.697576], [3.150439, 101.697668], [3.150733, 101.697576],
+        [3.151065, 101.697694], [3.151467, 101.697791], [3.151810, 101.698011],
         [3.152051, 101.698306], [3.152158, 101.698413], [3.152485, 101.698435],
         [3.152586, 101.698413], [3.151802, 101.697252], [3.151796, 101.697171],
-        [3.152102, 101.696968], [3.151684, 101.696683], [3.151914, 101.69627],
+        [3.152102, 101.696968], [3.151684, 101.696683], [3.151914, 101.696270],
         [3.151298, 101.695889], [3.151581, 101.695549], [3.150951, 101.695173],
-        [3.150238, 101.694712], [3.149922, 101.69451], [3.148934, 101.694228];
+        [3.150238, 101.694712], [3.149922, 101.694510], [3.148934, 101.694228]
+    ];
 
-    L.polyline(heritageZoneCoords, {
-        color: '#ff6b6b',         
-        weight: 4,               
-        opacity: 0.7,
-        dashArray: '10, 10',     
-        interactive: false       
+    L.polygon(heritageZoneCoords, {
+        color: '#666',          
+        fillColor: '#333',      
+        fillOpacity: 0.1,       
+        weight: 2,
+        dashArray: '5, 5',
+        interactive: false // <--- FIX: Allows clicks to pass through the shape to markers
     }).addTo(map);
 
     // -----------------------------------------------
@@ -250,25 +223,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnShare = document.getElementById('btnShare');
     const btnRecenter = document.getElementById('btnRecenter');
 
-    // AI UI Elements
-    const aiText = document.getElementById('aiResponse');
-    const aiBtn = document.getElementById('btnAskAI');
-
     const elements = {
         title: document.getElementById('modalTitle'),
         built: document.getElementById('modalBuilt'),
         architects: document.getElementById('modalArchitects'),
         info: document.getElementById('modalInfo'),
-        img: document.getElementById('modalImage'),           
+        img: document.getElementById('modalImage'),             
         imgContainer: document.getElementById('modalImageContainer') 
     };
 
     fetch('data.json')
-       .then(res => res.json())
-       .then(sites => {
+        .then(res => res.json())
+        .then(sites => {
             sites.forEach(site => {
-                const lat = parseFloat(site.coordinates);
+                // FIX: Parse coordinates as floats to ensure they work correctly
+                const lat = parseFloat(site.coordinates[0]);
                 const lng = parseFloat(site.coordinates[1]);
+
                 const marker = L.marker([lat, lng]).addTo(map);
 
                 if (visitedSites.includes(site.id)) {
@@ -276,14 +247,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 marker.on('click', () => {
-                    // 1. Update UI
                     elements.title.textContent = `${site.id}. ${site.name}`;
-                    elements.built.textContent = site.built |
-
-| "N/A";
-                    elements.architects.textContent = site.architects |
-
-| "N/A";
+                    elements.built.textContent = site.built || "N/A";
+                    elements.architects.textContent = site.architects || "N/A";
                     elements.info.textContent = site.info;
                     
                     if (site.image) {
@@ -293,10 +259,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         elements.imgContainer.classList.add('hidden');
                     }
 
+                    // Fix Google Maps URL
                     btnDirections.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
 
-                    // 2. Stamp Logic
-                    const isNumberedSite =!isNaN(site.id);
+                    const isNumberedSite = !isNaN(site.id);
                     if (!isNumberedSite) {
                         btnCollect.style.display = 'none'; 
                     } else {
@@ -309,95 +275,31 @@ document.addEventListener('DOMContentLoaded', () => {
                             btnCollect.innerHTML = "🏆 Collect Stamp";
                             btnCollect.classList.remove('opacity-50', 'cursor-not-allowed');
                             btnCollect.disabled = false;
-                            btnCollect.onclick = () => { collectStamp(site.id, marker, btnCollect); };
+                            
+                            btnCollect.onclick = () => {
+                                collectStamp(site.id, marker, btnCollect);
+                            };
                         }
                     }
-
-                    // 3. AI Logic (Reset)
-                    aiText.textContent = "";
-                    aiText.classList.add('hidden');
-                    aiBtn.disabled = false;
-                    aiBtn.innerHTML = "Tell me a secret fact!";
-                    aiBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-
-                    // Clone to clear old listeners
-                    const newAiBtn = aiBtn.cloneNode(true);
-                    aiBtn.parentNode.replaceChild(newAiBtn, aiBtn);
-
-                    newAiBtn.addEventListener('click', async () => {
-                        newAiBtn.innerHTML = "Consulting Archives... 📜"; 
-                        newAiBtn.disabled = true;
-                        newAiBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                        aiText.textContent = "Reading the historical records...";
-                        aiText.classList.remove('hidden');
-
-                        const prompt = `
-                        CONTEXT: You are a fun, expert historian guide for Kuala Lumpur.
-                        SOURCE MATERIAL: ${PDF_KNOWLEDGE_BASE}
-                        
-                        CURRENT SITE: ${site.name}
-                        OFFICIAL INFO: ${site.info}
-                        
-                        TASK: Tell me a "Hidden Secret" or interesting fact about the CURRENT SITE based on the SOURCE MATERIAL.
-                        
-                        IMPORTANT: If this site is not in the source material, use your general knowledge to provide a fun fact.
-                        
-                        STYLE: Short (max 2 sentences). Exciting.
-                        `;
-
-                        try {
-                            // --- CORRECTED CODE ---
-                            // This now calls our own secure server endpoint
-                            const response = await fetch('/api/askAI', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ prompt: prompt })
-                            });
-                            // --- END CORRECTED CODE ---
-                            
-                            if (!response.ok) throw new Error(`API Error: ${response.status}`);
-                            
-                            const data = await response.json();
-                            
-                            if(data.candidates && data.candidates.length > 0) {
-                                // Check for safety ratings block
-                                if (data.candidates.finishReason === 'SAFETY') {
-                                    aiText.textContent = "The historian prefers not to speak on that topic!";
-                                } else {
-                                    const aiResult = data.candidates.content.parts.text;
-                                    aiText.textContent = aiResult;
-                                }
-                            } else {
-                                console.error("Empty Candidates", data);
-                                aiText.textContent = "The historian is speechless! (No data found)";
-                            }
-                        } catch (error) {
-                            console.error("AI Fetch Error:", error);
-                            aiText.textContent = "Connection failed. (Check Console)";
-                        } finally {
-                            newAiBtn.innerHTML = "✨ Ask Another";
-                            newAiBtn.disabled = false;
-                            newAiBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                        }
-                    });
-
                     siteModal.classList.remove('hidden');
                 });
             });
         })
-       .catch(err => console.error("Error loading Map Data:", err));
+        .catch(err => console.error("Error loading Map Data:", err));
 
     function collectStamp(siteId, marker, btn) {
         if (!visitedSites.includes(siteId)) {
             visitedSites.push(siteId);
             localStorage.setItem('jejak_visited', JSON.stringify(visitedSites));
+            
             marker._icon.classList.add('marker-visited');
             btn.innerHTML = "✅ Stamp Collected";
             btn.classList.add('opacity-50', 'cursor-not-allowed');
             btn.disabled = true;
+
             updateGameProgress();
 
-            const numberedSitesVisited = visitedSites.filter(id =>!isNaN(id)).length;
+            const numberedSitesVisited = visitedSites.filter(id => !isNaN(id)).length;
             if (numberedSitesVisited >= TOTAL_SITES) {
                 setTimeout(() => {
                     siteModal.classList.add('hidden');
@@ -410,20 +312,22 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateGameProgress() {
         const progressBar = document.getElementById('progressBar');
         const progressText = document.getElementById('progressText');
-        if(!progressBar ||!progressText) return;
+        if(!progressBar || !progressText) return;
         
-        const count = visitedSites.filter(id =>!isNaN(id)).length;
+        const count = visitedSites.filter(id => !isNaN(id)).length;
         const percent = (count / TOTAL_SITES) * 100;
         progressBar.style.width = `${percent}%`;
         progressText.textContent = `${count}/${TOTAL_SITES} Sites`;
     }
     
+    // Recenter Button
     if(btnRecenter) {
         btnRecenter.addEventListener('click', () => {
             map.setView([3.1483, 101.6938], 16);
         });
     }
 
+    // Share Button
     if(btnShare) {
         btnShare.addEventListener('click', () => {
             const text = "I just became an Official Explorer by visiting all 13 Heritage Sites in Kuala Lumpur! 🇲🇾✨ Try the Jejak Warisan challenge here: #ThisKulCity #BadanWarisanMalaysia";
@@ -433,14 +337,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const userMarker = L.marker().addTo(map);
-    const userCircle = L.circle(, { radius: 10 }).addTo(map);
+    // User Location Logic
+    const userMarker = L.marker([0, 0]).addTo(map);
+    const userCircle = L.circle([0, 0], { radius: 10 }).addTo(map);
     map.on('locationfound', (e) => {
         userMarker.setLatLng(e.latlng);
         userCircle.setLatLng(e.latlng).setRadius(e.accuracy / 2);
     });
     map.locate({ watch: true, enableHighAccuracy: true });
 
+    // Modal Closers
     const hideModal = () => siteModal.classList.add('hidden');
     if(closeModal) closeModal.addEventListener('click', hideModal);
     if(closeReward) closeReward.addEventListener('click', () => rewardModal.classList.add('hidden'));
