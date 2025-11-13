@@ -1,6 +1,8 @@
 // --- CONFIGURATION ---
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOtyJ200uEv2yu24C-DesB5g57iBX9CpO_qp8mAQCKX1LYrS_S8BnZGtfVDq_9LqnJ7HO6nbXpu8J4/pub?gid=0&single=true&output=csv"; 
 const ADMIN_PASSWORD = "BWM"; 
+
+// YOUR API KEY (Integrated)
 const GEMINI_API_KEY = "AIzaSyDJdiq3SRAl4low1-VW-msp4A1ZD_5bymw";
 
 // --- KNOWLEDGE BASE (Extracted from BWM Document PDF) ---
@@ -205,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Map
     const map = L.map('map').setView([3.1483, 101.6938], 16);
 
-    // USE THIS CLEAN STYLE (CartoDB Positron)
+    // Clean Map Style (Positron)
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
         subdomains: 'abcd',
@@ -232,7 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
         [3.150238, 101.694712], [3.149922, 101.69451], [3.148934, 101.694228]
     ];
 
-    // Use Polyline for Route - Interactive: False is KEY to clicking pins
     L.polyline(heritageZoneCoords, {
         color: '#ff6b6b',       
         weight: 4,              
@@ -269,10 +270,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => res.json())
         .then(sites => {
             sites.forEach(site => {
-                // Parse coordinates
                 const lat = parseFloat(site.coordinates[0]);
                 const lng = parseFloat(site.coordinates[1]);
-
                 const marker = L.marker([lat, lng]).addTo(map);
 
                 if (visitedSites.includes(site.id)) {
@@ -280,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 marker.on('click', () => {
-                    // 1. Update Standard UI
+                    // 1. Update UI
                     elements.title.textContent = `${site.id}. ${site.name}`;
                     elements.built.textContent = site.built || "N/A";
                     elements.architects.textContent = site.architects || "N/A";
@@ -295,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     btnDirections.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
 
-                    // 2. Update Collection Button
+                    // 2. Stamp Logic
                     const isNumberedSite = !isNaN(site.id);
                     if (!isNumberedSite) {
                         btnCollect.style.display = 'none'; 
@@ -309,21 +308,17 @@ document.addEventListener('DOMContentLoaded', () => {
                             btnCollect.innerHTML = "🏆 Collect Stamp";
                             btnCollect.classList.remove('opacity-50', 'cursor-not-allowed');
                             btnCollect.disabled = false;
-                            
-                            btnCollect.onclick = () => {
-                                collectStamp(site.id, marker, btnCollect);
-                            };
+                            btnCollect.onclick = () => { collectStamp(site.id, marker, btnCollect); };
                         }
                     }
 
-                    // 3. Setup AI Logic (Reset & Attach)
+                    // 3. AI Logic
                     aiText.textContent = "";
                     aiText.classList.add('hidden');
                     aiBtn.disabled = false;
                     aiBtn.innerHTML = "Tell me a secret fact!";
                     aiBtn.classList.remove('opacity-50', 'cursor-not-allowed');
 
-                    // Clone button to remove old listeners
                     const newAiBtn = aiBtn.cloneNode(true);
                     aiBtn.parentNode.replaceChild(newAiBtn, aiBtn);
 
@@ -334,33 +329,35 @@ document.addEventListener('DOMContentLoaded', () => {
                         aiText.textContent = "Reading the historical records...";
                         aiText.classList.remove('hidden');
 
-                        // AI Prompt with PDF Knowledge
+                        // Expanded Prompt to handle "Not Found" cases
                         const prompt = `
-                        CONTEXT: You are an expert historian guide for Kuala Lumpur.
+                        CONTEXT: You are a fun, expert historian guide for Kuala Lumpur.
+                        SOURCE MATERIAL: ${PDF_KNOWLEDGE_BASE}
                         
-                        REFERENCE MATERIAL:
-                        ${PDF_KNOWLEDGE_BASE}
-                        
-                        USER LOCATION: ${site.name}
+                        CURRENT SITE: ${site.name}
                         OFFICIAL INFO: ${site.info}
                         
-                        TASK: The user is standing at this location. Based strictly on the REFERENCE MATERIAL provided above, tell them a "Hidden Secret" or interesting historical fact about this specific building.
+                        TASK: Tell me a "Hidden Secret" or interesting fact about the CURRENT SITE based on the SOURCE MATERIAL.
                         
-                        RULES:
-                        1. Use specific details (dates, architects, costs, names) from the text.
-                        2. If the reference material mentions a specific person (like "Yap Ah Loy" or "AC Norman"), mention them.
-                        3. Keep it short (maximum 2-3 sentences).
-                        4. Be exciting and passionate.
+                        IMPORTANT FALLBACK: If this specific site is not mentioned in the SOURCE MATERIAL, ignore the source material and use your own general historical knowledge to provide a fun, accurate fact about "${site.name}" in Kuala Lumpur. Do NOT say "I couldn't find it". Just give the fact.
+                        
+                        STYLE: Short (max 2 sentences). Exciting.
                         `;
 
-                        // Call Gemini API
                         try {
                             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
                             const response = await fetch(url, {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
-                                    contents: [{ parts: [{ text: prompt }] }]
+                                    contents: [{ parts: [{ text: prompt }] }],
+                                    // SAFETY SETTINGS: Prevent blocking valid historical facts
+                                    safetySettings: [
+                                        { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+                                        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+                                        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+                                        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
+                                    ]
                                 })
                             });
                             const data = await response.json();
@@ -369,11 +366,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                 const aiResult = data.candidates[0].content.parts[0].text;
                                 aiText.textContent = aiResult;
                             } else {
-                                aiText.textContent = "I couldn't find that page in the history book!";
+                                aiText.textContent = "The historian is speechless! (No data found)";
                             }
                         } catch (error) {
                             console.error(error);
-                            aiText.textContent = "The historian is on a coffee break. (Error connecting to AI)";
+                            aiText.textContent = "The historian is on a coffee break. (Connection Error)";
                         } finally {
                             newAiBtn.innerHTML = "✨ Ask Another";
                             newAiBtn.disabled = false;
@@ -391,12 +388,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!visitedSites.includes(siteId)) {
             visitedSites.push(siteId);
             localStorage.setItem('jejak_visited', JSON.stringify(visitedSites));
-            
             marker._icon.classList.add('marker-visited');
             btn.innerHTML = "✅ Stamp Collected";
             btn.classList.add('opacity-50', 'cursor-not-allowed');
             btn.disabled = true;
-
             updateGameProgress();
 
             const numberedSitesVisited = visitedSites.filter(id => !isNaN(id)).length;
@@ -420,14 +415,12 @@ document.addEventListener('DOMContentLoaded', () => {
         progressText.textContent = `${count}/${TOTAL_SITES} Sites`;
     }
     
-    // Recenter Button
     if(btnRecenter) {
         btnRecenter.addEventListener('click', () => {
             map.setView([3.1483, 101.6938], 16);
         });
     }
 
-    // Share Button
     if(btnShare) {
         btnShare.addEventListener('click', () => {
             const text = "I just became an Official Explorer by visiting all 13 Heritage Sites in Kuala Lumpur! 🇲🇾✨ Try the Jejak Warisan challenge here: #ThisKulCity #BadanWarisanMalaysia";
@@ -437,7 +430,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // User Location Logic
     const userMarker = L.marker([0, 0]).addTo(map);
     const userCircle = L.circle([0, 0], { radius: 10 }).addTo(map);
     map.on('locationfound', (e) => {
@@ -446,7 +438,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     map.locate({ watch: true, enableHighAccuracy: true });
 
-    // Modal Closers
     const hideModal = () => siteModal.classList.add('hidden');
     if(closeModal) closeModal.addEventListener('click', hideModal);
     if(closeReward) closeReward.addEventListener('click', () => rewardModal.classList.add('hidden'));
