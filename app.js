@@ -1,10 +1,11 @@
 // --- CONFIGURATION ---
+// 🔴 YOUR SPECIFIC GOOGLE SHEET LINK IS HERE 🔴
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOtyJ200uEv2yu24C-DesB5g57iBX9CpO_qp8mAQCKX1LYrS_S8BnZGtfVDq_9LqnJ7HO6nbXpu8J4/pub?gid=0&single=true&output=csv"; 
 const ADMIN_PASSWORD = "BWM"; 
 
 // --- GAME STATE ---
 let visitedSites = JSON.parse(localStorage.getItem('jejak_visited')) || [];
-const TOTAL_SITES = 13; // Number of numeric sites (1-13)
+const TOTAL_SITES = 13; 
 
 // --- 1. APP NAVIGATION & SECURITY ---
 
@@ -20,7 +21,6 @@ function initApp() {
     const landingPage = document.getElementById('landing-page');
     const gatekeeper = document.getElementById('gatekeeper');
     
-    // Check Login Session
     const sessionData = JSON.parse(localStorage.getItem('jejak_session'));
     const SESSION_DURATION = 24 * 60 * 60 * 1000; 
 
@@ -28,7 +28,6 @@ function initApp() {
         if (Date.now() - sessionData.start < SESSION_DURATION) {
             landingPage.remove();
             gatekeeper.remove();
-            // Show Game UI if logged in
             document.getElementById('game-ui').classList.remove('hidden');
             return; 
         } else {
@@ -165,14 +164,44 @@ async function verifyCode(enteredCode) {
 
 document.addEventListener('DOMContentLoaded', () => {
     initApp();
-    updateGameProgress(); // Update UI on load
+    updateGameProgress(); 
 
     const map = L.map('map').setView([3.1483, 101.6938], 16);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap'
     }).addTo(map);
 
-    // Modal Elements
+    // --- NEW: ADD HERITAGE ZONE POLYGON (From KML) ---
+    [cite_start]// This draws the "Grey Area" your friend created [cite: 1]
+    const heritageZoneCoords = [
+        [3.148934, 101.694228], [3.148012, 101.694051], [3.147936, 101.694399],
+        [3.147164, 101.694292], [3.147067, 101.695104], [3.146902, 101.695994],
+        [3.146215, 101.695884], [3.146004, 101.695860], [3.145961, 101.695897],
+        [3.145896, 101.696160], [3.145642, 101.696179], [3.145672, 101.696616],
+        [3.145883, 101.696592], [3.145982, 101.696922], [3.146416, 101.696670],
+        [3.146694, 101.696546], [3.146828, 101.696584], [3.146903, 101.696890],
+        [3.147075, 101.697169], [3.147541, 101.697517], [3.147889, 101.697807],
+        [3.147969, 101.697872], [3.148366, 101.697491], [3.149041, 101.696868],
+        [3.149330, 101.696632], [3.149549, 101.696718], [3.150106, 101.697303],
+        [3.150380, 101.697576], [3.150439, 101.697668], [3.150733, 101.697576],
+        [3.151065, 101.697694], [3.151467, 101.697791], [3.151810, 101.698011],
+        [3.152051, 101.698306], [3.152158, 101.698413], [3.152485, 101.698435],
+        [3.152586, 101.698413], [3.151802, 101.697252], [3.151796, 101.697171],
+        [3.152102, 101.696968], [3.151684, 101.696683], [3.151914, 101.696270],
+        [3.151298, 101.695889], [3.151581, 101.695549], [3.150951, 101.695173],
+        [3.150238, 101.694712], [3.149922, 101.694510]
+    ];
+
+    L.polygon(heritageZoneCoords, {
+        color: '#666',          // Grey outline
+        fillColor: '#333',      // Dark fill
+        fillOpacity: 0.1,       // Very transparent (10%)
+        weight: 2,
+        dashArray: '5, 5'       // Dashed line for "Zone" look
+    }).addTo(map);
+
+    // -----------------------------------------------
+
     const siteModal = document.getElementById('siteModal');
     const closeModal = document.getElementById('closeModal');
     const btnCollect = document.getElementById('btnCollectStamp');
@@ -187,37 +216,27 @@ document.addEventListener('DOMContentLoaded', () => {
         info: document.getElementById('modalInfo')
     };
 
-    // Store markers to update them later
-    const allMarkers = {};
-
     fetch('data.json')
         .then(res => res.json())
         .then(sites => {
             sites.forEach(site => {
                 const marker = L.marker(site.coordinates).addTo(map);
-                allMarkers[site.id] = marker;
 
-                // If already visited, turn Gold immediately
                 if (visitedSites.includes(site.id)) {
                     marker._icon.classList.add('marker-visited');
                 }
 
                 marker.on('click', () => {
-                    // Populate Modal
                     elements.title.textContent = `${site.id}. ${site.name}`;
                     elements.built.textContent = site.built || "N/A";
                     elements.architects.textContent = site.architects || "N/A";
                     elements.info.textContent = site.info;
                     
-                    // Setup Direction Link
                     btnDirections.href = `https://www.google.com/maps/dir/?api=1&destination=${site.coordinates[0]},${site.coordinates[1]}&travelmode=walking`;
 
-                    // Setup Collect Button
-                    // Only show collect button for numbered sites (1-13), not A-M
                     const isNumberedSite = !isNaN(site.id);
-                    
                     if (!isNumberedSite) {
-                        btnCollect.style.display = 'none'; // Hide for A-M sites
+                        btnCollect.style.display = 'none'; 
                     } else {
                         btnCollect.style.display = 'flex';
                         if (visitedSites.includes(site.id)) {
@@ -229,35 +248,28 @@ document.addEventListener('DOMContentLoaded', () => {
                             btnCollect.classList.remove('opacity-50', 'cursor-not-allowed');
                             btnCollect.disabled = false;
                             
-                            // Handle Click
                             btnCollect.onclick = () => {
                                 collectStamp(site.id, marker, btnCollect);
                             };
                         }
                     }
-                    
                     siteModal.classList.remove('hidden');
                 });
             });
         });
 
-    // Logic to Collect Stamp
     function collectStamp(siteId, marker, btn) {
         if (!visitedSites.includes(siteId)) {
-            // 1. Save to storage
             visitedSites.push(siteId);
             localStorage.setItem('jejak_visited', JSON.stringify(visitedSites));
             
-            // 2. Update UI
             marker._icon.classList.add('marker-visited');
             btn.innerHTML = "✅ Stamp Collected";
             btn.classList.add('opacity-50', 'cursor-not-allowed');
             btn.disabled = true;
 
-            // 3. Update Progress
             updateGameProgress();
 
-            // 4. Check Victory
             const numberedSitesVisited = visitedSites.filter(id => !isNaN(id)).length;
             if (numberedSitesVisited >= TOTAL_SITES) {
                 setTimeout(() => {
@@ -271,16 +283,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateGameProgress() {
         const progressBar = document.getElementById('progressBar');
         const progressText = document.getElementById('progressText');
-        
-        // Count only numbered sites (1-13)
         const count = visitedSites.filter(id => !isNaN(id)).length;
         const percent = (count / TOTAL_SITES) * 100;
-        
         progressBar.style.width = `${percent}%`;
         progressText.textContent = `${count}/${TOTAL_SITES} Sites`;
     }
 
-    // User Location
     const userMarker = L.marker([0, 0]).addTo(map);
     const userCircle = L.circle([0, 0], { radius: 10 }).addTo(map);
     map.on('locationfound', (e) => {
@@ -289,7 +297,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     map.locate({ watch: true, enableHighAccuracy: true });
 
-    // Close Modals
     const hideModal = () => siteModal.classList.add('hidden');
     closeModal.addEventListener('click', hideModal);
     closeReward.addEventListener('click', () => rewardModal.classList.add('hidden'));
