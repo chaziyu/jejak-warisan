@@ -1,4 +1,6 @@
 // --- CONFIGURATION ---
+import { BWM_KNOWLEDGE } from './knowledge.js';
+
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOtyJ200uEv2yu24C-DesB5g57iBX9CpO_qp8mAQCKX1LYrS_S8BnZGtfVDq_9LqnJ7HO6nbXpu8J4/pub?gid=0&single=true&output=csv"; 
 const ADMIN_PASSWORD = "BWM"; 
 
@@ -173,6 +175,92 @@ async function verifyCode(enteredCode) {
 // --- 2. MAP & GAMIFICATION LOGIC ---
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- START: CHATBOT LOGIC ---
+
+const btnChat = document.getElementById('btnChat');
+const chatModal = document.getElementById('chatModal');
+const closeChatModal = document.getElementById('closeChatModal');
+const chatMessages = document.getElementById('chatMessages');
+const chatInput = document.getElementById('chatInput');
+const chatSendBtn = document.getElementById('chatSendBtn');
+
+if (btnChat) {
+    btnChat.addEventListener('click', () => {
+        chatModal.classList.remove('hidden');
+    });
+}
+
+if (closeChatModal) {
+    closeChatModal.addEventListener('click', () => {
+        chatModal.classList.add('hidden');
+    });
+}
+
+async function handleChatSend() {
+    const query = chatInput.value.trim();
+    if (!query) return;
+
+    // 1. Display user's message
+    addChatMessage(query, 'user');
+    chatInput.value = '';
+    chatSendBtn.disabled = true;
+    chatSendBtn.textContent = '...';
+
+    try {
+        // 2. Call your OWN serverless function (not Google's)
+        const response = await fetch('/api/chat', { // <-- Calls your api/chat.js file
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userQuery: query,
+                context: BWM_KNOWLEDGE // <-- Send the entire document as context
+            })
+        });
+
+        const data = await response.json();
+
+        // 3. Display the AI's response
+        addChatMessage(data.reply, 'bot');
+
+    } catch (error) {
+        addChatMessage('Error: Could not connect to the AI guide.', 'bot');
+    } finally {
+        chatSendBtn.disabled = false;
+        chatSendBtn.textContent = 'Send';
+    }
+}
+
+function addChatMessage(message, sender) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('flex');
+
+    let innerHtml = '';
+    if (sender === 'user') {
+        innerHtml = `
+            <div class="bg-blue-600 text-white p-3 rounded-lg ml-auto max-w-xs">
+                <p>${message}</p>
+            </div>`;
+        messageDiv.classList.add('justify-end');
+    } else {
+        innerHtml = `
+            <div class="bg-gray-200 text-gray-800 p-3 rounded-lg max-w-xs">
+                <p>${message}</p>
+            </div>`;
+    }
+
+    messageDiv.innerHTML = innerHtml;
+    chatMessages.appendChild(messageDiv);
+
+    // Scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+if (chatSendBtn) chatSendBtn.addEventListener('click', handleChatSend);
+if (chatInput) chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') handleChatSend();
+});
+
+// --- END: CHATBOT LOGIC ---
     initApp();
     updateGameProgress(); 
 
