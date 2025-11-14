@@ -270,7 +270,7 @@ if (chatInput) chatInput.addEventListener('keypress', (e) => {
 
     // USE THIS CLEAN STYLE (CartoDB Positron)
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
         subdomains: 'abcd',
         maxZoom: 20
     }).addTo(map);
@@ -352,7 +352,7 @@ if (chatInput) chatInput.addEventListener('keypress', (e) => {
                         elements.imgContainer.classList.add('hidden');
                     }
 
-                    // Fix Google Maps URL
+                    // THIS LINE IS THE FIX
                     btnDirections.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
 
                     const isNumberedSite = !isNaN(site.id);
