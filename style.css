@@ -17,6 +17,12 @@ body, html {
 
 /* --- 2. UI LAYER INTERACTION (CRITICAL FIX) --- */
 /* This ensures you can click the Map PINS even though the UI is on top */
+/* Add this to section 2 of your style.css */
+#btnChat {
+    pointer-events: auto; 
+}
+
+
 
 #game-ui {
     position: absolute;
@@ -70,6 +76,11 @@ body, html {
 }
 
 /* --- 6. SPECIFIC ELEMENTS --- */
+
+/* Optional: Add to section 6 for layout */
+#btnChat {
+    z-index: 1000; /* Above map, below modals */
+}
 
 /* Recenter Button */
 #btnRecenter {
