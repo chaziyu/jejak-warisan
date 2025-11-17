@@ -1,5 +1,5 @@
 // --- CONFIGURATION ---
-// (No audio)
+// (No Proximity or Audio)
 
 // --- GAME STATE ---
 let visitedSites = JSON.parse(localStorage.getItem('jejak_visited')) || [];
@@ -400,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     btnDirections.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
 
-                    // --- NEW LOGIC FOR IDEA 3 (Smart AI Button) ---
+                    // --- Logic for Idea 3 (Smart AI Button) ---
                     const btnAskAI = document.getElementById('btnAskAI');
                     btnAskAI.onclick = (e) => {
                         e.preventDefault();
@@ -409,10 +409,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         chatModal.classList.remove('hidden');
                         chatInput.value = `Tell me more about the ${siteName}.`;
                     };
-                    // --- END NEW LOGIC FOR IDEA 3 ---
+                    // --- End Logic for Idea 3 ---
 
 
-                    // --- NEW LOGIC FOR IDEA 2 (Stamps & Discoveries) ---
+                    // --- LOGIC FOR IDEA 2 (Stamps & Discoveries) ---
+                    // (Proximity logic is REMOVED)
                     const isNumberedSite = !isNaN(site.id);
                     btnCollect.style.display = 'flex'; // Always show the button
 
@@ -427,12 +428,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             btnCollect.classList.remove('opacity-50', 'cursor-not-allowed');
                             btnCollect.disabled = false;
                             
-                            // --- THIS IS THE FIX ---
-                            // The typo is removed from this line.
                             btnCollect.onclick = () => {
                                 collectStamp(site.id, marker, btnCollect);
                             };
-                            // --- END OF FIX ---
                         }
                     } else {
                         // It's a "Discovery" (A-M)
@@ -451,11 +449,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                 btnCollect.innerHTML = "✅ Discovered!";
                                 btnCollect.classList.add('opacity-50', 'cursor-not-allowed');
                                 btnCollect.disabled = true;
-                                // Optional: You could add a different sound here
                             };
                         }
                     }
-                    // --- END NEW LOGIC FOR IDEA 2 ---
+                    // --- END LOGIC FOR IDEA 2 ---
 
                     siteModal.classList.remove('hidden');
                 });
@@ -512,7 +509,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(btnShare) {
         btnShare.addEventListener('click', () => {
             const text = "I just became an Official Explorer by visiting all 13 Heritage Sites in Kuala Lumpur! 🇲Y✨ Try the Jejak Warisan challenge here: #ThisKulCity #BadanWarisanMalaysia";
-            const url = "httpsm://jejak-warisan.vercel.app"; // Typo fixed here too
+            const url = "https://jejak-warisan.vercel.app";
             const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
             window.open(whatsappUrl, '_blank');
         });
@@ -522,6 +519,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const userMarker = L.marker([0, 0]).addTo(map);
     const userCircle = L.circle([0, 0], { radius: 10 }).addTo(map);
     map.on('locationfound', (e) => {
+        // We still show the user's location, we just don't use it for proximity
         userMarker.setLatLng(e.latlng);
         userCircle.setLatLng(e.latlng).setRadius(e.accuracy / 2);
     });
