@@ -14,7 +14,7 @@ let userMessageCount = parseInt(localStorage.getItem('jejak_message_count')) || 
 let currentModalSite = null; // To track the currently open pin
 
 // --- DOM Elements ---
-let siteModal, siteModalImage, siteModalTitle, siteModalInfo, siteModalQuizArea, siteModalQuizQ, siteModalQuizInput, siteModalQuizBtn, siteModalQuizResult, closeSiteModal, siteModalAskAI, siteModalDirections;
+let siteModal, siteModalImage, siteModalLabel, siteModalTitle, siteModalInfo, siteModalQuizArea, siteModalQuizQ, siteModalQuizInput, siteModalQuizBtn, siteModalQuizResult, closeSiteModal, siteModalAskAI, siteModalDirections;
 let chatModal, closeChatModal, chatHistoryEl, chatInput, chatSendBtn, chatLimitText;
 let passportModal, closePassportModal, passportInfo, passportGrid;
 
@@ -66,6 +66,8 @@ function handleMarkerClick(site, marker) {
 
     currentModalSite = site; // Store the clicked site
 
+    // Add Topic Label (e.g., "1." or "A.")
+    siteModalLabel.textContent = site.id ? `${site.id}.` : "";
     siteModalTitle.textContent = site.name;
     siteModalInfo.textContent = site.info;
     siteModalImage.src = site.image || 'https://placehold.co/600x400/eee/ccc?text=Site+Image';
@@ -73,10 +75,13 @@ function handleMarkerClick(site, marker) {
     // Check if it's a main site (ID 1-13) which has a quiz
     const isMainSite = site.quiz && !isNaN(parseInt(site.id));
     
+    // Show "Ask AI" and "Directions" for ALL sites
+    siteModalDirections.style.display = 'block';
+    siteModalAskAI.style.display = 'block';
+
     if (isMainSite) {
-        // Show Quiz and Ask AI button
+        // Show Quiz Area
         siteModalQuizArea.style.display = 'block';
-        siteModalAskAI.style.display = 'block';
         
         siteModalQuizQ.textContent = site.quiz.q;
         siteModalQuizInput.value = "";
@@ -111,9 +116,8 @@ function handleMarkerClick(site, marker) {
 
     } else {
         // This is a "discovery" pin (like 'A', 'B', 'C')
-        // Hide Quiz and Ask AI button
+        // Hide Quiz Area
         siteModalQuizArea.style.display = 'none';
-        siteModalAskAI.style.display = 'none';
         
         // Mark as "discovered" if it's the first time
         if (!discoveredSites.includes(site.id)) {
@@ -123,8 +127,6 @@ function handleMarkerClick(site, marker) {
         }
     }
 
-    // "Get Directions" button is always visible
-    siteModalDirections.style.display = 'block';
     siteModal.classList.remove('hidden');
 }
 
@@ -255,7 +257,7 @@ function updatePassport() {
         img.alt = site.name;
 
         const name = document.createElement('p');
-        name.textContent = site.name;
+        name.textContent = `${site.id}. ${site.name}`; // Add label to passport stamp
 
         stamp.appendChild(img);
         stamp.appendChild(name);
@@ -445,6 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Find all elements first ---
         siteModal = document.getElementById('siteModal');
         siteModalImage = document.getElementById('siteModalImage');
+        siteModalLabel = document.getElementById('siteModalLabel'); // New
         siteModalTitle = document.getElementById('siteModalTitle');
         siteModalInfo = document.getElementById('siteModalInfo');
         siteModalQuizArea = document.getElementById('siteModalQuizArea');
