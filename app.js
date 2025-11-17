@@ -210,7 +210,7 @@ POM     * [FIXED] This function was MISSING.
         errorMsg.classList.add('hidden');
 
         try {
-            const response = await fetch('/api/verify-passkey', {
+            const response = await fetch('/api/check-passkey', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ passkey: enteredCode })
