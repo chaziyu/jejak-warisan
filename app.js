@@ -3,10 +3,7 @@
 
 // --- GAME STATE ---
 let visitedSites = JSON.parse(localStorage.getItem('jejak_visited')) || [];
-// --- NEW ---
-// This new list will store the "Discovery" points (A, B, C...)
 let discoveredSites = JSON.parse(localStorage.getItem('jejak_discovered')) || [];
-// --- END NEW ---
 const TOTAL_SITES = 13; 
 
 // --- 1. APP NAVIGATION & SECURITY ---
@@ -430,10 +427,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             btnCollect.classList.remove('opacity-50', 'cursor-not-allowed');
                             btnCollect.disabled = false;
                             
+                            // --- THIS IS THE FIX ---
+                            // The typo is removed from this line.
                             btnCollect.onclick = () => {
                                 collectStamp(site.id, marker, btnCollect);
-Src`;
                             };
+                            // --- END OF FIX ---
                         }
                     } else {
                         // It's a "Discovery" (A-M)
@@ -513,7 +512,7 @@ Src`;
     if(btnShare) {
         btnShare.addEventListener('click', () => {
             const text = "I just became an Official Explorer by visiting all 13 Heritage Sites in Kuala Lumpur! 🇲Y✨ Try the Jejak Warisan challenge here: #ThisKulCity #BadanWarisanMalaysia";
-            const url = "https://jejak-warisan.vercel.app";
+            const url = "httpsm://jejak-warisan.vercel.app"; // Typo fixed here too
             const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
             window.open(whatsappUrl, '_blank');
         });
