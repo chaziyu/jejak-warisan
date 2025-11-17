@@ -13,9 +13,9 @@ let chatHistory = [];
 let userMessageCount = parseInt(localStorage.getItem('jejak_message_count')) || 0;
 
 // --- DOM Elements ---
-let siteModal, siteModalImage, siteModalTitle, siteModalInfo, siteModalQuizQ, siteModalQuizInput, siteModalQuizBtn, siteModalQuizResult, closeSiteModal;
+let siteModal, siteModalImage, siteModalTitle, siteModalInfo, siteModalQuizQ, siteModalQuizInput, siteModalQuizBtn, siteModalQuizResult, closeSiteModal, siteModalAskAI;
 let chatModal, closeChatModal, chatHistoryEl, chatInput, chatSendBtn, chatLimitText;
-let passportModal, closePassportModal, passportInfo, passportStampContainer;
+let passportModal, closePassportModal, passportInfo, passportGrid;
 
 // --- CORE GAME & MAP INITIALIZATION ---
 function initializeGameAndMap() {
@@ -40,6 +40,9 @@ function initializeGameAndMap() {
             }
             marker.on('click', () => handleMarkerClick(site, marker));
         });
+        // Call progress and passport updates *after* data is loaded
+        updateGameProgress();
+        updatePassport(); 
     }).catch(err => console.error("Error loading Map Data:", err));
 
     const userMarker = L.marker([0, 0]).addTo(map);
@@ -60,11 +63,20 @@ function handleMarkerClick(site, marker) {
     siteModalInfo.textContent = site.info;
     siteModalImage.src = site.image || 'https://placehold.co/600x400/eee/ccc?text=Site+Image';
     
+    // Hide 'Ask AI' button if it's not a main site (like Dataran Merdeka)
+    if (site.id >= 1 && site.id <= 13) {
+         siteModalQuizQ.parentElement.style.display = 'block';
+         siteModalAskAI.style.display = 'block';
+    } else {
+        // Hide quiz and Ask AI button for non-quiz sites
+         siteModalQuizQ.parentElement.style.display = 'none';
+         siteModalAskAI.style.display = 'none';
+    }
+
     siteModalQuizQ.textContent = site.quiz.q;
     siteModalQuizInput.value = "";
     siteModalQuizResult.classList.add('hidden');
     
-    // We remove old listener first to avoid bugs from multiple clicks
     const newQuizBtn = siteModalQuizBtn.cloneNode(true);
     siteModalQuizBtn.parentNode.replaceChild(newQuizBtn, siteModalQuizBtn);
     siteModalQuizBtn = newQuizBtn; 
@@ -161,20 +173,15 @@ function addChatMessage(role, text) {
 
 function updateGameProgress() {
     const visitedCount = visitedSites.length;
-    // Filter allSiteData to get only main sites (numeric IDs)
-    const mainSitesTotal = allSiteData.filter(site => !isNaN(parseInt(site.id))).length;
+    const mainSitesTotal = allSiteData.filter(site => !isNaN(parseInt(site.id))).length || TOTAL_SITES;
     
-    if (mainSitesTotal > 0) {
-        const percent = (visitedCount / mainSitesTotal) * 100;
-        document.getElementById('progressBar').style.width = `${percent}%`;
-        document.getElementById('progressText').textContent = `${visitedCount}/${mainSitesTotal} Sites`;
-    } else {
-        // Fallback in case data.json isn't loaded yet
-        document.getElementById('progressText').textContent = `${visitedCount}/${TOTAL_SITES} Sites`;
-    }
+    const percent = (visitedCount / mainSitesTotal) * 100;
+    document.getElementById('progressBar').style.width = `${percent}%`;
+    document.getElementById('progressText').textContent = `${visitedCount}/${mainSitesTotal} Sites`;
 }
 
 function updateChatUIWithCount() {
+    if (!chatLimitText) return; // Don't run if chat UI not set up
     const remaining = MAX_MESSAGES_PER_SESSION - userMessageCount;
     chatLimitText.textContent = `You have ${remaining} messages remaining.`;
 
@@ -184,6 +191,7 @@ function updateChatUIWithCount() {
 }
 
 function disableChatUI(flag) {
+    if (!chatInput || !chatSendBtn) return;
     chatInput.disabled = flag;
     chatSendBtn.disabled = flag;
     if (flag) {
@@ -192,30 +200,43 @@ function disableChatUI(flag) {
     }
 }
 
+/**
+ * [REWRITTEN] Updates the passport with the new photo grid.
+ */
 function updatePassport() {
-    if (!passportInfo || !passportStampContainer) return;
-
-    const visitedCount = visitedSites.length;
-    passportInfo.textContent = `You have visited ${visitedCount} out of ${TOTAL_SITES} sites.`;
-    
-    passportStampContainer.innerHTML = ""; // Clear old stamps
-    
-    if (visitedCount === 0) {
-        passportStampContainer.innerHTML = `<p class="text-gray-500">No sites visited yet. Start exploring!</p>`;
+    if (!passportInfo || !passportGrid || allSiteData.length === 0) {
+        console.log("Passport elements not ready, or data not loaded.");
         return;
     }
 
-    // Add a stamp for each visited site
-    visitedSites.forEach(siteId => {
-        const site = allSiteData.find(s => s.id === siteId);
-        if (site) {
-            const stampEl = document.createElement('div');
-            stampEl.className = 'p-2 bg-green-100 text-green-800 rounded-lg text-left text-sm font-medium';
-            stampEl.textContent = `✅ ${site.name}`;
-            passportStampContainer.appendChild(stampEl);
+    const mainSites = allSiteData.filter(site => !isNaN(parseInt(site.id)));
+    const visitedCount = visitedSites.length;
+    
+    passportInfo.textContent = `You have collected ${visitedCount} of the ${mainSites.length} stamps.`;
+    passportGrid.innerHTML = ""; // Clear old grid
+
+    mainSites.forEach(site => {
+        const stamp = document.createElement('div');
+        stamp.className = 'passport-stamp';
+        
+        const isVisited = visitedSites.includes(site.id);
+        if (!isVisited) {
+            stamp.classList.add('grayscale'); // Add grayscale class if not visited
         }
+
+        const img = document.createElement('img');
+        img.src = site.image || 'https://placehold.co/100x100/eee/ccc?text=?';
+        img.alt = site.name;
+
+        const name = document.createElement('p');
+        name.textContent = site.name;
+
+        stamp.appendChild(img);
+        stamp.appendChild(name);
+        passportGrid.appendChild(stamp);
     });
 }
+
 
 // --- APP STARTUP & LANDING PAGE LOGIC ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -233,7 +254,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             initializeGameAndMap();
             setupGameUIListeners(); 
-            updateGameProgress();
+            // Note: updateGameProgress() and updatePassport() are called inside initializeGameAndMap
+            // after the 'data.json' fetch is successful.
+            
             if (userMessageCount >= MAX_MESSAGES_PER_SESSION) {
                 disableChatUI(true);
             } else {
@@ -340,7 +363,6 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMsg.classList.add('hidden');
 
         try {
-            // Use the renamed API route
             const response = await fetch('/api/check-passkey', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -350,7 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 localStorage.setItem('jejak_session', JSON.stringify({
                     valid: true,
-                    start: Date.now() // The typo is fixed
+                    start: Date.now()
                 }));
 
                 document.getElementById('gatekeeper').style.opacity = 0;
@@ -362,8 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('progress-container').classList.remove('hidden');
                     
                     initializeGameAndMap();
-                    setupGameUIListeners(); // Connect in-game buttons
-                    updateGameProgress();
+                    setupGameUIListeners();
                 }, 500);
 
             } else {
@@ -380,6 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     /**
+     * [UPDATED]
      * Finds all DOM elements and attaches all in-game listeners.
      */
     function setupGameUIListeners() {
@@ -393,6 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
         siteModalQuizBtn = document.getElementById('siteModalQuizBtn');
         siteModalQuizResult = document.getElementById('siteModalQuizResult');
         closeSiteModal = document.getElementById('closeSiteModal');
+        siteModalAskAI = document.getElementById('siteModalAskAI'); // New
         
         chatModal = document.getElementById('chatModal');
         closeChatModal = document.getElementById('closeChatModal');
@@ -404,7 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
         passportModal = document.getElementById('passportModal');
         closePassportModal = document.getElementById('closePassportModal');
         passportInfo = document.getElementById('passportInfo');
-        passportStampContainer = document.getElementById('passportStampContainer');
+        passportGrid = document.getElementById('passportGrid'); // New
         
         // --- Attach Listeners ---
 
@@ -438,6 +461,23 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.key === 'Enter') {
                 handleSendMessage();
             }
+        });
+
+        // --- NEW LISTENER FOR "ASK AI" BUTTON ---
+        siteModalAskAI.addEventListener('click', () => {
+            const siteName = siteModalTitle.textContent;
+            if (!siteName || siteName === "Site Title") return;
+            
+            // Create a question
+            const question = `Tell me more about ${siteName}.`;
+            
+            // Close site modal, open chat modal
+            siteModal.classList.add('hidden');
+            chatModal.classList.remove('hidden');
+            
+            // Send the question directly
+            chatInput.value = question; // Pre-fill
+            handleSendMessage(); // Send it
         });
     }
 
