@@ -12,9 +12,10 @@ let allSiteData = [];
 let chatHistory = [];
 let userMessageCount = parseInt(localStorage.getItem('jejak_message_count')) || 0;
 let currentModalSite = null; // To track the currently open pin
+let currentModalMarker = null; // To track the currently open marker
 
 // --- DOM Elements ---
-let siteModal, siteModalImage, siteModalLabel, siteModalTitle, siteModalInfo, siteModalQuizArea, siteModalQuizQ, siteModalQuizInput, siteModalQuizBtn, siteModalQuizResult, closeSiteModal, siteModalAskAI, siteModalDirections;
+let siteModal, siteModalImage, siteModalLabel, siteModalTitle, siteModalInfo, siteModalQuizArea, siteModalQuizQ, siteModalQuizInput, siteModalQuizBtn, siteModalQuizResult, closeSiteModal, siteModalAskAI, siteModalDirections, siteModalCheckInBtn;
 let chatModal, closeChatModal, chatHistoryEl, chatInput, chatSendBtn, chatLimitText;
 let passportModal, closePassportModal, passportInfo, passportGrid;
 
@@ -48,21 +49,20 @@ function initializeGameAndMap() {
     
     // --- Custom User Location Pin ---
     const userIcon = L.divIcon({
-        className: 'user-location-pin', // This new class is in style.css
+        className: 'user-location-pin',
         iconSize: [20, 20],
-        iconAnchor: [10, 10] // Center of the icon
+        iconAnchor: [10, 10]
     });
     
     const userMarker = L.marker([0, 0], { icon: userIcon }).addTo(map);
 
     const userCircle = L.circle([0, 0], {
         radius: 10,
-        color: "#10B981", // Green
+        color: "#10B981",
         fillColor: "#10B981",
         fillOpacity: 0.1,
         weight: 1
     }).addTo(map);
-    // --- End Custom Pin ---
     
     map.on('locationfound', (e) => {
         userMarker.setLatLng(e.latlng);
@@ -79,7 +79,8 @@ function handleMarkerClick(site, marker) {
         return; 
     }
 
-    currentModalSite = site; 
+    currentModalSite = site;
+    currentModalMarker = marker; // Store the marker
 
     siteModalLabel.textContent = site.id ? `${site.id}.` : "";
     siteModalTitle.textContent = site.name;
@@ -88,11 +89,15 @@ function handleMarkerClick(site, marker) {
     
     const isMainSite = site.quiz && !isNaN(parseInt(site.id));
     
+    // Show "Ask AI" and "Directions" for ALL sites
     siteModalDirections.style.display = 'block';
     siteModalAskAI.style.display = 'block';
 
     if (isMainSite) {
+        // This is a main site (1-13)
         siteModalQuizArea.style.display = 'block';
+        siteModalCheckInBtn.style.display = 'none'; // Hide Check-in button
+        
         siteModalQuizQ.textContent = site.quiz.q;
         siteModalQuizInput.value = "";
         siteModalQuizResult.classList.add('hidden');
@@ -124,16 +129,47 @@ function handleMarkerClick(site, marker) {
         });
 
     } else {
-        siteModalQuizArea.style.display = 'none';
+        // This is a "discovery" pin (A, B, C...)
+        siteModalQuizArea.style.display = 'none'; // Hide Quiz
+        siteModalCheckInBtn.style.display = 'block'; // Show Check-in button
         
-        if (!discoveredSites.includes(site.id)) {
-            discoveredSites.push(site.id);
-            localStorage.setItem('jejak_discovered', JSON.stringify(discoveredSites));
-            marker._icon.classList.add('marker-visited');
+        // Set the state of the Check-in button
+        if (discoveredSites.includes(site.id)) {
+            siteModalCheckInBtn.disabled = true;
+            siteModalCheckInBtn.textContent = 'Visited';
+            siteModalCheckInBtn.classList.add('bg-gray-400', 'hover:bg-gray-400');
+            siteModalCheckInBtn.classList.remove('bg-purple-600', 'hover:bg-purple-700');
+        } else {
+            siteModalCheckInBtn.disabled = false;
+            siteModalCheckInBtn.textContent = 'Check In to this Site';
+            siteModalCheckInBtn.classList.remove('bg-gray-400', 'hover:bg-gray-400');
+            siteModalCheckInBtn.classList.add('bg-purple-600', 'hover:bg-purple-700');
         }
     }
 
     siteModal.classList.remove('hidden');
+}
+
+/**
+ * NEW: Handles the "Check In" button click for discovery sites
+ */
+function handleCheckIn() {
+    if (!currentModalSite || !currentModalMarker) return;
+    
+    // Add to discovered list if not already there
+    if (!discoveredSites.includes(currentModalSite.id)) {
+        discoveredSites.push(currentModalSite.id);
+        localStorage.setItem('jejak_discovered', JSON.stringify(discoveredSites));
+        
+        // Update the marker icon to "visited" (red)
+        currentModalMarker._icon.classList.add('marker-visited');
+        
+        // Update the button state
+        siteModalCheckInBtn.disabled = true;
+        siteModalCheckInBtn.textContent = 'Visited';
+        siteModalCheckInBtn.classList.add('bg-gray-400', 'hover:bg-gray-400');
+        siteModalCheckInBtn.classList.remove('bg-purple-600', 'hover:bg-purple-700');
+    }
 }
 
 async function handleSendMessage() {
@@ -300,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- THIS FUNCTION FIXES YOUR LOGIN BUTTONS ---
+    // --- THIS FUNCTION ATTACHES LISTENERS TO THE LANDING PAGE ---
     function setupLandingPage() {
         document.getElementById('btnVisitor').addEventListener('click', () => {
             document.getElementById('landing-page').classList.add('hidden');
@@ -327,7 +363,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setupGatekeeperLogic();
         setupAdminLoginLogic(); 
     }
-    // --- END OF FIX ---
 
 
     // --- LOGIN & MODAL FUNCTIONS ---
@@ -351,7 +386,6 @@ document.addEventListener('DOMContentLoaded', () => {
             errorMsg.classList.add('hidden');
 
             try {
-                // This assumes your file is /api/get-admin-code.js
                 const response = await fetch('/api/get-admin-code', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -403,7 +437,6 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMsg.classList.add('hidden');
 
         try {
-            // This MUST match the file name in your /api folder (e.g., check-passkey.js)
             const response = await fetch('/api/check-passkey', { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -459,6 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closeSiteModal = document.getElementById('closeSiteModal');
         siteModalAskAI = document.getElementById('siteModalAskAI');
         siteModalDirections = document.getElementById('siteModalDirections');
+        siteModalCheckInBtn = document.getElementById('siteModalCheckInBtn'); // New
         
         chatModal = document.getElementById('chatModal');
         closeChatModal = document.getElementById('closeChatModal');
@@ -528,6 +562,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`;
             window.open(url, '_blank');
         });
+        
+        // --- NEW LISTENER FOR "CHECK IN" BUTTON ---
+        siteModalCheckInBtn.addEventListener('click', handleCheckIn);
     }
 
     // --- Run the app ---
