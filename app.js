@@ -2,7 +2,7 @@
 const HISTORY_WINDOW_SIZE = 10;
 
 // --- GAME STATE ---
-let map = null; // IMPORTANT: Map is not initialized on page load to allow landing page buttons to work.
+let map = null; // Map is not initialized on page load to allow landing page buttons to work.
 let visitedSites = JSON.parse(localStorage.getItem('jejak_visited')) || [];
 let discoveredSites = JSON.parse(localStorage.getItem('jejak_discovered')) || [];
 const TOTAL_SITES = 13; 
@@ -11,7 +11,7 @@ let chatHistory = [];
 
 
 // --- CORE GAME & MAP INITIALIZATION ---
-// This function will now be called ONLY after the user gets past the landing page.
+// This function will be called ONLY after the user gets past the landing page.
 function initializeGameAndMap() {
     if (map) return; // Prevent re-initializing
 
@@ -23,7 +23,7 @@ function initializeGameAndMap() {
         maxZoom: 20
     }).addTo(map);
 
-    // 2. KML HERITAGE ZONE POLYGON (Bug Fix: Moved inside init to ensure map exists)
+    // 2. KML HERITAGE ZONE POLYGON (Bug Fix: Restored)
     const heritageZoneCoords = [[3.148934,101.694228],[3.148012,101.694051],[3.147936,101.694399],[3.147164,101.694292],[3.147067,101.695104],[3.146902,101.695994],[3.146215,101.695884],[3.146004,101.69586],[3.145961,101.695897],[3.145896,101.69616],[3.145642,101.696179],[3.145672,101.696616],[3.145883,101.696592],[3.145982,101.696922],[3.146416,101.69667],[3.146694,101.696546],[3.146828,101.696584],[3.146903,101.69689],[3.147075,101.697169],[3.147541,101.697517],[3.147889,101.697807],[3.147969,101.697872],[3.148366,101.697491],[3.149041,101.696868],[3.14933,101.696632],[3.149549,101.696718],[3.150106,101.697303],[3.15038,101.697576],[3.150439,101.697668],[3.150733,101.697576],[3.151065,101.697694],[3.151467,101.697791],[3.15181,101.698011],[3.152051,101.698306],[3.152158,101.698413],[3.152485,101.698435],[3.152586,101.698413],[3.151802,101.697252],[3.151796,101.697171],[3.152102,101.696968],[3.151684,101.696683],[3.151914,101.69627],[3.151298,101.695889],[3.151581,101.695549],[3.150951,101.695173],[3.150238,101.694712],[3.149922,101.69451],[3.148934,101.694228]];
     L.polygon(heritageZoneCoords, { color: '#666', fillColor: '#333', fillOpacity: 0.1, weight: 2, dashArray: '5, 5', interactive: false }).addTo(map);
 
@@ -32,15 +32,12 @@ function initializeGameAndMap() {
         .then(res => res.json())
         .then(sites => {
             allSiteData = sites;
-            updatePassport(); // Bug Fix: Initial passport load
+            updatePassport(); // Initial passport load
             sites.forEach(site => {
-                const [lat, lng] = [parseFloat(site.coordinates[0]), parseFloat(site.coordinates[1])];
-                const marker = L.marker([lat, lng]).addTo(map);
-
+                const marker = L.marker(site.coordinates).addTo(map);
                 if (visitedSites.includes(site.id) || discoveredSites.includes(site.id)) {
                     marker._icon.classList.add('marker-visited');
                 }
-
                 marker.on('click', () => handleMarkerClick(site, marker));
             });
         })
@@ -57,7 +54,6 @@ function initializeGameAndMap() {
 }
 
 // --- GLOBAL UI HANDLERS & LOGIC ---
-// These functions are now in the global scope so they are always accessible.
 
 function handleMarkerClick(site, marker) {
     const siteModal = document.getElementById('siteModal');
@@ -199,15 +195,38 @@ function updateGameProgress() {
     progressText.textContent = `${count}/${TOTAL_SITES} Sites`;
 }
 
+// --- DEFINITIVE FIX for Chat History Bug ---
+function addMessageToHistory(message, role) {
+    chatHistory.push({ role, parts: [{ text: message }] });
+}
+
+function addMessageToUI(message, sender) {
+    const chatMessages = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('flex', 'justify-' + (sender === 'user' ? 'end' : 'start'));
+    messageDiv.innerHTML = `<div class="${sender === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'} p-3 rounded-lg max-w-xs"><p>${message}</p></div>`;
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
 async function handleChatSend(query, isSilent = false) {
     const chatInput = document.getElementById('chatInput');
     const chatSendBtn = document.getElementById('chatSendBtn');
     const userQuery = query || chatInput.value.trim();
     if (!userQuery) return;
-    if (!isSilent) addChatMessage(userQuery, 'user');
+    
+    // 1. Always add user message to history
+    addMessageToHistory(userQuery, 'user');
+    
+    // 2. Conditionally add user message to UI
+    if (!isSilent) {
+        addMessageToUI(userQuery, 'user');
+    }
+
     chatInput.value = '';
     chatSendBtn.disabled = true;
     chatSendBtn.textContent = '...';
+    
     try {
         const recentHistory = chatHistory.slice(-HISTORY_WINDOW_SIZE);
         const response = await fetch('/api/chat', {
@@ -217,26 +236,20 @@ async function handleChatSend(query, isSilent = false) {
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data.reply || "Failed to get response.");
-        addChatMessage(data.reply, 'bot');
+
+        // 3. Add AI response to both history and UI
+        addMessageToHistory(data.reply, 'model');
+        addMessageToUI(data.reply, 'bot');
+
     } catch (error) {
-        addChatMessage(`Error: ${error.message}`, 'bot');
+        // 4. Add error to UI and history for context
+        const errorMessage = `Error: ${error.message}`;
+        addMessageToHistory(errorMessage, 'model');
+        addMessageToUI(errorMessage, 'bot');
     } finally {
         chatSendBtn.disabled = false;
         chatSendBtn.textContent = 'Send';
     }
-}
-
-function addChatMessage(message, sender) {
-    const chatMessages = document.getElementById('chatMessages');
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('flex', 'justify-' + (sender === 'user' ? 'end' : 'start'));
-    messageDiv.innerHTML = `<div class="${sender === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'} p-3 rounded-lg max-w-xs"><p>${message}</p></div>`;
-    chatMessages.appendChild(messageDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-    chatHistory.push({
-        role: (sender === 'user' ? 'user' : 'model'),
-        parts: [{ text: message }]
-    });
 }
 
 // --- APP STARTUP & LANDING PAGE LOGIC ---
@@ -359,7 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Set up listeners for in-game buttons that are always present
+    // Set up listeners for in-game buttons
     document.getElementById('btnChat').addEventListener('click', () => document.getElementById('chatModal').classList.remove('hidden'));
     document.getElementById('closeChatModal').addEventListener('click', () => document.getElementById('chatModal').classList.add('hidden'));
     document.getElementById('chatSendBtn').addEventListener('click', () => handleChatSend());
