@@ -1,18 +1,15 @@
 // File: /api/check-passkey.js
 
-// --- THIS FUNCTION IS NOW FIXED ---
 function getTodayString() {
     const now = new Date();
     // Get the date string for the 'Asia/Kuala_Lumpur' timezone
-    // The 'en-CA' (Canadian English) locale formats the date as YYYY-MM-DD.
     const todayStr = now.toLocaleDateString('en-CA', {
         timeZone: 'Asia/Kuala_Lumpur'
     });
     return todayStr;
 }
-// --- END OF FIX ---
 
-export default async function handler(request, response) {
+module.exports = async (request, response) => { // Use module.exports
     if (request.method !== 'POST') {
         return response.status(405).json({ error: 'Method not allowed' });
     }
@@ -35,7 +32,7 @@ export default async function handler(request, response) {
         
         const data = await sheetResponse.text();
         const rows = data.split('\n');
-        const todayStr = getTodayString(); // This will now be "2025-11-18"
+        const todayStr = getTodayString();
         let validCode = null;
 
         for (let i = 1; i < rows.length; i++) {
@@ -56,4 +53,4 @@ export default async function handler(request, response) {
         console.error('Error in passkey verification:', error);
         return response.status(500).json({ error: 'Server error' });
     }
-}
+};
