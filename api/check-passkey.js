@@ -1,12 +1,16 @@
-// File: /api/check-visitor.js  (This is the NEW file name)
+// File: /api/check-passkey.js
 
+// --- THIS FUNCTION IS NOW FIXED ---
 function getTodayString() {
     const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    // Get the date string for the 'Asia/Kuala_Lumpur' timezone
+    // The 'en-CA' (Canadian English) locale formats the date as YYYY-MM-DD.
+    const todayStr = now.toLocaleDateString('en-CA', {
+        timeZone: 'Asia/Kuala_Lumpur'
+    });
+    return todayStr;
 }
+// --- END OF FIX ---
 
 export default async function handler(request, response) {
     if (request.method !== 'POST') {
@@ -31,7 +35,7 @@ export default async function handler(request, response) {
         
         const data = await sheetResponse.text();
         const rows = data.split('\n');
-        const todayStr = getTodayString();
+        const todayStr = getTodayString(); // This will now be "2025-11-18"
         let validCode = null;
 
         for (let i = 1; i < rows.length; i++) {
