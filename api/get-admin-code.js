@@ -14,16 +14,39 @@ export default async function handler(request, response) {
     }
     
     try {
-        const { password } = request.body;
+        // --- NEW LOGGING ---
+        console.log("Staff login API endpoint was triggered.");
         
-        // 1. Check the password against the *secret* Environment Variable
-        if (password !== process.env.ADMIN_PASSWORD) {
+        const { password } = request.body;
+        const correctPassword = process.env.ADMIN_PASSWORD;
+
+        // --- NEW LOGGING ---
+        console.log(`Password received from client: '${password}'`);
+        console.log(`Is ADMIN_PASSWORD variable set on server? ${!!correctPassword}`);
+        
+        // 1. Check the password
+        if (password !== correctPassword) {
+            // --- NEW LOGGING ---
+            console.error("Password check FAILED. Client password did not match server password.");
             return response.status(401).json({ error: 'Wrong password' });
         }
 
+        // --- NEW LOGGING ---
+        console.log("Password check SUCCESSFUL. Fetching Google Sheet...");
+
         // 2. If password is correct, fetch the Google Sheet
         const SHEET_URL = process.env.GOOGLE_SHEET_URL;
+        if (!SHEET_URL) {
+            console.error("CRITICAL: GOOGLE_SHEET_URL is not set on server!");
+            return response.status(500).json({ error: 'Server error: Sheet URL missing' });
+        }
+        
         const sheetResponse = await fetch(SHEET_URL);
+        if (!sheetResponse.ok) {
+            console.error("Failed to fetch Google Sheet.");
+            return response.status(500).json({ error: 'Failed to fetch Google Sheet' });
+        }
+        
         const data = await sheetResponse.text();
         const rows = data.split('\n');
         const todayStr = getTodayString();
@@ -37,10 +60,14 @@ export default async function handler(request, response) {
             }
         }
         
+        // --- NEW LOGGING ---
+        console.log(`Found passkey for ${todayStr}: ${todayCode}`);
+        
         // 3. Return the code to the admin
         return response.status(200).json({ success: true, passkey: todayCode, date: todayStr });
 
     } catch (error) {
+        console.error("A fatal error occurred in /api/get-admin-code:", error.message);
         return response.status(500).json({ error: 'Server error' });
     }
 }
