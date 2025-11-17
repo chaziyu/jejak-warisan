@@ -1,11 +1,7 @@
-mport { GoogleGenerativeAI } from "@google/generative-ai";
-import { BWM_KNOWLEDGE } from '../knowledge.js';
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { BWM_KNOWLEDGE } = require('../knowledge.js'); // Use require
 
-// This function is no longer used, as we give the AI the full context
-// function findRelevantContext(query, knowledge_base) { ... }
-
-
-export default async function handler(request, response) {
+module.exports = async (request, response) => { // Use module.exports
     if (request.method !== 'POST') {
         return response.status(405).json({ error: 'Method not allowed' });
     }
@@ -18,11 +14,8 @@ export default async function handler(request, response) {
 
         const { userQuery, history } = request.body;
 
-        const finalContext = BWM_KNOWLEDGE; // Always give the AI the full context
+        const finalContext = BWM_KNOWLEDGE;
 
-        // ---
-        // NEW, UPGRADED SYSTEM PROMPT
-        // ---
         const systemPrompt = `
 You are 'Jejak', a friendly, warm, and enthusiastic local guide for the Jejak Warisan KL (Kuala Lumpur Heritage Walk). You love sharing stories and hidden details. Your goal is to make visitors feel excited and curious.
 
@@ -43,7 +36,7 @@ ${finalContext}
         const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
         
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash-lite", // Using a reliable model
+            model: "gemini-2.5-flash-lite",
             systemInstruction: systemPrompt,
         });
 
@@ -58,4 +51,4 @@ ${finalContext}
         console.error('Error in Google chat handler:', error);
         return response.status(500).json({ reply: 'An error occurred on the server while communicating with the AI.' });
     }
-}
+};
