@@ -17,11 +17,9 @@ export default async function handler(request, response) {
         }
 
         // --- 2. Get data from the client (app.js) ---
-        // We now receive the new query AND the previous chat history
         const { userQuery, history } = request.body;
 
         // --- 3. This is the same System Prompt for the AI ---
-        // It includes the "Smart AI" (Idea 3) instructions
         const systemPrompt = `You are an AI tour guide for the Jejak Warisan (Heritage Walk) in Kuala Lumpur. Your knowledge is limited to the BWM Document provided below.
 
 --- MAIN TASK ---
@@ -48,7 +46,9 @@ ${BWM_KNOWLEDGE}
         // --- 4. Initialize the Google AI Client ---
         const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
         const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-flash",
+            // --- THIS IS THE FIX ---
+            model: "gemini-pro", // Changed from "gemini-1.5-flash"
+            // --- END OF FIX ---
             systemInstruction: systemPrompt,
         });
 
