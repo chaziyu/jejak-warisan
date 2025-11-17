@@ -27,7 +27,7 @@ function initializeGameAndMap() {
         maxZoom: 20
     }).addTo(map);
 
-    setTimeout(() => { map.invalidateSize(); }, 100);
+    setTimeout(() => { map.invalidateSize(); }, 100); // Fixes map not loading on init
 
     const heritageZoneCoords = [[3.148934,101.694228],[3.148012,101.694051],[3.147936,101.694399],[3.147164,101.694292],[3.147067,101.695104],[3.146902,101.695994],[3.146215,101.695884],[3.146004,101.69586],[3.145961,101.695897],[3.145896,101.69616],[3.145642,101.696179],[3.145672,101.696616],[3.145883,101.696592],[3.145982,101.696922],[3.146416,101.69667],[3.146694,101.696546],[3.146828,101.696584],[3.146903,101.69689],[3.147075,101.697169],[3.147541,101.697517],[3.147889,101.697807],[3.147969,101.697872],[3.148366,101.697491],[3.149041,101.696868],[3.14933,101.696632],[3.149549,101.696718],[3.150106,101.697303],[3.15038,101.697576],[3.150439,101.697668],[3.150733,101.697576],[3.151065,101.697694],[3.151467,101.697791],[3.15181,101.698011],[3.152051,101.698306],[3.152158,101.698413],[3.152485,101.698435],[3.152586,101.698413],[3.151802,101.697252],[3.151796,101.697171],[3.152102,101.696968],[3.151684,101.696683],[3.151914,101.69627],[3.151298,101.695889],[3.151581,101.695549],[3.150951,101.695173],[3.150238,101.694712],[3.149922,101.69451],[3.148934,101.694228]];
     L.polygon(heritageZoneCoords, { color: '#666', fillColor: '#333', fillOpacity: 0.1, weight: 2, dashArray: '5, 5', interactive: false }).addTo(map);
@@ -59,7 +59,10 @@ function initializeGameAndMap() {
 // --- GAME LOGIC FUNCTIONS ---
 
 function handleMarkerClick(site, marker) {
-    if (!siteModal) return; 
+    if (!siteModal) {
+        console.error("Site modal is not initialized!");
+        return; 
+    }
 
     currentModalSite = site; // Store the clicked site
 
@@ -178,7 +181,7 @@ async function handleSendMessage() {
 function addChatMessage(role, text) {
     const messageEl = document.createElement('div');
     const name = (role === 'user') ? 'You' : 'AI Guide';
-    const align = (role ===_ 'user') ? 'self-end' : 'self-start';
+    const align = (role === 'user') ? 'self-end' : 'self-start';
     const bg = (role === 'user') ? 'bg-white' : 'bg-blue-100';
     const textCol = (role === 'user') ? 'text-gray-900' : 'text-blue-900';
     
@@ -197,9 +200,11 @@ function updateGameProgress() {
     // Get total main sites from allSiteData, or default to 13
     const mainSitesTotal = allSiteData.filter(site => !isNaN(parseInt(site.id))).length || TOTAL_SITES;
     
-    const percent = (visitedCount / mainSitesTotal) * 100;
-    document.getElementById('progressBar').style.width = `${percent}%`;
-    document.getElementById('progressText').textContent = `${visitedCount}/${mainSitesTotal} Sites`;
+    if (document.getElementById('progressBar') && document.getElementById('progressText')) {
+        const percent = (visitedCount / mainSitesTotal) * 100;
+        document.getElementById('progressBar').style.width = `${percent}%`;
+        document.getElementById('progressText').textContent = `${visitedCount}/${mainSitesTotal} Sites`;
+    }
 }
 
 function updateChatUIWithCount() {
@@ -276,10 +281,13 @@ document.addEventListener('DOMContentLoaded', () => {
             initializeGameAndMap();
             setupGameUIListeners(); 
             
-            if (userMessageCount >= MAX_MESSAGES_PER_SESSION) {
-                disableChatUI(true);
-            } else {
-                updateChatUIWithCount();
+            // Check if chat UI elements are loaded before updating
+            if (chatLimitText) {
+                if (userMessageCount >= MAX_MESSAGES_PER_SESSION) {
+                    disableChatUI(true);
+                } else {
+                    updateChatUIWithCount();
+                }
             }
         } else {
             // Session is INVALID or EXPIRED: Show landing page
@@ -290,6 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- THIS FUNCTION ATTACHES LISTENERS TO THE LANDING PAGE ---
     function setupLandingPage() {
         document.getElementById('btnVisitor').addEventListener('click', () => {
             document.getElementById('landing-page').classList.add('hidden');
@@ -305,14 +314,19 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('landing-page').classList.remove('hidden');
         });
         
-        document.getElementById('closeStaffScreen').addEventListener('click', () => {
-            document.getElementById('staff-screen').classList.add('hidden');
-            document.getElementById('landing-page').classList.remove('hidden');
-        });
+        // Ensure staff screen close button exists before adding listener
+        const closeStaffBtn = document.getElementById('closeStaffScreen');
+        if (closeStaffBtn) {
+            closeStaffBtn.addEventListener('click', () => {
+                document.getElementById('staff-screen').classList.add('hidden');
+                document.getElementById('landing-page').classList.remove('hidden');
+            });
+        }
         
         setupGatekeeperLogic();
         setupAdminLoginLogic(); 
     }
+
 
     // --- LOGIN & MODAL FUNCTIONS ---
 
@@ -322,7 +336,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupAdminLoginLogic() {
-        document.getElementById('adminLoginBtn').addEventListener('click', async () => {
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        if (!adminLoginBtn) return; // Don't run if staff button isn't there
+
+        adminLoginBtn.addEventListener('click', async () => {
             const password = document.getElementById('adminPasswordInput').value;
             const errorMsg = document.getElementById('adminErrorMsg');
             const loginBtn = document.getElementById('adminLoginBtn');
@@ -359,9 +376,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setupGatekeeperLogic() {
         const unlockBtn = document.getElementById('unlockBtn');
-        const passcodeInput = document.getElementById('passcodeInput');
+        if (!unlockBtn) return; // Don't run if visitor button isn't there
 
         unlockBtn.addEventListener('click', async () => {
+            const passcodeInput = document.getElementById('passcodeInput');
             const enteredCode = passcodeInput.value;
             if (!enteredCode) return;
             
@@ -382,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMsg.classList.add('hidden');
 
         try {
-            // This MUST match the file name in your /api folder
+            // This MUST match the file name in your /api folder (e.g., check-passkey.js)
             const response = await fetch('/api/check-passkey', { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
