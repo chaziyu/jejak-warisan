@@ -5,6 +5,7 @@
 let visitedSites = JSON.parse(localStorage.getItem('jejak_visited')) || [];
 let discoveredSites = JSON.parse(localStorage.getItem('jejak_discovered')) || [];
 const TOTAL_SITES = 13; 
+let allSiteData = []; // --- NEW: Stores all site data after fetching
 
 // --- 1. APP NAVIGATION & SECURITY ---
 
@@ -185,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- End Button Bug Fix ---
 
 
-    // --- START: CHATBOT LOGIC ---
+    // --- START: CHATBOT LOGIC (Updated for Idea 3) ---
     const btnChat = document.getElementById('btnChat');
     const chatModal = document.getElementById('chatModal');
     const closeChatModal = document.getElementById('closeChatModal');
@@ -205,11 +206,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    async function handleChatSend() {
-        const query = chatInput.value.trim();
-        if (!query) return;
+    // --- NEW: handleChatSend is modified for "silent" messages ---
+    async function handleChatSend(query, isSilent = false) {
+        // If the query is passed in, use it. Otherwise, get it from the input.
+        const userQuery = query || chatInput.value.trim();
+        if (!userQuery) return;
 
-        addChatMessage(query, 'user');
+        // Only add the user's message to chat if it's NOT silent
+        if (!isSilent) {
+            addChatMessage(userQuery, 'user');
+        }
+        
         chatInput.value = '';
         chatSendBtn.disabled = true;
         chatSendBtn.textContent = '...';
@@ -219,11 +226,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    userQuery: query
+                    userQuery: userQuery // Use the query from the variable
                 })
             });
 
             const data = await response.json();
+            
+            // We always add the bot's response
             addChatMessage(data.reply, 'bot');
 
         } catch (error) {
@@ -257,46 +266,69 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    if (chatSendBtn) chatSendBtn.addEventListener('click', handleChatSend);
+    if (chatSendBtn) chatSendBtn.addEventListener('click', () => handleChatSend()); // Updated to call with no args
     if (chatInput) chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleChatSend();
+        if (e.key === 'Enter') handleChatSend(); // Updated to call with no args
     });
     // --- END: CHATBOT LOGIC ---
 
-    // --- PASSPORT LOGIC ---
+    // --- PASSPORT LOGIC (Updated for Idea 1) ---
     const btnPassport = document.getElementById('btnPassport');
     const passportModal = document.getElementById('passportModal');
     const closePassportModal = document.getElementById('closePassportModal');
     const passportGrid = document.getElementById('passportGrid');
     const passportCount = document.getElementById('passportCount');
 
-    function updatePassport() {
+    // --- NEW: This function is now async to fetch data ---
+    async function updatePassport() {
         if (!passportGrid || !passportCount) return;
 
-        passportGrid.innerHTML = ''; // Clear the grid
+        passportGrid.innerHTML = 'Loading stamps...'; // Clear the grid
         let collectedCount = 0;
 
-        for (let i = 1; i <= TOTAL_SITES; i++) {
-            const siteId = String(i); 
-            const stampEl = document.createElement('div');
-            stampEl.classList.add('flex', 'flex-col', 'items-center', 'justify-center', 'w-16', 'h-16', 'md:w-20', 'md:h-20', 'border', 'rounded-lg', 'shadow-sm', 'transition-all');
+        // If allSiteData is empty, fetch it. Otherwise, use the cached version.
+        if (allSiteData.length === 0) {
+            try {
+                const response = await fetch('data.json');
+                allSiteData = await response.json();
+            } catch (e) {
+                passportGrid.innerHTML = 'Error loading stamps.';
+                return;
+            }
+        }
+        
+        const mainSites = allSiteData.filter(site => !isNaN(site.id));
+        passportGrid.innerHTML = ''; // Clear "Loading"
 
-            if (visitedSites.includes(siteId)) {
+        mainSites.forEach(site => {
+            const stampEl = document.createElement('div');
+            stampEl.classList.add('relative', 'w-full', 'aspect-square', 'border', 'rounded-lg', 'shadow-sm', 'transition-all', 'overflow-hidden');
+
+            const isCollected = visitedSites.includes(site.id);
+            
+            if (isCollected) {
+                // Collected stamp (Full color)
                 stampEl.classList.add('bg-green-100', 'border-green-300');
                 stampEl.innerHTML = `
-                    <div class="text-3xl">✅</div>
-                    <div class="text-xs font-bold text-green-800">Site ${siteId}</div>
+                    <img src="${site.image}" alt="${site.name}" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 w-full bg-black/50 text-white p-1 text-center">
+                        <p class="text-xs font-bold">${site.id}. ${site.name}</p>
+                    </div>
+                    <div class="absolute top-1 right-1 text-2xl">✅</div>
                 `;
                 collectedCount++;
             } else {
-                stampEl.classList.add('bg-gray-100', 'border-gray-200', 'opacity-60');
+                // Locked stamp (Grayscale)
+                stampEl.classList.add('bg-gray-100', 'border-gray-200');
                 stampEl.innerHTML = `
-                    <div class="text-3xl">🔒</div>
-                    <div class="text-xs font-bold text-gray-500">Site ${siteId}</div>
+                    <img src="${site.image}" alt="${site.name}" class="w-full h-full object-cover filter grayscale opacity-60">
+                    <div class="absolute bottom-0 left-0 w-full bg-black/50 text-white p-1 text-center">
+                        <p class="text-xs font-bold opacity-70">${site.id}. ???</p>
+                    </div>
                 `;
             }
             passportGrid.appendChild(stampEl);
-        }
+        });
         
         passportCount.textContent = collectedCount;
     }
@@ -313,6 +345,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     // --- END PASSPORT LOGIC ---
+
+    // --- NEW QUIZ LOGIC (for Idea 2) ---
+    const quizModal = document.getElementById('quizModal');
+    const closeQuizModal = document.getElementById('closeQuizModal');
+    const quizTitle = document.getElementById('quizTitle');
+    const quizQuestion = document.getElementById('quizQuestion');
+    const quizInput = document.getElementById('quizInput');
+    const quizSubmitBtn = document.getElementById('quizSubmitBtn');
+    const quizError = document.getElementById('quizError');
+
+    function openQuizModal(site, marker, btnCollect) {
+        siteModal.classList.add('hidden'); // Close site modal
+        quizTitle.textContent = `Quiz for: ${site.name}`;
+        quizQuestion.textContent = site.quiz.q;
+        quizInput.value = '';
+        quizError.classList.add('hidden'); // Hide old errors
+        quizModal.classList.remove('hidden');
+
+        // We set onclick here to pass the site data
+        quizSubmitBtn.onclick = () => {
+            checkQuizAnswer(site, marker, btnCollect);
+        };
+    }
+    
+    if (closeQuizModal) {
+        closeQuizModal.addEventListener('click', () => {
+            quizModal.classList.add('hidden');
+        });
+    }
+
+    function checkQuizAnswer(site, marker, btnCollect) {
+        const userAnswer = quizInput.value.trim();
+        const correctAnswer = site.quiz.a;
+
+        if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+            // Correct!
+            quizModal.classList.add('hidden');
+            collectStamp(site.id, marker, btnCollect, site.name); // Pass name for AI
+        } else {
+            // Wrong
+            quizError.textContent = "Not quite! Try reading the info again.";
+            quizError.classList.remove('hidden');
+        }
+    }
+    // --- END NEW QUIZ LOGIC ---
+
 
     // Initialize Map
     const map = L.map('map').setView([3.1483, 101.6938], 16);
@@ -373,8 +451,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     fetch('data.json')
-        .then(res => res.json())
+        .then(res => {
+            // --- NEW: Store data in our global var ---
+            allSiteData = res.clone().json(); // Store for passport
+            return res.json();
+            // --- END NEW ---
+        })
         .then(sites => {
+            allSiteData = sites; // Store data
             sites.forEach(site => {
                 const lat = parseFloat(site.coordinates[0]);
                 const lng = parseFloat(site.coordinates[1]);
@@ -412,8 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // --- End Logic for Idea 3 ---
 
 
-                    // --- LOGIC FOR IDEA 2 (Stamps & Discoveries) ---
-                    // (Proximity logic is REMOVED)
+                    // --- UPDATED LOGIC (Ideas 2) ---
                     const isNumberedSite = !isNaN(site.id);
                     btnCollect.style.display = 'flex'; // Always show the button
 
@@ -424,13 +507,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             btnCollect.classList.add('opacity-50', 'cursor-not-allowed');
                             btnCollect.disabled = true;
                         } else {
-                            btnCollect.innerHTML = "🏆 Collect Stamp";
+                            // --- NEW: Open quiz instead ---
+                            btnCollect.innerHTML = "🏆 Earn Stamp (Quiz!)";
                             btnCollect.classList.remove('opacity-50', 'cursor-not-allowed');
                             btnCollect.disabled = false;
-                            
                             btnCollect.onclick = () => {
-                                collectStamp(site.id, marker, btnCollect);
+                                openQuizModal(site, marker, btnCollect);
                             };
+                            // --- END NEW ---
                         }
                     } else {
                         // It's a "Discovery" (A-M)
@@ -452,7 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             };
                         }
                     }
-                    // --- END LOGIC FOR IDEA 2 ---
+                    // --- END UPDATED LOGIC ---
 
                     siteModal.classList.remove('hidden');
                 });
@@ -463,9 +547,9 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Fatal Error: Could not load heritage site data. Please check your internet connection and refresh the page.");
         });
 
-    function collectStamp(siteId, marker, btn) {
+    // --- UPDATED collectStamp (for Idea 3) ---
+    function collectStamp(siteId, marker, btn, siteName) { // siteName is new
         if (!visitedSites.includes(siteId)) {
-            // (Audio removed)
             
             visitedSites.push(siteId);
             localStorage.setItem('jejak_visited', JSON.stringify(visitedSites));
@@ -476,6 +560,10 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.disabled = true;
 
             updateGameProgress();
+
+            // --- NEW: Silently tell the AI what happened ---
+            handleChatSend(`I have just collected the stamp for ${siteName}.`, true);
+            // --- END NEW ---
 
             const numberedSitesVisited = visitedSites.filter(id => !isNaN(id)).length;
             if (numberedSitesVisited >= TOTAL_SITES) {
@@ -519,7 +607,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const userMarker = L.marker([0, 0]).addTo(map);
     const userCircle = L.circle([0, 0], { radius: 10 }).addTo(map);
     map.on('locationfound', (e) => {
-        // We still show the user's location, we just don't use it for proximity
         userMarker.setLatLng(e.latlng);
         userCircle.setLatLng(e.latlng).setRadius(e.accuracy / 2);
     });
