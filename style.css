@@ -14,44 +14,63 @@ body, html {
     left: 0;
 }
 
-/* --- 2. UI LAYOUT (DEFINITIVE FIX) --- */
-/* All UI elements now simply sit on top of the map layer. No more complex pointer-events. */
-
+/* --- 2. UI LAYOUT --- */
 #progress-container {
-    pointer-events: none; /* The container itself is not clickable */
+    pointer-events: none;
 }
 #progress-container > div {
-    pointer-events: auto; /* But the progress bar inside it IS clickable/hoverable if needed */
+    pointer-events: auto;
+}
+#btnChat, #btnPassport, #btnRecenter {
+    z-index: 1000; /* Ensure buttons are above the map */
 }
 
-/* --- 3. TRANSITIONS & MODALS --- */
-#gatekeeper, #staff-screen, #rewardModal, #siteModal, #chatModal, #passportModal, #quizModal { 
-    transition: opacity 0.3s ease; 
-    z-index: 2000; /* Modals are always on top */
-}
-
-/* --- 4. ANIMATIONS --- */
-@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.animate-bounce-up { animation: slideUp 0.3s ease-out; }
+/* --- 3. TRANSITIONS & ANIMATIONS --- */
 @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
 @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 .animate-slide-up { opacity: 0; animation: slideUpFade 0.8s ease-out 0.3s forwards; }
 
-/* --- 5. GAMIFICATION STYLES --- */
+/* --- 4. NEW "CLASSIC" MODAL STYLE --- */
+/* This is the new style for Site & Passport modals */
+.classic-modal-backdrop {
+    /* A simple, non-blurred dark background */
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 2000;
+}
+.classic-modal-content {
+    /* This replicates the simple, centered white box */
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    max-width: 500px; /* 500px wide */
+    width: 90%;
+    overflow: hidden;
+    /* This uses the simple slide-up animation from the landing page */
+    animation: slideUpFade 0.3s ease-out forwards;
+}
+
+/* --- 5. MODERN CHAT MODAL STYLE --- */
+/* This style remains unchanged, as you requested */
+.modern-modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 2000;
+    transition: opacity 0.3s ease;
+}
+.modern-modal-content {
+    height: 70vh;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    max-width: 500px;
+    width: 90%;
+    animation: slideUpFade 0.3s ease-out forwards;
+}
+
+/* --- 6. GAMIFICATION STYLES --- */
 .marker-visited {
     filter: hue-rotate(140deg) brightness(1.2) saturate(3);
     transition: filter 0.5s ease;
-}
-#rewardModal .text-6xl {
-    animation: pulse 1s infinite;
-}
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-}
-
-/* --- 6. SPECIFIC ELEMENTS --- */
-#btnChat, #btnPassport, #btnRecenter {
-    z-index: 1000; /* Ensure buttons are above the map */
 }
