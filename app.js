@@ -1,6 +1,5 @@
 // --- CONFIGURATION ---
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOtyJ200uEv2yu24C-DesB5g57iBX9CpO_qp8mAQCKX1LYrS_S8BnZGtfVDq_9LqnJ7HO6nbXpu8J4/pub?gid=0&single=true&output=csv"; 
-const ADMIN_PASSWORD = "BWM"; 
 
 // --- GAME STATE ---
 let visitedSites = JSON.parse(localStorage.getItem('jejak_visited')) || [];
@@ -83,43 +82,51 @@ function setupLandingPage() {
     setupGatekeeperLogic();
 }
 
+// This is the NEW showAdminCode function for app.js
 async function showAdminCode() {
     const staffScreen = document.getElementById('staff-screen');
     const passkeyDisplay = document.getElementById('adminPasskeyDisplay');
     const dateDisplay = document.getElementById('adminDateDisplay');
     
+    // Get the password from the prompt
+    const pass = prompt("👮 BWM STAFF LOGIN\nPlease enter your password:");
+    if (!pass) return; // User clicked cancel
+
     staffScreen.classList.remove('hidden');
     passkeyDisplay.textContent = "LOADING...";
     passkeyDisplay.classList.add('animate-pulse');
 
     try {
-        const response = await fetch(SHEET_URL);
+        // Call the secure API
+        const response = await fetch('/api/get-admin-code', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: pass })
+        });
+
+        const data = await response.json();
+
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error(data.error || 'Failed to fetch');
         }
-        const data = await response.text();
-        const rows = data.split('\n');
-        const todayStr = getTodayString();
-        let todayCode = "NOT FOUND";
-        
-        for (let i = 1; i < rows.length; i++) {
-            const cols = rows[i].split(',');
-            if (cols[0] && cols[0].trim() === todayStr) {
-                todayCode = cols[1].trim();
-                break;
-            }
-        }
+
+        // Success!
         passkeyDisplay.classList.remove('animate-pulse');
-        passkeyDisplay.textContent = todayCode;
-        dateDisplay.textContent = `Date: ${todayStr}`;
+        passkeyDisplay.textContent = data.passkey;
+        dateDisplay.textContent = `Date: ${data.date}`;
+
     } catch (e) {
         passkeyDisplay.classList.remove('animate-pulse');
         passkeyDisplay.textContent = "ERROR";
-        dateDisplay.textContent = "Could not connect to Google Sheet.";
+        dateDisplay.textContent = e.message;
         console.error("Staff Login Fetch Error:", e);
+        // Hide the screen after an error and show landing page
+        setTimeout(() => {
+            staffScreen.classList.add('hidden');
+            document.getElementById('landing-page').classList.remove('hidden');
+        }, 2000);
     }
 }
-
 function setupGatekeeperLogic() {
     const btn = document.getElementById('unlockBtn');
     const input = document.getElementById('passcodeInput');
@@ -130,6 +137,7 @@ function setupGatekeeperLogic() {
     }
 }
 
+// This is the NEW verifyCode function for app.js
 async function verifyCode(enteredCode) {
     const btn = document.getElementById('unlockBtn');
     const errorMsg = document.getElementById('errorMsg');
@@ -137,24 +145,19 @@ async function verifyCode(enteredCode) {
     const gatekeeper = document.getElementById('gatekeeper');
     
     btn.textContent = "Verifying...";
+    btn.disabled = true;
     errorMsg.classList.add('hidden');
 
     try {
-        const response = await fetch(SHEET_URL);
-        const data = await response.text();
-        const rows = data.split('\n');
-        const todayStr = getTodayString();
-        let validCode = null;
+        // We now call our secure API endpoint
+        const response = await fetch('/api/verify-passkey', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ passkey: enteredCode })
+        });
 
-        for (let i = 1; i < rows.length; i++) {
-            const cols = rows[i].split(',');
-            if (cols.length >= 2 && cols[0].trim() === todayStr) {
-                validCode = cols[1].trim();
-                break;
-            }
-        }
-
-        if (validCode && enteredCode.trim().toUpperCase() === validCode.toUpperCase()) {
+        if (response.ok) {
+            // --- SUCCESS ---
             const session = { valid: true, start: Date.now() };
             localStorage.setItem('jejak_session', JSON.stringify(session));
             
@@ -166,14 +169,21 @@ async function verifyCode(enteredCode) {
                 if(landingPage) landingPage.remove();
                 document.getElementById('game-ui').classList.remove('hidden');
             }, 500);
+
         } else {
-            btn.textContent = "Verify & Unlock";
-            errorMsg.textContent = "Invalid Passkey.";
+            // --- FAILURE ---
+            const data = await response.json();
+            errorMsg.textContent = data.error || "Invalid Passkey.";
             errorMsg.classList.remove('hidden');
+            btn.textContent = "Verify & Unlock";
+            btn.disabled = false;
         }
     } catch (err) {
-        btn.textContent = "Error";
-        alert("Connection Error.");
+        console.error("Fetch error:", err);
+        errorMsg.textContent = "Connection error. Please try again.";
+        errorMsg.classList.remove('hidden');
+        btn.textContent = "Verify & Unlock";
+        btn.disabled = false;
     }
 }
 
