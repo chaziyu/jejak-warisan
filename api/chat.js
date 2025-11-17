@@ -1,26 +1,22 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { BWM_KNOWLEDGE } from '../knowledge.js';
 
-// RAG Function: Finds the most relevant section from the knowledge base.
 function findRelevantContext(query, knowledge_base) {
     const sections = knowledge_base.split('### ').slice(1);
     const queryLower = query.toLowerCase();
 
-    // First pass: look for an exact title match in the query
     for (const section of sections) {
         const title = section.split('\n')[0].trim().toLowerCase();
         if (queryLower.includes(title)) {
             return "### " + section;
         }
     }
-
-    // Second pass: look for general keywords
     for (const section of sections) {
         if (section.toLowerCase().includes(queryLower)) {
             return "### " + section;
         }
     }
-    return null; // No relevant context found
+    return null;
 }
 
 
@@ -37,11 +33,8 @@ export default async function handler(request, response) {
 
         const { userQuery, history } = request.body;
 
-        // --- 1. RETRIEVAL Step (RAG) ---
-        // Find the most relevant part of the document instead of sending the whole thing.
         const relevantContext = findRelevantContext(userQuery, BWM_KNOWLEDGE);
 
-        // --- 2. GENERATION Step (Building the prompt) ---
         const systemPrompt = `You are an AI tour guide for the Jejak Warisan (Heritage Walk) in Kuala Lumpur.
 - Your knowledge is strictly limited to the information provided in the "CONTEXT" section below.
 - Answer the user's questions based ONLY on this context.
@@ -59,10 +52,7 @@ ${relevantContext || "General knowledge about the Kuala Lumpur Heritage Walk. No
             systemInstruction: systemPrompt,
         });
 
-        const chat = model.startChat({
-            history: history || [], 
-        });
-
+        const chat = model.startChat({ history: history || [] });
         const result = await chat.sendMessage(userQuery);
         const aiResponse = result.response;
         const text = aiResponse.text();
