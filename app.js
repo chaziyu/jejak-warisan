@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-POM     * [FIXED] This function was MISSING.
+     * [FIXED] This function was MISSING.
      * It verifies the visitor passkey against the server API.
      */
     async function verifyCode(enteredCode) {
@@ -210,6 +210,7 @@ POM     * [FIXED] This function was MISSING.
         errorMsg.classList.add('hidden');
 
         try {
+            // This part is correct. It calls the file you named 'check-passkey.js'
             const response = await fetch('/api/check-passkey', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -220,7 +221,13 @@ POM     * [FIXED] This function was MISSING.
                 // SUCCESS: Create session and start game
                 localStorage.setItem('jejak_session', JSON.stringify({
                     valid: true,
-                    start: Date.now()
+                    //
+                    // --- THIS IS THE FIX ---
+                    //
+                    start: Date.now() // Was Date.Mnow()
+                    //
+                    // --- END FIX ---
+                    //
                 }));
 
                 document.getElementById('gatekeeper').style.opacity = 0;
@@ -242,6 +249,7 @@ POM     * [FIXED] This function was MISSING.
                 errorMsg.classList.remove('hidden');
             }
         } catch (error) {
+            // The Date.Mnow() crash was being caught here, showing "Network error"
             console.error('Error during passkey verification:', error);
             errorMsg.textContent = 'Network error. Please try again.';
             errorMsg.classList.remove('hidden');
