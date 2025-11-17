@@ -15,31 +15,42 @@ body, html {
     left: 0;
 }
 
-/* --- 2. UI LAYER INTERACTION (CORRECTED FIX) --- */
-/* This ensures you can click the Map PINS even though the UI is on top */
+
+/* --- 2. UI LAYER INTERACTION (DEFINITIVE FIX) --- */
 
 /* 
-  NEW: Create a specific class for the click-through effect.
-  We will apply this ONLY to the main game UI container.
+  By default, #game-ui is a normal container. It does NOT have pointer-events: none.
+  This ensures it does not interfere with the landing page or modals.
+*/
+#game-ui {
+    position: absolute;
+    inset: 0;      /* Full screen */
+    z-index: 100;  /* Above the map */
+}
+
+/*
+  This is the specific class we add to the #game-ui container in index.html.
+  It makes the container itself "transparent" to clicks, allowing you to interact with the map.
 */
 .ui-passthrough {
     pointer-events: none;
 }
 
 /* 
-  Re-enable clicking for ALL buttons and clickable elements inside
-  any container that has the ui-passthrough class. This is more robust.
+  This rule then re-enables clicks for all important elements *inside* the passthrough container.
+  This allows the user to click the progress bar, modals, etc.
 */
 .ui-passthrough button,
 .ui-passthrough input,
 .ui-passthrough a,
-.ui-passthrough .bg-white { /* Makes modal cards clickable */
+.ui-passthrough .bg-white, /* Makes modal cards and the progress bar bg clickable */
+.ui-passthrough .pointer-events-auto { /* Catches any other elements needing clicks */
     pointer-events: auto;
 }
 
 /*
-  These buttons are OUTSIDE the main game UI, so we must ensure
-  they are always clickable, as they are not affected by the rule above.
+  These buttons are OUTSIDE the #game-ui container, so we also ensure
+  they are always clickable. This is a safeguard.
 */
 #btnRecenter,
 #btnPassport,
@@ -68,13 +79,11 @@ body, html {
 
 /* --- 5. GAMIFICATION STYLES --- */
 
-/* Turns the default Blue Leaflet marker into Gold */
 .marker-visited {
     filter: hue-rotate(140deg) brightness(1.2) saturate(3);
-    transition: filter 0.5s ease; /* Smooth color change */
+    transition: filter 0.5s ease;
 }
 
-/* Confetti/Pulse effect for reward text */
 #rewardModal .text-6xl {
     animation: pulse 1s infinite;
 }
@@ -84,6 +93,7 @@ body, html {
 }
 
 /* --- 6. SPECIFIC ELEMENTS --- */
+
 #btnChat, #btnPassport, #btnRecenter {
-    z-index: 1000; /* Above map, below modals */
+    z-index: 1000;
 }
