@@ -20,8 +20,8 @@ export default async function handler(request, response) {
         }
 
         // --- THIS IS THE FIX ---
-        // Changed the URL from 'v1beta' to 'v1' to match the model.
-        const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+        // We are changing the model to 'gemini-pro' which is a stable 'v1' model.
+        const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
 
         // This is the fix: The imported BWM_KNOWLEDGE is used.
         const systemPrompt = `You are an AI tour guide. Your knowledge is limited to the following text. Answer the user's question based ONLY on this text. If the answer is not in the text, say "I'm sorry, that information is not in the BWM document." --- DOCUMENT START --- ${BWM_KNOWLEDGE} --- DOCUMENT END ---`;
