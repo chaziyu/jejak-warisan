@@ -1,5 +1,5 @@
 // --- CONFIGURATION ---
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOtyJ200uEv2yu24C-DesB5g57iBX9CpO_qp8mAQCKX1LYrS_S8BnZGtfVDq_9LqnJ7HO6nbXpu8J4/pub?gid=0&single=true&output=csv"; 
+const SHEET_URL = "[https://docs.google.com/spreadsheets/d/e/2PACX-1vSOtyJ200uEv2yu24C-DesB5g57iBX9CpO_qp8mAQCKX1LYrS_S8BnZGtfVDq_9LqnJ7HO6nbXpu8J4/pub?gid=0&single=true&output=csv](https://docs.google.com/spreadsheets/d/e/2PACX-1vSOtyJ200uEv2yu24C-DesB5g57iBX9CpO_qp8mAQCKX1LYrS_S8BnZGtfVDq_9LqnJ7HO6nbXpu8J4/pub?gid=0&single=true&output=csv)"; 
 const ADMIN_PASSWORD = "BWM"; 
 
 // --- GAME STATE ---
@@ -272,8 +272,8 @@ if (chatInput) chatInput.addEventListener('keypress', (e) => {
     const map = L.map('map').setView([3.1483, 101.6938], 16);
 
     // USE THIS CLEAN STYLE (CartoDB Positron)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
+    L.tileLayer('https://{s}[.basemaps.cartocdn.com/light_all/](https://.basemaps.cartocdn.com/light_all/){z}/{x}/{y}{r}.png', {
+        attribution: '© <a href="[https://www.openstreetmap.org/copyright](https://www.openstreetmap.org/copyright)">OpenStreetMap</a> contributors © <a href="[https://carto.com/attributions](https://carto.com/attributions)">CARTO</a>',
         subdomains: 'abcd',
         maxZoom: 20
     }).addTo(map);
@@ -337,10 +337,6 @@ if (chatInput) chatInput.addEventListener('keypress', (e) => {
                 const lng = parseFloat(site.coordinates[1]);
 
                 const marker = L.marker([lat, lng]).addTo(map);
-
-                if (visitedSites.includes(site.id)) {
-                    marker._icon.classList.add('marker-visited');
-L.marker([lat, lng]).addTo(map);
 
                 if (visitedSites.includes(site.id)) {
                     marker._icon.classList.add('marker-visited');
@@ -433,27 +429,45 @@ L.marker([lat, lng]).addTo(map);
     // Share Button
     if(btnShare) {
         btnShare.addEventListener('click', () => {
-            const text = "I just became an Official Explorer by visiting all 13 Heritage Sites in Kuala Lumpur! 🇲🇾✨ Try the Jejak Warisan challenge here: #ThisKulCIt's a very common and frustrating bug! This happens when the JavaScript variables for your different screens get mixed up.
-
-Based on the code, the problem is in your **`app.js`** file, inside the `setupLandingPage` function. You've accidentally told the visitor button (`btnVisitor`) to open the staff's screen (`staff-screen`).
-
-### 🕵️ The Problem
-
-Here is what your code is likely doing right now (this is the **buggy** version):
-
-```javascript
-// Inside app.js -> setupLandingPage()
-
-    if(btnVisitor) {
-        btnVisitor.addEventListener('click', () => {
-            landingPage.classList.add('hidden');
-            staffScreen.classList.remove('hidden'); // <-- BUG! This should be 'gatekeeper'
+            const text = "I just became an Official Explorer by visiting all 13 Heritage Sites in Kuala Lumpur! 🇲🇾✨ Try the Jejak Warisan challenge here: #ThisKulCity #BadanWarisanMalaysia";
+            const url = "[https://jejak-warisan.vercel.app](https://jejak-warisan.vercel.app)";
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
+            window.open(whatsappUrl, '_blank');
         });
     }
 
-    if(btnStaff) {
-        btnStaff.addEventListener('click', async () => {
-            // ... staff login logic ...
-            await showAdminCode(); // This correctly shows staffScreen
+    // User Location Logic
+    const userMarker = L.marker([0, 0]).addTo(map);
+    const userCircle = L.circle([0, 0], { radius: 10 }).addTo(map);
+    map.on('locationfound', (e) => {
+        userMarker.setLatLng(e.latlng);
+        userCircle.setLatLng(e.latlng).setRadius(e.accuracy / 2);
+    });
+    map.locate({ watch: true, enableHighAccuracy: true });
+
+    // Modal Closers
+    const hideModal = () => siteModal.classList.add('hidden');
+    if(closeModal) closeModal.addEventListener('click', hideModal);
+    if(closeReward) closeReward.addEventListener('click', () => rewardModal.classList.add('hidden'));
+});
+city #BadanWarisanMalaysia";
+            const url = "[https://jejak-warisan.vercel.app](https://jejak-warisan.vercel.app)";
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
+            window.open(whatsappUrl, '_blank');
         });
     }
+
+    // User Location Logic
+    const userMarker = L.marker([0, 0]).addTo(map);
+    const userCircle = L.circle([0, 0], { radius: 10 }).addTo(map);
+    map.on('locationfound', (e) => {
+        userMarker.setLatLng(e.latlng);
+        userCircle.setLatLng(e.latlng).setRadius(e.accuracy / 2);
+    });
+    map.locate({ watch: true, enableHighAccuracy: true });
+
+    // Modal Closers
+    const hideModal = () => siteModal.classList.add('hidden');
+    if(closeModal) closeModal.addEventListener('click', hideModal);
+    if(closeReward) closeReward.addEventListener('click', () => rewardModal.classList.add('hidden'));
+});
