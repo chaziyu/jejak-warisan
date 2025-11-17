@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { BWM_KNOWLEDGE } from '../knowledge.js';
-// --- FIX: Removed 'import { kv } from '@vercel/kv';' ---
+// We removed the KV import, so this file is clean.
 
 export default async function handler(request, response) {
     if (request.method !== 'POST') {
@@ -8,8 +8,6 @@ export default async function handler(request, response) {
     }
 
     try {
-        // --- FIX: All rate-limiting code has been REMOVED. ---
-
         // --- 1. Get the new Google Key ---
         const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
         if (!GOOGLE_API_KEY) {
@@ -47,7 +45,10 @@ ${BWM_KNOWLEDGE}
         // --- 4. Initialize the Google AI Client ---
         const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.5-pro",
+            // --- THIS IS THE FIX ---
+            // Switched to the "Flash-Lite" model
+            model: "gemini-2.5-flash-lite",
+            // --- END OF FIX ---
             systemInstruction: systemPrompt,
         });
 
