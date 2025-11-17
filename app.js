@@ -45,22 +45,20 @@ function setupLandingPage() {
     const closeStaffScreen = document.getElementById('closeStaffScreen');
     const staffScreen = document.getElementById('staff-screen');
 
-    // --- FIX 1 ---
-    // The VISITOR button must show the 'gatekeeper' div.
+    // The VISITOR button shows the 'gatekeeper' div.
     if(btnVisitor) {
         btnVisitor.addEventListener('click', () => {
             landingPage.classList.add('hidden');
-            gatekeeper.classList.remove('hidden'); // This is the fix.
+            gatekeeper.classList.remove('hidden');
         });
     }
 
-    // --- FIX 2 ---
-    // The STAFF button must also hide the 'landingPage'.
+    // The STAFF button hides the landing page and shows the code.
     if(btnStaff) {
         btnStaff.addEventListener('click', async () => {
             const pass = prompt("👮 BWM STAFF LOGIN\nPlease enter your password:");
             if (pass === ADMIN_PASSWORD) {
-                landingPage.classList.add('hidden'); // This is the fix.
+                landingPage.classList.add('hidden');
                 await showAdminCode();
             } else if (pass !== null) {
                 alert("❌ Wrong password");
@@ -445,7 +443,9 @@ if (chatInput) chatInput.addEventListener('keypress', (e) => {
     map.locate({ watch: true, enableHighAccuracy: true });
 
     // Modal Closers
-    const hideModal = () => siteModal.classList..add('hidden');
+    // --- THIS IS THE FIX ---
+    // The extra dot has been removed.
+    const hideModal = () => siteModal.classList.add('hidden');
     if(closeModal) closeModal.addEventListener('click', hideModal);
     if(closeReward) closeReward.addEventListener('click', () => rewardModal.classList.add('hidden'));
 });
