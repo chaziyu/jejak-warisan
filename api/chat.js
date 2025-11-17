@@ -10,7 +10,6 @@ export default async function handler(request, response) {
     // --- START: ULTIMATE DEBUGGING CODE ---
 
     try {
-        // This is the fix: Only the query is needed from the user.
         const { userQuery } = request.body;
         const GEMINI_API_KEY = process.env.MY_GEMINI_KEY;
         
@@ -19,11 +18,10 @@ export default async function handler(request, response) {
             return response.status(500).json({ reply: "Server configuration error: API key is missing." });
         }
 
-        // --- THIS IS THE FIX ---
-        // Using the 'gemini-1.0-pro' model on the 'v1' endpoint.
-        const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.0-pro:generateContent?key=${GEMINI_API_KEY}`;
+        // --- Setting the API to the correct 'v1beta' 'gemini-1.5-flash' model ---
+        // --- This is the correct URL. The problem is your key, not this line. ---
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-        // This is the fix: The imported BWM_KNOWLEDGE is used.
         const systemPrompt = `You are an AI tour guide. Your knowledge is limited to the following text. Answer the user's question based ONLY on this text. If the answer is not in the text, say "I'm sorry, that information is not in the BWM document." --- DOCUMENT START --- ${BWM_KNOWLEDGE} --- DOCUMENT END ---`;
 
         const apiResponse = await fetch(API_URL, {
@@ -34,16 +32,10 @@ export default async function handler(request, response) {
             })
         });
         
-        // Log the basic status first, as this will never fail.
         console.log(`Google API Response Status: ${apiResponse.status} ${apiResponse.statusText}`);
-
-        // Safely get the raw text body, which works even if it's not JSON.
         const rawBody = await apiResponse.text();
-        
-        // Log the entire raw response. THIS IS THE MOST IMPORTANT LOG.
         console.log('RAW RESPONSE BODY FROM GOOGLE:', rawBody);
 
-        // Now, safely try to parse the body as JSON.
         let data;
         try {
             data = JSON.parse(rawBody);
@@ -52,7 +44,6 @@ export default async function handler(request, response) {
             return response.status(500).json({ reply: 'The AI service returned a malformed response.' });
         }
 
-        // Check for errors within the valid JSON response from Google.
         if (data.error) {
              console.error('Google API returned an error object:', JSON.stringify(data.error, null, 2));
              return response.status(500).json({ reply: `API Error: ${data.error.message}` });
