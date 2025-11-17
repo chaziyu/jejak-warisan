@@ -5,18 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Jejak Warisan KL</title>
     
+    <!-- Leaflet Map CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-defaulticon-compatibility@0.1.2/dist/leaflet-defaulticon-compatibility.css" />
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Your Custom CSS (style.css) -->
     <link rel="stylesheet" href="style.css" />
 
+    <!-- Leaflet Map JS (Must be in <head>) -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-defaulticon-compatibility@0.1.2/dist/leaflet-defaulticon-compatibility.js"></script>
 </head>
 <body class="overflow-hidden bg-gray-100">
 
+    <!-- Screen 1: Landing Page -->
     <div id="landing-page" class="fixed inset-0 bg-white z-[6000] flex flex-col justify-center items-center p-6 text-center">
         <div class="mb-10 animate-fade-in">
             <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-3 tracking-tight">Jejak Warisan KL</h1>
@@ -36,6 +41,7 @@
         </div>
     </div>
 
+    <!-- Screen 2: Gatekeeper -->
     <div id="gatekeeper" class="fixed inset-0 bg-slate-900 z-[5000] hidden flex flex-col justify-center items-center p-4">
         <div class="bg-white p-6 md:p-8 rounded-xl shadow-2xl max-w-sm w-full text-center relative">
             <button id="backToHome" class="absolute top-4 left-4 text-gray-400 hover:text-gray-800 text-sm font-medium transition">← Back</button>
@@ -48,6 +54,7 @@
         </div>
     </div>
 
+    <!-- Screen 3: Staff Login -->
     <div id="staff-screen" class="fixed inset-0 bg-slate-900 z-[7000] hidden flex flex-col justify-center items-center p-6 text-center text-white">
         <div class="bg-white p-6 md:p-8 rounded-xl shadow-2xl max-w-sm w-full text-center relative text-gray-900">
             <button id="closeStaffScreen" class="absolute top-4 left-4 text-gray-400 hover:text-gray-800 text-sm font-medium transition">← Back</button>
@@ -67,6 +74,7 @@
         </div>
     </div>
 
+    <!-- In-Game UI -->
     <div id="progress-container" class="fixed top-0 left-0 w-full z-[1000] hidden px-4 pt-4">
         <div class="bg-white/90 backdrop-blur-sm shadow-lg rounded-full border border-gray-200 p-1 max-w-md mx-auto flex items-center">
             <div class="bg-gray-200 rounded-full h-3 w-full mx-3 relative overflow-hidden">
@@ -82,6 +90,13 @@
         <button id="btnChat" class="bg-white p-3 rounded-full shadow-xl hover:bg-gray-100 text-2xl transition transform hover:scale-110 border border-gray-200">💬</button>
     </div>
 
+    <!-- 
+      ---
+      MODAL CONTENT (FINAL)
+      ---
+    -->
+
+    <!-- Site Info Modal (CLASSIC STYLE + CHECK IN BUTTON) -->
     <div id="siteModal" class="classic-modal-backdrop fixed inset-0 hidden">
         <div class="classic-modal-content">
             <div class="relative">
@@ -97,7 +112,12 @@
                 
                 <p id="siteModalInfo" class="text-gray-700 mb-4">Site info loading...</p>
                 
-                <div class="flex gap-2 mt-4">
+                <!-- === NEW CHECK-IN BUTTON (for discovery sites) === -->
+                <button id="siteModalCheckInBtn" class="w-full bg-purple-600 text-white font-bold py-2 rounded-lg hover:bg-purple-700 transition mb-4 text-sm">
+                    Check In to this Site
+                </button>
+
+                <div class="flex gap-2">
                     <button id="siteModalDirections" class="flex-1 bg-green-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-green-700 transition text-sm">
                         Get Directions
                     </button>
@@ -116,6 +136,7 @@
         </div>
     </div>
 
+    <!-- AI Chat Modal (MODERN STYLE) -->
     <div id="chatModal" class="modern-modal-backdrop fixed inset-0 hidden">
         <div class="modern-modal-content">
             <div class="flex justify-between items-center p-4 border-b">
@@ -138,6 +159,7 @@
         </div>
     </div>
 
+    <!-- Passport Modal (CLASSIC STYLE + PHOTO GRID) -->
     <div id="passportModal" class="classic-modal-backdrop fixed inset-0 hidden">
          <div class="classic-modal-content p-6 text-center">
             <button id="closePassportModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 text-2xl transition">×</button>
@@ -145,10 +167,12 @@
             <p id="passportInfo" class="text-gray-600 mb-6 text-sm">You have collected 0 of the 13 stamps.</p>
             
             <div id="passportGrid" class="max-h-[60vh] overflow-y-auto grid grid-cols-3 gap-4 p-2 bg-gray-100 rounded-lg">
-                </div>
+                <!-- Stamps will be added here by JS -->
+            </div>
          </div>
     </div>
     
+    <!-- Other Modals (Empty) -->
     <div id="rewardModal" class="fixed inset-0 bg-black/50 z-[2000] hidden"></div>
     <div id="quizModal" class="fixed inset-0 bg-black/50 z-[2000] hidden"></div>
     
