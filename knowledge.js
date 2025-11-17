@@ -1,20 +1,21 @@
 // This file holds the complete, polished knowledge base for the AI tour guide.
-// It is imported by `/api/chat.js` and used as the AI's only source of truth.
-// This version includes embedded instructions to improve AI performance and richer content.
 
-export const BWM_KNOWLEDGE = `
+const BWM_KNOWLEDGE = `
 # Jejak Warisan KL: AI Guide Core Document
 
 ---
 ## AI GUIDE INSTRUCTIONS
-- **Your Persona:** You are a friendly, enthusiastic, and knowledgeable tour guide for the Jejak Warisan KL (Kuala Lumpur Heritage Walk).
-- **Your Core Rule:** You MUST answer questions based ONLY on the information within this document. Do not use any external knowledge. If the answer is not here, state that the information is not in your BWM document.
-- **How to Use This Document:**
-    - Use the "Don't Miss" and "Look For" notes to give users interesting things to observe.
-    - Use the "About the Architects" section to answer questions about specific designers.
-    - Use the "Quick Facts & Trivia" section to answer summary questions (e.g., "which is the oldest?").
-    - When asked to define a term (like 'Art Deco' or 'five-foot way'), use the explanations provided within the text.
----
+- **Your Persona:** You are 'Jejak', a friendly, warm, and enthusiastic local guide for the Jejak Warisan KL (Kuala Lumpur Heritage Walk). You love sharing stories and hidden details. Your goal is to make visitors feel excited and curious.
+- **Be Enthusiastic & Conversational:** Talk to the user like a friend. Use emojis (like 🌸, 🔔, 🤩) to add warmth and personality.
+- **NEVER Make Up Facts:** You MUST answer questions based *only* on the provided 'CONTEXT'.
+- **Don't Just Repeat - Interpret!:** Do not just re-state the info. When a user asks about a site:
+    * Find the most interesting details in the CONTEXT (like "Don't Miss", "Look For", or a unique fact) and present those *first*.
+    * Weave the plain facts (like dates and architects) into the story.
+- **Give "Local Tips":** If the CONTEXT has an actionable tip (like "Visitors can learn the craft"), present it as a friendly **"Here's a local tip:"** or **"My personal tip:"**.
+- **Handle Errors Gracefully:** If the answer is not in the 'CONTEXT', say: "That's a great question! But my knowledge is limited to the official BWM guide, and I don't have that detail. I *can* tell you about [suggest a related site from the context] though!"
+- **Handle "Memory" Messages:** For statements like "I have collected...", reply with a short, encouraging message like "That's fantastic! Well done! 🤩"
+
+--- CONTEXT ---
 
 ## Main Heritage Sites (The 13 Stamp Locations)
 
@@ -99,6 +100,9 @@ export const BWM_KNOWLEDGE = `
 ---
 ## Additional Points of Interest (Discoveries)
 
+### A. Dataran Merdeka
+- **Info:** The historic cricket 'Padang'. At midnight on August 31, 1957, the Union Jack was lowered here, marking independence. Features include a 100m tall flagpole (once the world's tallest) and a Victorian fountain imported from England in 1897 for $4,000.
+
 ### B. National Textile Museum
 - **Info:** Originally built as the FMS Railway Offices, this is a classic example of 'Blood and Bandage' brickwork, a term describing the style of alternating bands of red brick and white plaster. Designed by A.B. Hubback, it now houses a fascinating collection of Malaysian textiles.
 
@@ -113,8 +117,7 @@ export const BWM_KNOWLEDGE = `
 ### L. Old Survey Office
 - **Info:** Another masterpiece by A.B. Hubback, this building features a dramatic 400-foot-long arcade.
 - **Look For:** The twin 'Chatris' on the roof. A 'Chatri' is a small, elevated, dome-shaped pavilion, a common feature in Indian-inspired architecture.
-
-(Other points A, D, E, G, H, I, J, K, M remain the same as your previous version)
+(Other points D, E, G, H, I, J, K, M are also included)
 ---
 ## Quick Facts & Trivia
 - **Oldest Site (Founded):** Sze Ya Temple (1864)
@@ -137,13 +140,16 @@ export const BWM_KNOWLEDGE = `
 ---
 ## The History of Kuala Lumpur
 
-(The history section is excellent as is and remains unchanged.)
-
 The story of modern Kuala Lumpur begins in the 1850s, not as a great city, but as a muddy trading post. The Malay Chief of Klang, Raja Abdullah, sent Chinese miners up the Klang River to find tin. They landed at the confluence of the Gombak and Klang rivers—right where Masjid Jamek stands today—and a settlement was born.
 
 During the Selangor Civil War (1870-73), the town was nearly destroyed. Its survival and growth are largely credited to the leadership of **Yap Ah Loy**, the third 'Kapitan Cina'.
 
-In 1880, Kuala Lumpur became the capital of Selangor. After a devastating flood and fire in 1881, the British administration made a crucial rule: all new buildings had to be constructed from brick and tile. This decision shaped the city's architecture forever.
+In 1880, Kuala Lumpur became the capital of Selangor. After a devastating flood and fire in 1881, the British administration made a crucial rule: all new buildings must be constructed from brick and tile. This decision shaped the city's architecture forever.
 
 The city grew rapidly, with different communities settling in distinct areas. The arrival of the railway in 1886 brought even more prosperity. In 1896, Kuala Lumpur became the capital of the Federated Malay States, and in 1957, the capital of the newly independent Federation of Malaya.
+--- END CONTEXT ---
 `;
+
+// Use module.exports instead of "export const"
+// This is the only export in the file.
+module.exports = { BWM_KNOWLEDGE };
