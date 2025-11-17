@@ -6,9 +6,9 @@
     "image": "images/bangunan_sultan_abdul_samad.jpeg",
     "built": "1894-1897",
     "architects": "A.C. Norman, R.A.J. Bidwell, A.B. Hubback",
-    [cite_start]"info": "Once the largest building of its day, this administrative centre cost $198,000 Straits Dollars to build[cite: 18]. It used over 4 million bricks! [cite_start]The massive 140ft clock tower houses a one-ton bell that first chimed for Queen Victoria's birthday in 1897[cite: 23, 24, 25]. [cite_start]Look for the granite bollards near the porch—they were originally used for tethering horses[cite: 34].",
+    "info": "Once the largest building of its day, this administrative centre cost $198,000 Straits Dollars to build[cite: 18]. It used over 4 million bricks! The massive 140ft clock tower houses a one-ton bell that first chimed for Queen Victoria's birthday in 1897[cite: 23, 24, 25]. Look for the granite bollards near the porch—they were originally used for tethering horses[cite: 34].",
     "quiz": {
-      [cite_start]"q": "What was the cost of the building in Straits Dollars? [cite: 18]",
+     "q": "What was the cost of the building in Straits Dollars? [cite: 18]",
       "a": "198,000"
     }
   },
@@ -19,9 +19,9 @@
     "image": "images/old_post_office.jpg",
     "built": "1904-1907",
     "architects": "A.B. Hubback",
-    [cite_start]"info": "Built at a cost of $100,000 Straits Dollars, this Moghul-style structure served as KL's General Post Office until 1984[cite: 39]. Designed by A.B. [cite_start]Hubback to match the Sultan Abdul Samad building, it features wide verandahs and pointed horse-shoe arches[cite: 39, 41]. [cite_start]It is now used by the Ministry of Tourism and Culture[cite: 38].",
+    "info": "Built at a cost of $100,000 Straits Dollars, this Moghul-style structure served as KL's General Post Office until 1984[cite: 39]. Designed by A.B. Hubback to match the Sultan Abdul Samad building, it features wide verandahs and pointed horse-shoe arches[cite: 39, 41]. It is now used by the Ministry of Tourism and Culture[cite: 38].",
     "quiz": {
-      [cite_start]"q": "Who was the architect? [cite: 39]",
+      "q": "Who was the architect? [cite: 39]",
       "a": "AB Hubback"
     }
   },
@@ -32,9 +32,9 @@
     "image": "images/wismastraits.jpg",
     "built": "Early 1900s - 1930s",
     "architects": "B.M. Iversen (Loke Yew), A.K. Moosden (Chow Kit)",
-    "info": "A cluster of commercial history. The Loke Yew Building is an iconic 6-storey Art Deco style structure designed by B.M. [cite_start]Iversen[cite: 55]. [cite_start]Next door is the Neo-Renaissance style Chow Kit & Co. Building (1905), featuring Flemish pediments[cite: 59, 60]. [cite_start]These sites mark the empire established by early tin tycoons like Loke Yew[cite: 53].",
+    "info": "A cluster of commercial history. The Loke Yew Building is an iconic 6-storey Art Deco style structure designed by B.M. Iversen[cite: 55]. Next door is the Neo-Renaissance style Chow Kit & Co. Building (1905), featuring Flemish pediments[cite: 59, 60]. These sites mark the empire established by early tin tycoons like Loke Yew[cite: 53].",
     "quiz": {
-      [cite_start]"q": "The Loke Yew Building is a 6-storey ___ style structure. [cite: 55]",
+      "q": "The Loke Yew Building is a 6-storey ___ style structure. [cite: 55]",
       "a": "Art Deco"
     }
   },
@@ -45,9 +45,9 @@
     "image": "images/jamek_bridge.jpg",
     "built": "1908-1909",
     "architects": "A.B. Hubback",
-    [cite_start]"info": "Built for $33,500 Straits Dollars at the confluence of the Klang and Gombak rivers[cite: 67, 64]. [cite_start]This Moghul-inspired mosque sits on an old Malay cemetery[cite: 68]. [cite_start]Admire the red and white brick bands and the flooring, which uses original Doulton tiles designed in the pattern of prayer mats[cite: 73, 76].",
+    "info": "Built for $33,500 Straits Dollars at the confluence of the Klang and Gombak rivers[cite: 67, 64]. This Moghul-inspired mosque sits on an old Malay cemetery[cite: 68]. Admire the red and white brick bands and the flooring, which uses original Doulton tiles designed in the pattern of prayer mats[cite: 73, 76].",
     "quiz": {
-      [cite_start]"q": "Masjid Jamek is located on the site of a Malay... [cite: 68]",
+      "q": "Masjid Jamek is located on the site of a Malay... [cite: 68]",
       "a": "cemetery"
     }
   },
@@ -58,9 +58,9 @@
     "image": "images/medan_pasar.jpg",
     "built": "1907 (Shophouses), 1937 (Clock Tower)",
     "architects": "N/A",
-    [cite_start]"info": "The original town center of Kapitan Yap Ah Loy[cite: 79]. The square is lined with ornate 1907 Neo-classical shophouses. [cite_start]In the center stands an Art Deco Clock Tower featuring a 'sunburst' motif, built in 1937 to commemorate the coronation of King George VI[cite: 83, 84].",
+    "info": "The original town center of Kapitan Yap Ah Loy[cite: 79]. The square is lined with ornate 1907 Neo-classical shophouses. In the center stands an Art Deco Clock Tower featuring a 'sunburst' motif, built in 1937 to commemorate the coronation of King George VI[cite: 83, 84].",
     "quiz": {
-      [cite_start]"q": "The 1937 Clock Tower commemorates the coronation of King ___ ___. [cite: 83]",
+      "q": "The 1937 Clock Tower commemorates the coronation of King ___ ___. [cite: 83]",
       "a": "George VI"
     }
   },
@@ -71,9 +71,9 @@
     "image": "images/sze_ya_temple.jpg",
     "built": "1864 (Founded), 1882 (Rebuilt)",
     "architects": "N/A",
-    [cite_start]"info": "KL's oldest traditional Chinese temple, founded by Kapitan Yap Ah Loy[cite: 88, 110]. [cite_start]Uniquely, it sits at an angle to the road to follow Feng Shui principles[cite: 90]. [cite_start]It is dedicated to the deities who guided Yap Ah Loy during the Civil War[cite: 110].",
+    "info": "KL's oldest traditional Chinese temple, founded by Kapitan Yap Ah Loy[cite: 88, 110]. Uniquely, it sits at an angle to the road to follow Feng Shui principles[cite: 90]. It is dedicated to the deities who guided Yap Ah Loy during the Civil War[cite: 110].",
     "quiz": {
-      [cite_start]"q": "Who was the founder of the temple in 1864? [cite: 110]",
+      "q": "Who was the founder of the temple in 1864? [cite: 110]",
       "a": "Kapitan Yap Ah Loy"
     }
   },
@@ -84,9 +84,9 @@
     "image": "images/triangle_kl.jpg",
     "built": "1905",
     "architects": "N/A",
-    [cite_start]"info": "Located at the Bangkok Bank Triangle[cite: 115]. [cite_start]The Old Federal Stores building is unique because it spans the entire block and has no 'five-foot way'[cite: 118]. [cite_start]It features fanciful garlic-shaped finials and was once occupied by the founders of Cycle & Carriage, who imported the first cars into Malaya[cite: 118, 119].",
+    "info": "Located at the Bangkok Bank Triangle[cite: 115]. The Old Federal Stores building is unique because it spans the entire block and has no 'five-foot way'[cite: 118]. It features fanciful garlic-shaped finials and was once occupied by the founders of Cycle & Carriage, who imported the first cars into Malaya[cite: 118, 119].",
     "quiz": {
-      [cite_start]"q": "The unique Old Federal Stores building has no '___-foot way'. [cite: 118]",
+      "q": "The unique Old Federal Stores building has no '___-foot way'. [cite: 118]",
       "a": "five"
     }
   },
@@ -97,9 +97,9 @@
     "image": "images/kwongubat.jpg",
     "built": "c. 1980s (Established)",
     "architects": "N/A",
-    [cite_start]"info": "Step back in time at No. 62. Established over 30 years ago, this traditional medicine shop retains its original glass cabinets and fittings[cite: 99, 100]. [cite_start]It is a living museum where you can still buy traditional herbs for everything from coughs and digestion to stress relief[cite: 102].",
+    "info": "Step back in time at No. 62. Established over 30 years ago, this traditional medicine shop retains its original glass cabinets and fittings[cite: 99, 100]. It is a living museum where you can still buy traditional herbs for everything from coughs and digestion to stress relief[cite: 102].",
     "quiz": {
-      [cite_start]"q": "This shop was established over how many years ago? [cite: 100]",
+      "q": "This shop was established over how many years ago? [cite: 100]",
       "a": "30"
     }
   },
@@ -110,9 +110,9 @@
     "image": "images/oriental_building.jpg",
     "built": "1932",
     "architects": "A.O. Coltman",
-    [cite_start]"info": "When built in 1932, this 85-foot Art Deco masterpiece was the tallest building in Kuala Lumpur[cite: 105, 121]! Designed by A.O. [cite_start]Coltman on a triangular site, it features a beautiful curved façade[cite: 106, 121]. [cite_start]It originally housed Radio Malaya and later served as a bank[cite: 122].",
+    "info": "When built in 1932, this 85-foot Art Deco masterpiece was the tallest building in Kuala Lumpur[cite: 105, 121]! Designed by A.O. Coltman on a triangular site, it features a beautiful curved façade[cite: 106, 121]. It originally housed Radio Malaya and later served as a bank[cite: 122].",
     "quiz": {
-      [cite_start]"q": "In 1932, this was the tallest building in KL, at ___ feet high. [cite: 121]",
+      "q": "In 1932, this was the tallest building in KL, at ___ feet high. [cite: 121]",
       "a": "85"
     }
   },
@@ -123,9 +123,9 @@
     "image": "images/flower_garland.webp",
     "built": "N/A",
     "architects": "N/A",
-    [cite_start]"info": "A feast for the senses located near the Teochew Association[cite: 124]. Here you can watch artisans weaving traditional fresh flower garlands used for religious offerings and celebrations. [cite_start]You can learn how to make one, or just buy a bunch of flowers[cite: 124].",
+    "info": "A feast for the senses located near the Teochew Association[cite: 124]. Here you can watch artisans weaving traditional fresh flower garlands used for religious offerings and celebrations. You can learn how to make one, or just buy a bunch of flowers[cite: 124].",
     "quiz": {
-      [cite_start]"q": "You can learn how to make a traditional flower ___. [cite: 124]",
+      "q": "You can learn how to make a traditional flower ___. [cite: 124]",
       "a": "garland"
     }
   },
@@ -136,9 +136,9 @@
     "image": "images/masjid_india.jpg",
     "built": "1966 (Rebuilt)",
     "architects": "N/A",
-    [cite_start]"info": "Started as a timber hut in 1893 [cite: 126][cite_start], the current Southern Indian style structure was opened in 1966 to hold 3,500 people[cite: 131, 132]. [cite_start]Unlike Masjid Jamek, services here are conducted in both Arabic and Tamil[cite: 135]. [cite_start]The surrounding arcade is famous for textiles, spices, and religious items[cite: 136].",
+    "info": "Started as a timber hut in 1893 [cite: 126], the current Southern Indian style structure was opened in 1966 to hold 3,500 people[cite: 131, 132]. Unlike Masjid Jamek, services here are conducted in both Arabic and Tamil[cite: 135]. The surrounding arcade is famous for textiles, spices, and religious items[cite: 136].",
     "quiz": {
-      [cite_start]"q": "Prayer service is conducted in Arabic and ___. [cite: 135]",
+      "q": "Prayer service is conducted in Arabic and ___. [cite: 135]",
       "a": "Tamil"
     }
   },
@@ -149,9 +149,9 @@
     "image": "images/ph_hendry.jpg",
     "built": "1902 (Established)",
     "architects": "N/A",
-    "info": "Malaysia's oldest existing jewellers, founded by P.H. [cite_start]Hendry from Sri Lanka after he was shipwrecked en route to Australia[cite: 138, 140]! [cite_start]The family became so renowned they were appointed Royal Jewellers to three different Sultans (Selangor, Kelantan and Negeri Sembilan) in the 1920s[cite: 146].",
+    "info": "Malaysia's oldest existing jewellers, founded by P.H. Hendry from Sri Lanka after he was shipwrecked en route to Australia[cite: 138, 140]! The family became so renowned they were appointed Royal Jewellers to three different Sultans (Selangor, Kelantan and Negeri Sembilan) in the 1920s[cite: 146].",
     "quiz": {
-      "q": "P.H. [cite_start]Hendry was appointed royal jewellers to how many Sultans? [cite: 146]",
+      "q": "P.H. Hendry was appointed royal jewellers to how many Sultans? [cite: 146]",
       "a": "3"
     }
   },
@@ -162,9 +162,9 @@
     "image": "images/panggung_bandaraya.jpg",
     "built": "1904",
     "architects": "A.B. Hubback",
-    [cite_start]"info": "Built for $107,000 Straits Dollars, this Moghul-style beauty housed the Municipal Offices and KL's only theatre auditorium[cite: 151, 153]. [cite_start]After surviving a major fire in the mid-1980s, it was restored as the Panggong Bandaraya[cite: 158]. [cite_start]It is now the venue for the musical MUD: Our story of Kuala Lumpur[cite: 158].",
+    "info": "Built for $107,000 Straits Dollars, this Moghul-style beauty housed the Municipal Offices and KL's only theatre auditorium[cite: 151, 153]. After surviving a major fire in the mid-1980s, it was restored as the Panggong Bandaraya[cite: 158]. It is now the venue for the musical MUD: Our story of Kuala Lumpur[cite: 158].",
     "quiz": {
-      [cite_start]"q": "The building was razed by ___ in the mid-1980s. [cite: 158]",
+      "q": "The building was razed by ___ in the mid-1980s. [cite: 158]",
       "a": "fire"
     }
   },
@@ -175,7 +175,7 @@
     "image": "images/around_merdeka.jpg",
     "built": "1897 (Fountain)",
     "architects": "N/A",
-    [cite_start]"info": "The historic cricket 'Padang'[cite: 264]. [cite_start]At midnight on August 31, 1957, the Union Jack was lowered here, marking independence[cite: 266]. [cite_start]Features include a 100m tall flagpole (once the world's tallest) and a Victorian fountain imported from England in 1897 for $4,000[cite: 269, 271]."
+    "info": "The historic cricket 'Padang'[cite: 264]. At midnight on August 31, 1957, the Union Jack was lowered here, marking independence[cite: 266]. Features include a 100m tall flagpole (once the world's tallest) and a Victorian fountain imported from England in 1897 for $4,000[cite: 269, 271]."
   },
   {
     "id": "B",
@@ -184,7 +184,7 @@
     "image": "images/textile_museum.jpg",
     "built": "1904-1905",
     "architects": "A.B. Hubback",
-    [cite_start]"info": "Originally the Railway Offices (Cost: $116,000), this building is a classic example of 'Blood and Bandage' brickwork (red and white bands)[cite: 300, 303]. Designed by A.B. [cite_start]Hubback, it now houses a fascinating collection of Malaysian textiles[cite: 300, 302]."
+    "info": "Originally the Railway Offices (Cost: $116,000), this building is a classic example of 'Blood and Bandage' brickwork (red and white bands)[cite: 300, 303]. Designed by A.B. Hubback, it now houses a fascinating collection of Malaysian textiles[cite: 300, 302]."
   },
   {
     "id": "C",
@@ -193,7 +193,7 @@
     "image": "images/ocbc.jpg",
     "built": "1936",
     "architects": "A.O. Coltman",
-    "info": "A 1936 Art Deco gem by A.O. [cite_start]Coltman[cite: 309, 310]. [cite_start]It was innovatively designed with a basement bicycle garage[cite: 312]! [cite_start]Look up to see the stepped pylon and a mosaic panel featuring a Chinese Junk ship, the bank's original logo[cite: 314, 315]."
+    "info": "A 1936 Art Deco gem by A.O. Coltman[cite: 309, 310]. It was innovatively designed with a basement bicycle garage[cite: 312]! Look up to see the stepped pylon and a mosaic panel featuring a Chinese Junk ship, the bank's original logo[cite: 314, 315]."
   },
   {
     "id": "D",
@@ -202,7 +202,7 @@
     "image": "images/central_market.jpg",
     "built": "1936",
     "architects": "N/A",
-    [cite_start]"info": "Built in 1936 as the wholesale wet market for $330,000[cite: 317]. [cite_start]It used special 'Calorex' glass to keep the interior cool, saving the city from needing refrigerators[cite: 320]! [cite_start]In 1986, it was converted into the award-winning arts market[cite: 318]."
+    "info": "Built in 1936 as the wholesale wet market for $330,000[cite: 317]. It used special 'Calorex' glass to keep the interior cool, saving the city from needing refrigerators[cite: 320]! In 1986, it was converted into the award-winning arts market[cite: 318]."
   },
   {
     "id": "E",
@@ -211,7 +211,7 @@
     "image": "images/yap_ah_loy.jpg",
     "built": "N/A",
     "architects": "N/A",
-    [cite_start]"info": "A short street with huge history[cite: 328]. [cite_start]This road originally led directly to the home of Kapitan Yap Ah Loy[cite: 329]. [cite_start]It joins Jalan Hang Lekiu (formerly Klyne Street), which was once one of the only paved streets in the city[cite: 329]."
+    "info": "A short street with huge history[cite: 328]. This road originally led directly to the home of Kapitan Yap Ah Loy[cite: 329]. It joins Jalan Hang Lekiu (formerly Klyne Street), which was once one of the only paved streets in the city[cite: 329]."
   },
   {
     "id": "F",
@@ -220,7 +220,7 @@
     "image": "images/lebuh_ampang.webp",
     "built": "N/A",
     "architects": "N/A",
-    [cite_start]"info": "Historically the street of the Chettiars (money-lenders)[cite: 337]. Look closely at No. 85—it features beautiful ceramic peacock tiles. [cite_start]The peacock is the symbol of Lord Muruga, the deity of the Chettiar caste[cite: 338, 339]."
+    "info": "Historically the street of the Chettiars (money-lenders)[cite: 337]. Look closely at No. 85—it features beautiful ceramic peacock tiles. The peacock is the symbol of Lord Muruga, the deity of the Chettiar caste[cite: 338, 339]."
   },
   {
     "id": "G",
@@ -229,7 +229,7 @@
     "image": "images/jalan_melaka.jpg",
     "built": "N/A",
     "architects": "N/A",
-    "info": "A mix of old and new. [cite_start]Notable for the Bank Muamalat building, which was designed to look like a traditional Malay House despite being a modern banking hall[cite: 343]. [cite_start]The Malay school was originally located in this area[cite: 359]."
+    "info": "A mix of old and new. Notable for the Bank Muamalat building, which was designed to look like a traditional Malay House despite being a modern banking hall[cite: 343]. The Malay school was originally located in this area[cite: 359]."
   },
   {
     "id": "H",
@@ -238,7 +238,7 @@
     "image": "images/selangor_mansion.jpg",
     "built": "1964",
     "architects": "N/A",
-    [cite_start]"info": "Completed in 1964 for $2.5 million, these 8-storey blocks were an early experiment in mass public housing for the newly independent nation[cite: 348, 350]. [cite_start]They replaced the former squatters of Lorong Gombak[cite: 349]."
+    "info": "Completed in 1964 for $2.5 million, these 8-storey blocks were an early experiment in mass public housing for the newly independent nation[cite: 348, 350]. They replaced the former squatters of Lorong Gombak[cite: 349]."
   },
   {
     "id": "I",
@@ -247,7 +247,7 @@
     "image": "images/wisma_yakin.jpg",
     "built": "1970s",
     "architects": "N/A",
-    [cite_start]"info": "Built in the 1970s, this tower was once the tallest in the area[cite: 353]. [cite_start]It remains the absolute best place in the city to buy traditional Malay attire like Baju Melayu and Songkok (visit Stall 11 to meet En Zolfadli, the expert)[cite: 355, 356]."
+    "info": "Built in the 1970s, this tower was once the tallest in the area[cite: 353]. It remains the absolute best place in the city to buy traditional Malay attire like Baju Melayu and Songkok (visit Stall 11 to meet En Zolfadli, the expert)[cite: 355, 356]."
   },
   {
     "id": "J",
@@ -256,7 +256,7 @@
     "image": "images/jalan_melayu.jpg",
     "built": "N/A",
     "architects": "N/A",
-    [cite_start]"info": "Known as 'Malay Street'[cite: 358], this area was once filled with spice factories and bakeries. [cite_start]Look for the 100-year-old business selling 'Kain Pelekat' (sarongs) at No 3-5, run by the Kulasingam Chettiar family since 1895[cite: 361, 362]."
+    "info": "Known as 'Malay Street'[cite: 358], this area was once filled with spice factories and bakeries. Look for the 100-year-old business selling 'Kain Pelekat' (sarongs) at No 3-5, run by the Kulasingam Chettiar family since 1895[cite: 361, 362]."
   },
   {
     "id": "K",
@@ -265,7 +265,7 @@
     "image": "images/jalan_tar.jpg",
     "built": "1915-1920 (Shophouses)",
     "architects": "N/A",
-    [cite_start]"info": "Now Jalan Tuanku Abdul Rahman, this was originally just a track leading to the tin mines at Batu Caves[cite: 364]. [cite_start]The stunning block of shophouses here (built 1912-1915) features giant pilasters and decorative plaster garlands[cite: 366, 368]."
+    "info": "Now Jalan Tuanku Abdul Rahman, this was originally just a track leading to the tin mines at Batu Caves[cite: 364]. The stunning block of shophouses here (built 1912-1915) features giant pilasters and decorative plaster garlands[cite: 366, 368]."
   },
   {
     "id": "L",
@@ -274,7 +274,7 @@
     "image": "images/survey_office.jpg",
     "built": "1909-1910",
     "architects": "A.B. Hubback",
-    "info": "Another A.B. [cite_start]Hubback design built for $150,000[cite: 371]. [cite_start]It features a dramatic 400ft long arcade[cite: 372]. [cite_start]Look for the twin 'Chatris' (domed pavilions) on the roof[cite: 372]. [cite_start]It sits sadly beneath the modern LRT line but remains a stunning piece of architecture[cite: 373]."
+    "info": "Another A.B. Hubback design built for $150,000[cite: 371]. It features a dramatic 400ft long arcade[cite: 372]. Look for the twin 'Chatris' (domed pavilions) on the roof[cite: 372]. It sits sadly beneath the modern LRT line but remains a stunning piece of architecture[cite: 373]."
   },
   {
     "id": "M",
@@ -283,6 +283,6 @@
     "image": "images/old_high_court.jpg",
     "built": "1912-1915",
     "architects": "A.B. Hubback",
-    [cite_start]"info": "Costing $208,000, this 1915 building replaced the courts on the hill[cite: 376, 377]. It features a grand inner courtyard and was designed by—you guessed it—A.B. [cite_start]Hubback[cite: 376, 378]. [cite_start]It is currently awaiting restoration by Kraftangan Malaysia[cite: 382]."
+    "info": "Costing $208,000, this 1915 building replaced the courts on the hill[cite: 376, 377]. It features a grand inner courtyard and was designed by—you guessed it—A.B. Hubback[cite: 376, 378]. It is currently awaiting restoration by Kraftangan Malaysia[cite: 382]."
   }
 ]
