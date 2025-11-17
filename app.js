@@ -1,5 +1,5 @@
 // --- CONFIGURATION ---
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOtyJ200uEv2yu24C-DesB5g57iBX9CpO_qp8mAQCKX1LYrS_S8BnZGtfVDq_9LqnJ7HO6nbXpu8J4/pub?gid=0&single=true&output=csv"; 
+// (The SHEET_URL and ADMIN_PASSWORD are now securely on the server)
 
 // --- GAME STATE ---
 let visitedSites = JSON.parse(localStorage.getItem('jejak_visited')) || [];
@@ -52,18 +52,18 @@ function setupLandingPage() {
         });
     }
 
-    // The STAFF button hides the landing page and shows the code.
+    // --- THIS IS THE FIX ---
+    // This listener now just calls showAdminCode(), 
+    // which handles the password prompt and API call.
     if(btnStaff) {
-        btnStaff.addEventListener('click', async () => {
-            const pass = prompt("👮 BWM STAFF LOGIN\nPlease enter your password:");
-            if (pass === ADMIN_PASSWORD) {
-                landingPage.classList.add('hidden');
-                await showAdminCode();
-            } else if (pass !== null) {
-                alert("❌ Wrong password");
-            }
+        btnStaff.addEventListener('click', () => {
+            const landingPage = document.getElementById('landing-page');
+            landingPage.classList.add('hidden');
+            // Just call the function. It handles the rest.
+            showAdminCode(); 
         });
     }
+    // --- END OF FIX ---
 
     if(backToHome) {
         backToHome.addEventListener('click', () => {
@@ -82,7 +82,8 @@ function setupLandingPage() {
     setupGatekeeperLogic();
 }
 
-// This is the NEW showAdminCode function for app.js
+// --- NEW SECURE ADMIN FUNCTION ---
+// This function now prompts for the password and calls the secure API.
 async function showAdminCode() {
     const staffScreen = document.getElementById('staff-screen');
     const passkeyDisplay = document.getElementById('adminPasskeyDisplay');
@@ -90,7 +91,11 @@ async function showAdminCode() {
     
     // Get the password from the prompt
     const pass = prompt("👮 BWM STAFF LOGIN\nPlease enter your password:");
-    if (!pass) return; // User clicked cancel
+    if (!pass) {
+        // User clicked cancel, show the landing page again
+        document.getElementById('landing-page').classList.remove('hidden');
+        return;
+    }
 
     staffScreen.classList.remove('hidden');
     passkeyDisplay.textContent = "LOADING...";
@@ -127,6 +132,7 @@ async function showAdminCode() {
         }, 2000);
     }
 }
+
 function setupGatekeeperLogic() {
     const btn = document.getElementById('unlockBtn');
     const input = document.getElementById('passcodeInput');
@@ -137,7 +143,8 @@ function setupGatekeeperLogic() {
     }
 }
 
-// This is the NEW verifyCode function for app.js
+// --- NEW SECURE VISITOR FUNCTION ---
+// This function now calls the secure /api/verify-passkey API.
 async function verifyCode(enteredCode) {
     const btn = document.getElementById('unlockBtn');
     const errorMsg = document.getElementById('errorMsg');
@@ -187,97 +194,98 @@ async function verifyCode(enteredCode) {
     }
 }
 
+
 // --- 2. MAP & GAMIFICATION LOGIC ---
+// (This section is unchanged from your original file)
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- START: CHATBOT LOGIC ---
 
-const btnChat = document.getElementById('btnChat');
-const chatModal = document.getElementById('chatModal');
-const closeChatModal = document.getElementById('closeChatModal');
-const chatMessages = document.getElementById('chatMessages');
-const chatInput = document.getElementById('chatInput');
-const chatSendBtn = document.getElementById('chatSendBtn');
+    const btnChat = document.getElementById('btnChat');
+    const chatModal = document.getElementById('chatModal');
+    const closeChatModal = document.getElementById('closeChatModal');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const chatSendBtn = document.getElementById('chatSendBtn');
 
-if (btnChat) {
-    btnChat.addEventListener('click', () => {
-        chatModal.classList.remove('hidden');
-    });
-}
-
-if (closeChatModal) {
-    closeChatModal.addEventListener('click', () => {
-        chatModal.classList.add('hidden');
-    });
-}
-
-async function handleChatSend() {
-    const query = chatInput.value.trim();
-    if (!query) return;
-
-    // 1. Display user's message
-    addChatMessage(query, 'user');
-    chatInput.value = '';
-    chatSendBtn.disabled = true;
-    chatSendBtn.textContent = '...';
-
-    try {
-        const response = await fetch('/api/chat', { 
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                userQuery: query
-            })
+    if (btnChat) {
+        btnChat.addEventListener('click', () => {
+            chatModal.classList.remove('hidden');
         });
-
-        const data = await response.json();
-
-        // 3. Display the AI's response
-        addChatMessage(data.reply, 'bot');
-
-    } catch (error) {
-        addChatMessage('Error: Could not connect to the AI guide.', 'bot');
-    } finally {
-        chatSendBtn.disabled = false;
-        chatSendBtn.textContent = 'Send';
-    }
-}
-
-function addChatMessage(message, sender) {
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('flex');
-
-    let innerHtml = '';
-    if (sender === 'user') {
-        innerHtml = `
-            <div class="bg-blue-600 text-white p-3 rounded-lg ml-auto max-w-xs">
-                <p>${message}</p>
-            </div>`;
-        messageDiv.classList.add('justify-end');
-    } else {
-        innerHtml = `
-            <div class="bg-gray-200 text-gray-800 p-3 rounded-lg max-w-xs">
-                <p>${message}</p>
-            </div>`;
     }
 
-    messageDiv.innerHTML = innerHtml;
-    chatMessages.appendChild(messageDiv);
+    if (closeChatModal) {
+        closeChatModal.addEventListener('click', () => {
+            chatModal.classList.add('hidden');
+        });
+    }
 
-    // Scroll to bottom
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
+    async function handleChatSend() {
+        const query = chatInput.value.trim();
+        if (!query) return;
 
-if (chatSendBtn) chatSendBtn.addEventListener('click', handleChatSend);
-if (chatInput) chatInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') handleChatSend();
-});
+        // 1. Display user's message
+        addChatMessage(query, 'user');
+        chatInput.value = '';
+        chatSendBtn.disabled = true;
+        chatSendBtn.textContent = '...';
 
-// --- END: CHATBOT LOGIC ---
+        try {
+            const response = await fetch('/api/chat', { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userQuery: query
+                })
+            });
+
+            const data = await response.json();
+
+            // 3. Display the AI's response
+            addChatMessage(data.reply, 'bot');
+
+        } catch (error) {
+            addChatMessage('Error: Could not connect to the AI guide.', 'bot');
+        } finally {
+            chatSendBtn.disabled = false;
+            chatSendBtn.textContent = 'Send';
+        }
+    }
+
+    function addChatMessage(message, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('flex');
+
+        let innerHtml = '';
+        if (sender === 'user') {
+            innerHtml = `
+                <div class="bg-blue-600 text-white p-3 rounded-lg ml-auto max-w-xs">
+                    <p>${message}</p>
+                </div>`;
+            messageDiv.classList.add('justify-end');
+        } else {
+            innerHtml = `
+                <div class="bg-gray-200 text-gray-800 p-3 rounded-lg max-w-xs">
+                    <p>${message}</p>
+                </div>`;
+        }
+
+        messageDiv.innerHTML = innerHtml;
+        chatMessages.appendChild(messageDiv);
+
+        // Scroll to bottom
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    if (chatSendBtn) chatSendBtn.addEventListener('click', handleChatSend);
+    if (chatInput) chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleChatSend();
+    });
+
+    // --- END: CHATBOT LOGIC ---
     initApp();
     updateGameProgress(); 
 
-    // Initialize Map
     // Initialize Map
     const map = L.map('map').setView([3.1483, 101.6938], 16);
 
