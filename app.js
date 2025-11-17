@@ -11,9 +11,10 @@ const TOTAL_SITES = 13;
 let allSiteData = []; 
 let chatHistory = [];
 let userMessageCount = parseInt(localStorage.getItem('jejak_message_count')) || 0;
+let currentModalSite = null; // To track the currently open pin
 
 // --- DOM Elements ---
-let siteModal, siteModalImage, siteModalTitle, siteModalInfo, siteModalQuizQ, siteModalQuizInput, siteModalQuizBtn, siteModalQuizResult, closeSiteModal, siteModalAskAI;
+let siteModal, siteModalImage, siteModalTitle, siteModalInfo, siteModalQuizArea, siteModalQuizQ, siteModalQuizInput, siteModalQuizBtn, siteModalQuizResult, closeSiteModal, siteModalAskAI, siteModalDirections;
 let chatModal, closeChatModal, chatHistoryEl, chatInput, chatSendBtn, chatLimitText;
 let passportModal, closePassportModal, passportInfo, passportGrid;
 
@@ -33,14 +34,15 @@ function initializeGameAndMap() {
 
     fetch('data.json').then(res => res.json()).then(sites => {
         allSiteData = sites;
+        // This attaches a click listener to EVERY site in data.json
         sites.forEach(site => {
             const marker = L.marker(site.coordinates).addTo(map);
+            // Mark as visited if it's in the main visited list (1-13) OR discovery list (A, B, C)
             if (visitedSites.includes(site.id) || discoveredSites.includes(site.id)) {
                 marker._icon.classList.add('marker-visited');
             }
             marker.on('click', () => handleMarkerClick(site, marker));
         });
-        // Call progress and passport updates *after* data is loaded
         updateGameProgress();
         updatePassport(); 
     }).catch(err => console.error("Error loading Map Data:", err));
@@ -59,49 +61,67 @@ function initializeGameAndMap() {
 function handleMarkerClick(site, marker) {
     if (!siteModal) return; 
 
+    currentModalSite = site; // Store the clicked site
+
     siteModalTitle.textContent = site.name;
     siteModalInfo.textContent = site.info;
     siteModalImage.src = site.image || 'https://placehold.co/600x400/eee/ccc?text=Site+Image';
     
-    // Hide 'Ask AI' button if it's not a main site (like Dataran Merdeka)
-    if (site.id >= 1 && site.id <= 13) {
-         siteModalQuizQ.parentElement.style.display = 'block';
-         siteModalAskAI.style.display = 'block';
+    // Check if it's a main site (ID 1-13) which has a quiz
+    const isMainSite = site.quiz && !isNaN(parseInt(site.id));
+    
+    if (isMainSite) {
+        // Show Quiz and Ask AI button
+        siteModalQuizArea.style.display = 'block';
+        siteModalAskAI.style.display = 'block';
+        
+        siteModalQuizQ.textContent = site.quiz.q;
+        siteModalQuizInput.value = "";
+        siteModalQuizResult.classList.add('hidden');
+        
+        // Re-create quiz button to remove old listeners
+        const newQuizBtn = siteModalQuizBtn.cloneNode(true);
+        siteModalQuizBtn.parentNode.replaceChild(newQuizBtn, siteModalQuizBtn);
+        siteModalQuizBtn = newQuizBtn; 
+        
+        siteModalQuizBtn.addEventListener('click', () => {
+            const userAnswer = siteModalQuizInput.value.trim().toLowerCase();
+            const correctAnswer = site.quiz.a.trim().toLowerCase();
+            
+            if (userAnswer === correctAnswer) {
+                siteModalQuizResult.textContent = "Correct! Well done!";
+                siteModalQuizResult.className = "text-sm mt-2 text-center font-bold text-green-600";
+                
+                if (!visitedSites.includes(site.id)) {
+                    visitedSites.push(site.id);
+                    localStorage.setItem('jejak_visited', JSON.stringify(visitedSites));
+                    marker._icon.classList.add('marker-visited');
+                    updateGameProgress();
+                    updatePassport(); // Update passport when a new stamp is earned
+                }
+            } else {
+                siteModalQuizResult.textContent = "Not quite, try again!";
+                siteModalQuizResult.className = "text-sm mt-2 text-center font-bold text-red-600";
+            }
+            siteModalQuizResult.classList.remove('hidden');
+        });
+
     } else {
-        // Hide quiz and Ask AI button for non-quiz sites
-         siteModalQuizQ.parentElement.style.display = 'none';
-         siteModalAskAI.style.display = 'none';
+        // This is a "discovery" pin (like 'A', 'B', 'C')
+        // Hide Quiz and Ask AI button
+        siteModalQuizArea.style.display = 'none';
+        siteModalAskAI.style.display = 'none';
+        
+        // Mark as "discovered" if it's the first time
+        if (!discoveredSites.includes(site.id)) {
+            discoveredSites.push(site.id);
+            localStorage.setItem('jejak_discovered', JSON.stringify(discoveredSites));
+            marker._icon.classList.add('marker-visited');
+        }
     }
 
-    siteModalQuizQ.textContent = site.quiz.q;
-    siteModalQuizInput.value = "";
-    siteModalQuizResult.classList.add('hidden');
-    
-    const newQuizBtn = siteModalQuizBtn.cloneNode(true);
-    siteModalQuizBtn.parentNode.replaceChild(newQuizBtn, siteModalQuizBtn);
-    siteModalQuizBtn = newQuizBtn; 
-    
-    siteModalQuizBtn.addEventListener('click', () => {
-        const userAnswer = siteModalQuizInput.value.trim().toLowerCase();
-        const correctAnswer = site.quiz.a.trim().toLowerCase();
-        
-        if (userAnswer === correctAnswer) {
-            siteModalQuizResult.textContent = "Correct! Well done!";
-            siteModalQuizResult.className = "text-sm mt-2 text-center font-bold text-green-600";
-            
-            if (!visitedSites.includes(site.id)) {
-                visitedSites.push(site.id);
-                localStorage.setItem('jejak_visited', JSON.stringify(visitedSites));
-                marker._icon.classList.add('marker-visited');
-                updateGameProgress();
-            }
-        } else {
-            siteModalQuizResult.textContent = "Not quite, try again!";
-            siteModalQuizResult.className = "text-sm mt-2 text-center font-bold text-red-600";
-        }
-        siteModalQuizResult.classList.remove('hidden');
-    });
-
+    // "Get Directions" button is always visible
+    siteModalDirections.style.display = 'block';
     siteModal.classList.remove('hidden');
 }
 
@@ -139,6 +159,7 @@ async function handleSendMessage() {
         localStorage.setItem('jejak_message_count', userMessageCount.toString());
         updateChatUIWithCount();
         
+        // Use innerHTML to render Markdown (like bolding or lists) from the AI
         thinkingEl.querySelector('p').innerHTML = data.reply; 
 
     } catch (error) {
@@ -157,7 +178,7 @@ async function handleSendMessage() {
 function addChatMessage(role, text) {
     const messageEl = document.createElement('div');
     const name = (role === 'user') ? 'You' : 'AI Guide';
-    const align = (role === 'user') ? 'self-end' : 'self-start';
+    const align = (role ===_ 'user') ? 'self-end' : 'self-start';
     const bg = (role === 'user') ? 'bg-white' : 'bg-blue-100';
     const textCol = (role === 'user') ? 'text-gray-900' : 'text-blue-900';
     
@@ -165,7 +186,7 @@ function addChatMessage(role, text) {
     messageEl.innerHTML = `<p class="font-bold text-sm">${name}</p><p>${text}</p>`;
     
     chatHistoryEl.appendChild(messageEl);
-    chatHistoryEl.scrollTop = chatHistoryEl.scrollHeight; 
+    chatHistoryEl.scrollTop = chatHistoryEl.scrollHeight; // Auto-scroll
     return messageEl;
 }
 
@@ -173,6 +194,7 @@ function addChatMessage(role, text) {
 
 function updateGameProgress() {
     const visitedCount = visitedSites.length;
+    // Get total main sites from allSiteData, or default to 13
     const mainSitesTotal = allSiteData.filter(site => !isNaN(parseInt(site.id))).length || TOTAL_SITES;
     
     const percent = (visitedCount / mainSitesTotal) * 100;
@@ -201,12 +223,11 @@ function disableChatUI(flag) {
 }
 
 /**
- * [REWRITTEN] Updates the passport with the new photo grid.
+ * Updates the passport with the photo grid.
  */
 function updatePassport() {
     if (!passportInfo || !passportGrid || allSiteData.length === 0) {
-        console.log("Passport elements not ready, or data not loaded.");
-        return;
+        return; // Don't run if elements aren't ready
     }
 
     const mainSites = allSiteData.filter(site => !isNaN(parseInt(site.id)));
@@ -254,8 +275,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             initializeGameAndMap();
             setupGameUIListeners(); 
-            // Note: updateGameProgress() and updatePassport() are called inside initializeGameAndMap
-            // after the 'data.json' fetch is successful.
             
             if (userMessageCount >= MAX_MESSAGES_PER_SESSION) {
                 disableChatUI(true);
@@ -363,7 +382,8 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMsg.classList.add('hidden');
 
         try {
-            const response = await fetch('/api/check-passkey', {
+            // This MUST match the file name in your /api folder
+            const response = await fetch('/api/check-passkey', { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ passkey: enteredCode })
@@ -401,7 +421,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     /**
-     * [UPDATED]
      * Finds all DOM elements and attaches all in-game listeners.
      */
     function setupGameUIListeners() {
@@ -410,12 +429,14 @@ document.addEventListener('DOMContentLoaded', () => {
         siteModalImage = document.getElementById('siteModalImage');
         siteModalTitle = document.getElementById('siteModalTitle');
         siteModalInfo = document.getElementById('siteModalInfo');
+        siteModalQuizArea = document.getElementById('siteModalQuizArea');
         siteModalQuizQ = document.getElementById('siteModalQuizQ');
         siteModalQuizInput = document.getElementById('siteModalQuizInput');
         siteModalQuizBtn = document.getElementById('siteModalQuizBtn');
         siteModalQuizResult = document.getElementById('siteModalQuizResult');
         closeSiteModal = document.getElementById('closeSiteModal');
-        siteModalAskAI = document.getElementById('siteModalAskAI'); // New
+        siteModalAskAI = document.getElementById('siteModalAskAI');
+        siteModalDirections = document.getElementById('siteModalDirections');
         
         chatModal = document.getElementById('chatModal');
         closeChatModal = document.getElementById('closeChatModal');
@@ -427,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
         passportModal = document.getElementById('passportModal');
         closePassportModal = document.getElementById('closePassportModal');
         passportInfo = document.getElementById('passportInfo');
-        passportGrid = document.getElementById('passportGrid'); // New
+        passportGrid = document.getElementById('passportGrid');
         
         // --- Attach Listeners ---
 
@@ -463,21 +484,28 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // --- NEW LISTENER FOR "ASK AI" BUTTON ---
         siteModalAskAI.addEventListener('click', () => {
             const siteName = siteModalTitle.textContent;
             if (!siteName || siteName === "Site Title") return;
             
-            // Create a question
             const question = `Tell me more about ${siteName}.`;
             
-            // Close site modal, open chat modal
             siteModal.classList.add('hidden');
             chatModal.classList.remove('hidden');
             
-            // Send the question directly
-            chatInput.value = question; // Pre-fill
-            handleSendMessage(); // Send it
+            chatInput.value = question;
+            handleSendMessage();
+        });
+        
+        siteModalDirections.addEventListener('click', () => {
+            if (!currentModalSite) return;
+            
+            const lat = currentModalSite.coordinates[0];
+            const lon = currentModalSite.coordinates[1];
+            
+            // This opens Google Maps with directions from "current location" to the destination
+            const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`;
+            window.open(url, '_blank');
         });
     }
 
