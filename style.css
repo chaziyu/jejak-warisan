@@ -139,3 +139,14 @@ body, html {
         opacity: 1;
     }
 }
+
+/* --- 9. NEW UI ADDITIONS --- */
+#logoOverlay {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 100px; /* Adjust as needed */
+    z-index: 1000; /* Above map, below modals */
+    pointer-events: none; /* So it doesn't block map clicks */
+    opacity: 0.8;
+}
