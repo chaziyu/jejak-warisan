@@ -1,6 +1,6 @@
 // --- CONFIGURATION ---
 const HISTORY_WINDOW_SIZE = 10;
-const MAX_MESSAGES_PER_SESSION = 15;
+const MAX_MESSAGES_PER_SESSION = 10; // <-- MODIFIED: Changed from 15 to 10
 const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
 // --- GAME STATE ---
@@ -224,7 +224,7 @@ async function handleSendMessage() {
 function addChatMessage(role, text) {
     const messageEl = document.createElement('div');
     const name = (role === 'user') ? 'You' : 'AI Guide';
-    const align = (role === 'user') ? 'self-end' : 'self-start';
+    const align = (role ==='user') ? 'self-end' : 'self-start';
     const bg = (role === 'user') ? 'bg-white' : 'bg-blue-100';
     const textCol = (role === 'user') ? 'text-gray-900' : 'text-blue-900';
     
@@ -559,7 +559,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const lat = currentModalSite.coordinates[0];
             const lon = currentModalSite.coordinates[1];
             
-            const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`;
+            const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=walking`;
             window.open(url, '_blank');
         });
         
