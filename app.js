@@ -27,7 +27,7 @@ function initializeGameAndMap() {
     
     // MODIFIED: Changed map style to Stamen Toner Lite for a vintage feel
     L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.png', {
-        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> — Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 20
     }).addTo(map);
 
@@ -604,9 +604,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const lat = currentModalSite.coordinates[0];
             const lon = currentModalSite.coordinates[1];
             
-            // --- CRITICAL FIX ---
-            // Replaced broken URL with the correct Google Maps URL
-            const url = `https://www.google.com/maps?q=${lat},${lon}&travelmode=walking`;
+            // === MODIFIED THIS LINE ===
+            // This is the correct, working URL for Google Maps directions
+            const url = `https://www.google.com/maps?daddr=${lat},${lon}&travelmode=walking`;
             
             window.open(url, '_blank');
         });
