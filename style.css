@@ -21,7 +21,8 @@ body, html {
 #progress-container > div {
     pointer-events: auto;
 }
-#btnChat, #btnPassport, #btnRecenter {
+/* MODIFIED: Added #btnChallenge */
+#btnChat, #btnPassport, #btnRecenter, #btnChallenge {
     z-index: 1000;
 }
 
@@ -121,27 +122,43 @@ body, html {
     border: 3px solid #ffffff;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
     
-    /* Pulsing animation */
-    animation: pulse-animation 1.5s infinite;
+    /* MODIFIED: Set default animation to medium */
+    animation: pulse-animation-medium 1.5s infinite;
 }
 
-@keyframes pulse-animation {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.4);
-        opacity: 0.7;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+/* Renamed old animation to medium */
+@keyframes pulse-animation-medium {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
 }
+
+/* ADDED: New animation speeds */
+@keyframes pulse-animation-slow {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.2); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+@keyframes pulse-animation-fast {
+    0% { transform: scale(1.2); opacity: 1; }
+    50% { transform: scale(1.6); opacity: 1; }
+    100% { transform: scale(1.2); opacity: 1; }
+}
+
+/* ADDED: Classes to trigger new animations */
+.pulse-slow {
+    animation: pulse-animation-slow 3s infinite !important;
+}
+.pulse-medium {
+    animation: pulse-animation-medium 1.5s infinite !important;
+}
+.pulse-fast {
+    animation: pulse-animation-fast 0.7s infinite !important;
+}
+
 
 /* --- 9. NEW UI ADDITIONS --- */
-/* MODIFIED: This now styles the new logo box */
 #logoOverlay {
     position: fixed;
     top: 15px; 
@@ -149,7 +166,6 @@ body, html {
     z-index: 1000;
     pointer-events: none;
     
-    /* New Styles for the box */
     background-color: white;
     border-radius: 8px;
     padding: 10px;
@@ -157,14 +173,14 @@ body, html {
     width: 120px; 
 }
 #logoOverlay img {
-    width: 80px; /* Control logo size */
+    width: 80px; 
     height: 80px;
     display: block;
-    margin: 0 auto 8px auto; /* Center it and add space below */
+    margin: 0 auto 8px auto; 
 }
 #logoOverlay p {
     font-size: 10px;
-    font-weight: 600; /* Semi-bold */
+    font-weight: 600; 
     color: #333;
     text-align: center;
     line-height: 1.2;
