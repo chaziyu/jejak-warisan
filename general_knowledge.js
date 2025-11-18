@@ -27,25 +27,25 @@ const GENERAL_KNOWLEDGE = `
 ## About the Architects
 
 ### Arthur Benison Hubback (A.B. Hubback)
-- [cite_start]**A key figure** in the architectural history of British Malaya[cite: 834]. He designed many of Kuala Lumpur's most famous Moghul-style buildings in the early 20th century.
-- [cite_start]**His notable works on this walk include:** Masjid Jamek [cite: 884][cite_start], Panggong Bandaraya (Old City Hall) [cite: 969-970][cite_start], the Old Post Office [cite: 856][cite_start], the National Textile Museum (Old FMS Railway Offices) [cite: 1117][cite_start], the Old Survey Office [cite: 1188][cite_start], and the Old High Court[cite: 1193].
+- **A key figure** in the architectural history of British Malaya. He designed many of Kuala Lumpur's most famous Moghul-style buildings in the early 20th century.
+- **His notable works on this walk include:** Masjid Jamek, Panggong Bandaraya (Old City Hall), the Old Post Office, the National Textile Museum (Old FMS Railway Offices), the Old Survey Office, and the Old High Court.
 
 ### Arthur Oakley Coltman (A.O. Coltman)
 - **A master of the Art Deco style** in Kuala Lumpur during the 1930s. His designs were known for being modern and innovative.
-- [cite_start]**His notable works on this walk include:** The Oriental Building [cite: 923][cite_start], the OCBC Building [cite: 1127][cite_start], and the Clock Tower at Medan Pasar[cite: 900].
+- **His notable works on this walk include:** The Oriental Building, the OCBC Building, and the Clock Tower at Medan Pasar.
 
 ---
 ## The History of Kuala Lumpur
 
-[cite_start]The story of modern Kuala Lumpur has its origins in the 1850s when the Malay Chief of Klang, Raja Abdullah, sent Chinese miners up the Klang River to open new tin mines[cite: 1204].
+The story of modern Kuala Lumpur has its origins in the 1850s when the Malay Chief of Klang, Raja Abdullah, sent Chinese miners up the Klang River to open new tin mines.
 
-**Fun Fact:** The name 'Kuala Lumpur' literally means **"muddy confluence"**! [cite_start]This is because the first trading post was established right where the muddy Gombak River (then Sungai Lumpur) met the Klang River[cite: 1205]. You can stand at this exact spot at Masjid Jamek today.
+**Fun Fact:** The name 'Kuala Lumpur' literally means **"muddy confluence"**! This is because the first trading post was established right where the muddy Gombak River (then Sungai Lumpur) met the Klang River. You can stand at this exact spot at Masjid Jamek today.
 
-[cite_start]The early town was a wild frontier, but its survival and growth are credited to the leadership of **Yap Ah Loy**, the third 'Kapitan Cina'[cite: 1207].
+The early town was a wild frontier, but its survival and growth are credited to the leadership of **Yap Ah Loy**, the third 'Kapitan Cina'.
 
-[cite_start]In 1880, KL became the capital of Selangor[cite: 1208]. [cite_start]After a devastating fire and flood in 1881, the British administration made a crucial rule: all new buildings had to be constructed from **brick and tile**, not wood and attap (thatch)[cite: 1210]. This single decision shaped the city's architecture forever!
+In 1880, KL became the capital of Selangor. After a devastating fire and flood in 1881, the British administration made a crucial rule: all new buildings had to be constructed from **brick and tile**, not wood and attap (thatch). This single decision shaped the city's architecture forever!
 
-[cite_start]The railway's arrival in 1886 brought more prosperity[cite: 1217]. [cite_start]In 1896, Kuala Lumpur became the capital of the newly formed Federated Malay States [cite: 1217][cite_start], and in 1957, it became the capital of the newly independent Federation of Malaya[cite: 1225].
+The railway's arrival in 1886 brought more prosperity. In 1896, Kuala Lumpur became the capital of the newly formed Federated Malay States, and in 1957, it became the capital of the newly independent Federation of Malaya.
 `;
 
 // Use module.exports
