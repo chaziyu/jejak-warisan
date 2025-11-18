@@ -224,7 +224,7 @@ async function handleSendMessage() {
 function addChatMessage(role, text) {
     const messageEl = document.createElement('div');
     const name = (role === 'user') ? 'You' : 'AI Guide';
-    const align = (role ==='user') ? 'self-end' : 'self-start';
+    const align = (role === 'user') ? 'self-end' : 'self-start';
     const bg = (role === 'user') ? 'bg-white' : 'bg-blue-100';
     const textCol = (role === 'user') ? 'text-gray-900' : 'text-blue-900';
     
@@ -559,7 +559,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const lat = currentModalSite.coordinates[0];
             const lon = currentModalSite.coordinates[1];
             
-            const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=walking`;
+            const url = `https://maps.google.com/maps?q=${lat},${lon}&travelmode=walking`;
             window.open(url, '_blank');
         });
         
