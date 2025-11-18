@@ -47,9 +47,9 @@ function initializeGameAndMap() {
     if (map) return;
     map = L.map('map').setView([3.1483, 101.6938], 16);
     
-    // Map style (Stamen Toner Lite) to match your screenshot
-    L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.png', {
-        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> — Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    // MODIFIED: Reverted to the original map style
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap contributors © CARTO',
         maxZoom: 20
     }).addTo(map);
 
