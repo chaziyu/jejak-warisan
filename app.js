@@ -721,7 +721,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         shareWhatsAppBtn.addEventListener('click', () => {
-            const whatsappMsg = encodeURIComponent("I've collected all 13 heritage stamps on the Jejak Warisan KL app!");
+            const message = "🎉 Mission Accomplished! I've collected all 13 heritage stamps on the BWM KUL City Walk! 🏛️✨\n\nDiscover KL's history and start your own adventure here: https://bwm-kul-city-walk.vercel.app/";
+            const whatsappMsg = encodeURIComponent(message);
             window.open(`https://wa.me/?text=${whatsappMsg}`, '_blank');
         });
         
